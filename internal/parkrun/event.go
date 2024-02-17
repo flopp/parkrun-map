@@ -45,6 +45,10 @@ func (event Event) WikiUrl() string {
 	return fmt.Sprintf("https://wiki.parkrun.com/index.php/%s", strings.ReplaceAll(event.Name, " ", "_"))
 }
 
+func (event Event) ReportUrl() string {
+	return fmt.Sprintf("https://results-service.parkrun.com/resultsSystem/App/eventJournoReportHTML.php?evNum=%d", event.EventId)
+}
+
 func (event Event) LastRun() string {
 	run := event.LatestRun
 	if run == nil {

@@ -12,8 +12,16 @@ import (
 	"time"
 )
 
+var downloadDelay = 0 * time.Second
+
+func SetDownloadDelay(t time.Duration) {
+	downloadDelay = t
+}
+
 func AlwaysDownload(url string, filePath string) error {
-	fmt.Printf("-- downloading %s to %s\n", url, filePath)
+	//fmt.Printf("-- downloading %s to %s\n", url, filePath)
+
+	time.Sleep(downloadDelay)
 
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 
@@ -48,6 +56,12 @@ func DownloadFileIfOlder(url string, filePath string, maxAge time.Time) error {
 	}
 
 	return AlwaysDownload(url, filePath)
+}
+
+func MustDownloadFileIfOlder(url string, filePath string, maxAge time.Time) {
+	if err := DownloadFileIfOlder(url, filePath, maxAge); err != nil {
+		panic(fmt.Errorf("while downloading '%s' to '%s': %v", url, filePath, err))
+	}
 }
 
 func DownloadFileIfNotExists(url string, filePath string) error {
