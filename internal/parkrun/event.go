@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/flopp/parkrun-map/internal/utils"
@@ -38,6 +39,10 @@ type Event struct {
 
 func (event Event) Url() string {
 	return fmt.Sprintf("https://parkrun.com.de/%s", event.Id)
+}
+
+func (event Event) WikiUrl() string {
+	return fmt.Sprintf("https://wiki.parkrun.com/index.php/%s", strings.ReplaceAll(event.Name, " ", "_"))
 }
 
 func (event Event) LastRun() string {
@@ -305,5 +310,72 @@ func (event *Event) LoadReport(filePath string) error {
 	}
 
 	event.LatestRun = &Run{event, int(runIndex), date, int(runners)}
+	return nil
+}
+
+const (
+	StateStart = iota
+	StateDate
+	StateIndex
+	StateRunners
+	StateEnd
+)
+
+func (event *Event) LoadWiki(filePath string) error {
+	buf, err := utils.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+	sbuf := string(buf)
+
+	state := StateStart
+	dateS := ""
+	indexS := ""
+	runnersS := ""
+	//<td>17th February 2024
+	//<td>191
+	//<td>43
+	reTd := regexp.MustCompile(`^\s*<td>(.+)\s*$`)
+	for _, line := range strings.Split(sbuf, "\n") {
+		if state == StateStart {
+			if strings.Contains(line, "Most_Recent_Event_Summary") {
+				state = StateDate
+			}
+		} else if state == StateDate {
+			if m := reTd.FindStringSubmatch(line); m != nil {
+				dateS = strings.TrimSpace(m[1])
+				state = StateIndex
+			}
+		} else if state == StateIndex {
+			if m := reTd.FindStringSubmatch(line); m != nil {
+				indexS = strings.TrimSpace(m[1])
+				state = StateRunners
+			}
+		} else if state == StateRunners {
+			if m := reTd.FindStringSubmatch(line); m != nil {
+				runnersS = strings.TrimSpace(m[1])
+				state = StateEnd
+				break
+			}
+		}
+	}
+	if state != StateEnd {
+		return fmt.Errorf("failed to fetch results table")
+	}
+
+	date, err := parseDate(dateS)
+	if err != nil {
+		return fmt.Errorf("cannot parse run date: %s; %s", dateS, err)
+	}
+	index, err := strconv.ParseInt(indexS, 10, 32)
+	if err != nil {
+		return fmt.Errorf("cannot parse run index: %s", indexS)
+	}
+	runners, err := strconv.ParseInt(runnersS, 10, 32)
+	if err != nil {
+		return fmt.Errorf("cannot parse runners: %s", runnersS)
+	}
+
+	event.LatestRun = &Run{event, int(index), date, int(runners)}
 	return nil
 }

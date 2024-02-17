@@ -77,14 +77,24 @@ func main() {
 
 	// pull latest results
 	for _, event := range events {
-		report_url := fmt.Sprintf("https://results-service.parkrun.com/resultsSystem/App/eventJournoReportHTML.php?evNum=%d", event.EventId)
-		report_file := filepath.Join(*downloadDir, "parkrun", event.Id, "report")
-		if err := utils.DownloadFileIfOlder(report_url, report_file, yesterday); err != nil {
-			panic(fmt.Errorf("while downloading %s to %s: %w", report_url, report_file, err))
+		wiki_url := event.WikiUrl()
+		wiki_file := filepath.Join(*downloadDir, "parkrun", event.Id, "wiki")
+		if err := utils.DownloadFileIfOlder(wiki_url, wiki_file, yesterday); err != nil {
+			panic(fmt.Errorf("while downloading %s to %s: %w", wiki_url, wiki_file, err))
 		}
-		if err := event.LoadReport(report_file); err != nil {
-			panic(fmt.Errorf("file parsing %s: %w", report_file, err))
+		if err := event.LoadWiki(wiki_file); err != nil {
+			panic(fmt.Errorf("file parsing %s: %w", wiki_file, err))
 		}
+		/*
+			report_url := fmt.Sprintf("https://results-service.parkrun.com/resultsSystem/App/eventJournoReportHTML.php?evNum=%d", event.EventId)
+			report_file := filepath.Join(*downloadDir, "parkrun", event.Id, "report")
+			if err := utils.DownloadFileIfOlder(report_url, report_file, yesterday); err != nil {
+				panic(fmt.Errorf("while downloading %s to %s: %w", report_url, report_file, err))
+			}
+			if err := event.LoadReport(report_file); err != nil {
+				panic(fmt.Errorf("file parsing %s: %w", report_file, err))
+			}
+		*/
 	}
 
 	// fetch external assets (bulma, leaflet)
