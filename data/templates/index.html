@@ -1,0 +1,22 @@
+{{template "header.html" .}}
+        <div id="map"></div>
+<script>
+const parkruns = [
+{{range .Events}}
+{
+    "url": "{{.Url}}",
+    "name": "{{.FixedName}}",
+    "lat": {{.Lat}}, "lon": {{.Lon}},
+    "location": "{{.FixedLocation}}",
+    {{if .LatestRun}}"latest": {
+        "index": {{.LatestRun.Index}},
+        "url": "{{.LatestRun.Url}}",
+        "date": "{{.LatestRun.DateF}}",
+        "runners": {{.LatestRun.RunnerCount}}
+    }{{else}}"latest": null{{end}}
+},
+{{end}}
+];
+</script>
+
+{{template "footer.html" .}}
