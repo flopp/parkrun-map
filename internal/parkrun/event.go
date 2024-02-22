@@ -28,17 +28,22 @@ func (run Run) DateF() string {
 }
 
 type Event struct {
-	EventId   int
-	Id        string
-	Name      string
-	Location  string
-	Lat       float64
-	Lon       float64
-	LatestRun *Run
+	EventId      int
+	Id           string
+	Name         string
+	Location     string
+	Lat          float64
+	Lon          float64
+	GoogleMapsId string
+	LatestRun    *Run
 }
 
 func (event Event) Url() string {
 	return fmt.Sprintf("https://parkrun.com.de/%s", event.Id)
+}
+
+func (event Event) CoursePageUrl() string {
+	return fmt.Sprintf("https://parkrun.com.de/%s/course", event.Id)
 }
 
 func (event Event) WikiUrl() string {
@@ -246,7 +251,7 @@ func LoadEvents(events_json_file string) ([]*Event, error) {
 		lat := coordinates[1].(float64)
 		lon := coordinates[0].(float64)
 
-		eventList = append(eventList, &Event{id, name, longName, location, lat, lon, nil})
+		eventList = append(eventList, &Event{id, name, longName, location, lat, lon, "", nil})
 	}
 
 	sort.Slice(eventList, func(i, j int) bool {
@@ -381,5 +386,28 @@ func (event *Event) LoadWiki(filePath string) error {
 	}
 
 	event.LatestRun = &Run{event, int(index), date, int(runners)}
+	return nil
+}
+
+// <iframe src="https://www.google.com/maps/d/embed?t=h&mid=1jzu9KWQBw__FbZHD3RW6KqLY9CxMzQAa" width="450" height="450"></iframe>
+var reMapsId = regexp.MustCompile(`<iframe src="https://www.google.com/maps/[^"]*mid=([^"&]+)("|&)`)
+
+func (event *Event) LoadCoursePage(filePath string) error {
+	buf, err := utils.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+	sbuf := string(buf)
+
+	event.GoogleMapsId = ""
+	for _, line := range strings.Split(sbuf, "\n") {
+		if m := reMapsId.FindStringSubmatch(line); m != nil {
+			event.GoogleMapsId = m[1]
+		}
+	}
+
+	if event.GoogleMapsId == "" {
+		return fmt.Errorf("cannot find map of course page")
+	}
 	return nil
 }
