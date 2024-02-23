@@ -30,7 +30,8 @@ const loadMap = function (id) {
             var latlngs = [];
             track.forEach(c => {
                 latlngs.push(L.LatLng(c.Lat, c.Lon))
-            })
+            });
+            console.log(latlngs);
             var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
         });
     });
