@@ -26,16 +26,11 @@ const loadMap = function (id) {
         }
         const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon}).addTo(map)
             .bindPopup(`<a href="${parkrun.url}"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
-        //console.log("TRACKS:", parkrun.tracks);
         parkrun.tracks.forEach(track => {
-            //console.log("TRACK:", track);
             const latlngs = [];
             track.forEach(c => {
-                //console.log("COORDS:", c);
-                //latlngs.push(L.LatLng(c.Lat, c.Lon));
                 latlngs.push([c.Lat, c.Lon]);
             });
-            //console.log("L-TRACK:", latlngs);
             const polyline = L.polyline(latlngs, {color: 'red'});
             polyline.addTo(map);
         });

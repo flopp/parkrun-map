@@ -2,7 +2,6 @@ package parkrun
 
 import (
 	"encoding/json"
-	"encoding/xml"
 	"fmt"
 	"regexp"
 	"sort"
@@ -445,24 +444,33 @@ type LineString struct {
 	Coordinates string `xml:"coordinates"`
 }
 
+var reCoordinatesStart = regexp.MustCompile(`^\s*<coordinates>\s*$`)
+var reCoordinatesEnd = regexp.MustCompile(`^\s*</coordinates>\s*$`)
+
 func (event *Event) LoadKML(filePath string) error {
 	buf, err := utils.ReadFile(filePath)
 	if err != nil {
 		return err
 	}
 
-	var kml KML
-	err = xml.Unmarshal(buf, &kml)
-	if err != nil {
-		return err
-	}
-
 	event.Tracks = make([][]Coordinates, 0)
+	track := make([]Coordinates, 0)
 
-	for _, placemark := range kml.Placemarks {
-		if placemark.LineString.Coordinates != "" {
-			track := make([]Coordinates, 0)
-			for _, line := range strings.Split(placemark.LineString.Coordinates, "\n") {
+	in := false
+	for _, line := range strings.Split(string(buf), "\n") {
+		if !in {
+			if reCoordinatesStart.MatchString(line) {
+				in = true
+				track = make([]Coordinates, 0)
+			}
+		} else {
+			if reCoordinatesEnd.MatchString(line) {
+				in = false
+				if len(track) > 1 {
+					event.Tracks = append(event.Tracks, track)
+				}
+				track = make([]Coordinates, 0)
+			} else {
 				line = strings.TrimSpace(line)
 				if len(line) == 0 {
 					continue
@@ -481,8 +489,11 @@ func (event *Event) LoadKML(filePath string) error {
 				}
 				track = append(track, Coordinates{lat, lon})
 			}
-			event.Tracks = append(event.Tracks, track)
 		}
+	}
+
+	if len(track) > 0 {
+		return fmt.Errorf("unterminated coordinates list")
 	}
 
 	return nil

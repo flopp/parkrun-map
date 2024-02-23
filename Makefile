@@ -24,3 +24,9 @@ run-local:
     	-data     "data" \
     	-download ".download" \
     	-output   ".output"
+
+.phony: upload-local
+upload-local: run-local
+	rsync -a .output/ echeclus.uberspace.de:/var/www/virtual/floppnet/parkrun.flopp.net/
+	ssh echeclus.uberspace.de chmod -R o=u /var/www/virtual/floppnet/parkrun.flopp.net
+
