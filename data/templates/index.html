@@ -8,6 +8,7 @@ const parkruns = [
     "name": "{{.FixedName}}",
     "lat": {{.Lat}}, "lon": {{.Lon}},
     "location": "{{.FixedLocation}}",
+    "tracks" : {{.Tracks}},
     {{if .LatestRun}}"latest": {
         "index": {{.LatestRun.Index}},
         "url": "{{.LatestRun.Url}}",

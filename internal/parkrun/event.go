@@ -2,6 +2,7 @@ package parkrun
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"regexp"
 	"sort"
@@ -27,6 +28,10 @@ func (run Run) DateF() string {
 	return run.Date.Format("02.01.2006")
 }
 
+type Coordinates struct {
+	Lat, Lon float64
+}
+
 type Event struct {
 	EventId      int
 	Id           string
@@ -35,6 +40,7 @@ type Event struct {
 	Lat          float64
 	Lon          float64
 	GoogleMapsId string
+	Tracks       [][]Coordinates
 	LatestRun    *Run
 }
 
@@ -251,7 +257,7 @@ func LoadEvents(events_json_file string) ([]*Event, error) {
 		lat := coordinates[1].(float64)
 		lon := coordinates[0].(float64)
 
-		eventList = append(eventList, &Event{id, name, longName, location, lat, lon, "", nil})
+		eventList = append(eventList, &Event{id, name, longName, location, lat, lon, "", nil, nil})
 	}
 
 	sort.Slice(eventList, func(i, j int) bool {
@@ -409,5 +415,75 @@ func (event *Event) LoadCoursePage(filePath string) error {
 	if event.GoogleMapsId == "" {
 		return fmt.Errorf("cannot find map of course page")
 	}
+	return nil
+}
+
+type KML struct {
+	Placemarks []Placemark `xml:"Document>Folder>Placemark"`
+}
+
+type Placemark struct {
+	Name       string     `xml:"name"`
+	Point      Point      `xml:"Point"`
+	LineString LineString `xml:"LineString"`
+}
+
+type ExtendedData struct {
+	Data []Data `xml:"Data"`
+}
+
+type Data struct {
+	Name  string `xml:"name,attr"`
+	Value string `xml:"value"`
+}
+
+type Point struct {
+	Coordinates string `xml:"coordinates"`
+}
+
+type LineString struct {
+	Coordinates string `xml:"coordinates"`
+}
+
+func (event *Event) LoadKML(filePath string) error {
+	buf, err := utils.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+
+	var kml KML
+	err = xml.Unmarshal(buf, &kml)
+	if err != nil {
+		return err
+	}
+
+	event.Tracks = make([][]Coordinates, 0)
+
+	for _, placemark := range kml.Placemarks {
+		if placemark.LineString.Coordinates != "" {
+			track := make([]Coordinates, 0)
+			for _, line := range strings.Split(placemark.LineString.Coordinates, "\n") {
+				line = strings.TrimSpace(line)
+				if len(line) == 0 {
+					continue
+				}
+				c := strings.Split(line, ",")
+				if len(c) != 3 {
+					return fmt.Errorf("error parsing coordinates '%s': not 3 elements", line)
+				}
+				lon, err := strconv.ParseFloat(c[0], 64)
+				if err != nil {
+					return fmt.Errorf("error parsing coordinates '%s': %v", line, err)
+				}
+				lat, err := strconv.ParseFloat(c[1], 64)
+				if err != nil {
+					return fmt.Errorf("error parsing coordinates '%s': %v", line, err)
+				}
+				track = append(track, Coordinates{lat, lon})
+			}
+			event.Tracks = append(event.Tracks, track)
+		}
+	}
+
 	return nil
 }

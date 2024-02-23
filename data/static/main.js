@@ -26,6 +26,13 @@ const loadMap = function (id) {
         }
         const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon}).addTo(map)
             .bindPopup(`<a href="${parkrun.url}"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
+        parkrun.tracks.forEach(track => {
+            var latlngs = [];
+            track.forEach(c => {
+                latlngs.push(L.LatLng(c.Lat, c.Lon))
+            })
+            var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+        });
     });
 };
 

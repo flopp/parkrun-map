@@ -111,6 +111,10 @@ func main() {
 		kml_url := fmt.Sprintf("https://www.google.com/maps/d/kml?mid=%s&forcekml=1", event.GoogleMapsId)
 		kml_file := download.Path("parkrun", event.Id, "kml")
 		utils.MustDownloadFileIfOlder(kml_url, kml_file, fileAge)
+
+		if err := event.LoadKML(kml_file); err != nil {
+			panic(fmt.Errorf("file parsing %s: %w", kml_file, err))
+		}
 	}
 
 	// fetch external assets (bulma, leaflet)
