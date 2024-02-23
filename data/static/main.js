@@ -29,19 +29,14 @@ const loadMap = function (id) {
         console.log("TRACKS:", parkrun.tracks);
         parkrun.tracks.forEach(track => {
             console.log("TRACK:", track);
-        });
-        /*
-        parkrun.tracks.forEach(track => {
-            console.log("TRACK:", track);
-            var latlngs = [];
+            const latlngs = [];
             track.forEach(c => {
                 console.log("COORDS:", c);
-                latlngs.push(L.LatLng(c.Lat, c.Lon))
+                //latlngs.push(L.LatLng(c.Lat, c.Lon));
             });
             console.log("L-TRACK:", latlngs);
-            var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+            //var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
         });
-        */
     });
 };
 
