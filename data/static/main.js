@@ -33,6 +33,7 @@ const loadMap = function (id) {
             track.forEach(c => {
                 console.log("COORDS:", c);
                 //latlngs.push(L.LatLng(c.Lat, c.Lon));
+                latlngs.push([c.Lat, c.Lon]);
             });
             console.log("L-TRACK:", latlngs);
             //var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
