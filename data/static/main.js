@@ -29,6 +29,7 @@ const loadMap = function (id) {
         parkrun.tracks.forEach(track => {
             var latlngs = [];
             track.forEach(c => {
+                console.log(c);
                 latlngs.push(L.LatLng(c.Lat, c.Lon))
             });
             console.log(latlngs);
