@@ -27,6 +27,7 @@ const loadMap = function (id) {
         const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon}).addTo(map)
             .bindPopup(`<a href="${parkrun.url}"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
         console.log("TRACKS:", parkrun.tracks);
+        /*
         parkrun.tracks.forEach(track => {
             console.log("TRACK:", track);
             var latlngs = [];
@@ -37,6 +38,7 @@ const loadMap = function (id) {
             console.log("L-TRACK:", latlngs);
             var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
         });
+        */
     });
 };
 
