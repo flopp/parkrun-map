@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"html/template"
@@ -16,6 +17,7 @@ type RenderData struct {
 	Events    []*parkrun.Event
 	JsFiles   []string
 	CssFiles  []string
+	StatsJs   string
 	Title     string
 	Canonical string
 	Nav       string
@@ -56,6 +58,22 @@ func (p PathBuilder) Path(items ...string) string {
 		joined = fmt.Sprintf("%s/%s", joined, item)
 	}
 	return joined
+}
+
+func modifyGoatcounterLinkSelector(dir, file string) string {
+	path := filepath.Join(dir, file)
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return file
+	}
+
+	data = bytes.ReplaceAll(data, []byte(`querySelectorAll("*[data-goatcounter-click]")`), []byte(`querySelectorAll("a[target=_blank]")`))
+	data = bytes.ReplaceAll(data, []byte(`(elem.dataset.goatcounterClick || elem.name || elem.id || '')`), []byte(`(elem.dataset.goatcounterClick || elem.name || elem.id || elem.href || '')`))
+	data = bytes.ReplaceAll(data, []byte(`(elem.dataset.goatcounterReferrer || elem.dataset.goatcounterReferral || '')`), []byte(`(elem.dataset.goatcounterReferrer || elem.dataset.goatcounterReferral || window.location.href || '')`))
+	file2 := fmt.Sprintf("mod-%s", file)
+	path2 := filepath.Join(dir, file2)
+	os.WriteFile(path2, data, 0770)
+	return file2
 }
 
 func main() {
@@ -139,6 +157,9 @@ func main() {
 	// download bulma
 	utils.MustDownloadFileIfOlder(bulma_url.Path("css/bulma.min.css"), download.Path("bulma", "bulma.css"), fileAge1w)
 
+	// download goatcounter
+	utils.MustDownloadFileIfOlder("https://gc.zgo.at/count.js", download.Path("goatcounter", "stats.js"), fileAge1w)
+
 	js_files := make([]string, 0)
 	js_files = append(js_files, utils.MustCopyHash(download.Path("leaflet/leaflet.js"), "leaflet-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(data.Path("static", "main.js"), "main-HASH.js", *outputDir))
@@ -150,8 +171,11 @@ func main() {
 	utils.MustCopyHash(download.Path("leaflet/marker-icon-2x.png"), "images/marker-icon-2x.png", *outputDir)
 	utils.MustCopyHash(download.Path("leaflet/marker-shadow.png"), "images/marker-shadow.png", *outputDir)
 
+	statsJs := modifyGoatcounterLinkSelector(download.Path("goatcounter"), "stats.js")
+	statsJs = utils.MustCopyHash(download.Path("goatcounter", statsJs), "stats-HASH.js", *outputDir)
+
 	// render templates to output folder
-	renderData := RenderData{events, js_files, css_files, "", "", ""}
+	renderData := RenderData{events, js_files, css_files, statsJs, "", "", ""}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("parkruns in Deutschland - Karte", "https://parkrun.flopp.net/", "map")
 	if err := renderData.render(filepath.Join(*outputDir, "index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html")); err != nil {
