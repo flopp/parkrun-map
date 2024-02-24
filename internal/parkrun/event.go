@@ -346,10 +346,7 @@ func (event *Event) LoadWiki(filePath string) error {
 	dateS := ""
 	indexS := ""
 	runnersS := ""
-	//<td>17th February 2024
-	//<td>191
-	//<td>43
-	reTd := regexp.MustCompile(`^\s*<td>(.+)\s*$`)
+	reTd := regexp.MustCompile(`^\s*<td>(.*)\s*$`)
 	for _, line := range strings.Split(sbuf, "\n") {
 		if state == StateStart {
 			if strings.Contains(line, "Most_Recent_Event_Summary") {
@@ -375,6 +372,11 @@ func (event *Event) LoadWiki(filePath string) error {
 	}
 	if state != StateEnd {
 		return fmt.Errorf("failed to fetch results table")
+	}
+
+	if dateS == "" {
+		// no runs, yet!
+		return nil
 	}
 
 	date, err := parseDate(dateS)
