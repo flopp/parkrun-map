@@ -111,6 +111,7 @@ func (event Event) FixedLocation() string {
 		locations["obersee"] = "Bielefeld"
 		locations["oberwald"] = "Karlsruhe"
 		locations["offenthal"] = "Offenthal"
+		locations["prestelsee"] = "Graben-Neudorf"
 		locations["priessnitzgrund"] = "Dresden"
 		locations["prinzenpark"] = "Braunschweig"
 		locations["rheinaue"] = "Bonn"
