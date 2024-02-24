@@ -64,7 +64,9 @@ func main() {
 	outputDir := flag.String("output", ".output", "the output directory")
 	flag.Parse()
 
-	fileAge := time.Now().Add(-24 * time.Hour)
+	fileAge1d := time.Now().Add(-24 * time.Hour)
+	fileAge1w := time.Now().Add(-24 * 7 * time.Hour)
+
 	utils.SetDownloadDelay(1 * time.Second)
 
 	data := PathBuilder(*dataDir)
@@ -73,7 +75,7 @@ func main() {
 	// fetch parkrun events
 	events_json_url := "https://images.parkrun.com/events.json"
 	events_json_file := download.Path("parkrun", "events.json.gz")
-	if err := utils.DownloadFileIfOlder(events_json_url, events_json_file, fileAge); err != nil {
+	if err := utils.DownloadFileIfOlder(events_json_url, events_json_file, fileAge1d); err != nil {
 		panic(fmt.Errorf("while downloading %s to %s: %w", events_json_url, events_json_file, err))
 	}
 
@@ -87,7 +89,7 @@ func main() {
 	for _, event := range events {
 		wiki_url := event.WikiUrl()
 		wiki_file := download.Path("parkrun", event.Id, "wiki")
-		utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge)
+		utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
 		if err := event.LoadWiki(wiki_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", wiki_file, err))
 		}
@@ -95,7 +97,7 @@ func main() {
 		/*
 			report_url := event.ReportUrl()
 			report_file := download.Path("parkrun", event.Id, "report")
-			utils.MustDownloadFileIfOlder(report_url, report_file, fileAge)
+			utils.MustDownloadFileIfOlder(report_url, report_file, fileAge1d)
 			if err := event.LoadReport(report_file); err != nil {
 				panic(fmt.Errorf("file parsing %s: %w", report_file, err))
 			}
@@ -103,14 +105,14 @@ func main() {
 
 		course_page_url := event.CoursePageUrl()
 		course_page_file := download.Path("parkrun", event.Id, "course_page")
-		utils.MustDownloadFileIfOlder(course_page_url, course_page_file, fileAge)
+		utils.MustDownloadFileIfOlder(course_page_url, course_page_file, fileAge1w)
 		if err := event.LoadCoursePage(course_page_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", course_page_file, err))
 		}
 
 		kml_url := fmt.Sprintf("https://www.google.com/maps/d/kml?mid=%s&forcekml=1", event.GoogleMapsId)
 		kml_file := download.Path("parkrun", event.Id, "kml")
-		utils.MustDownloadFileIfOlder(kml_url, kml_file, fileAge)
+		utils.MustDownloadFileIfOlder(kml_url, kml_file, fileAge1w)
 
 		if err := event.LoadKML(kml_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", kml_file, err))
@@ -128,14 +130,14 @@ func main() {
 	leaflet_url := PathBuilder(fmt.Sprintf("https://unpkg.com/leaflet@%s", leaflet_version))
 
 	// download leaflet
-	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/leaflet.js"), download.Path("leaflet", "leaflet.js"), fileAge)
-	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/leaflet.css"), download.Path("leaflet", "leaflet.css"), fileAge)
-	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/images/marker-icon.png"), download.Path("leaflet", "marker-icon.png"), fileAge)
-	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/images/marker-icon-2x.png"), download.Path("leaflet", "marker-icon-2x.png"), fileAge)
-	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/images/marker-shadow.png"), download.Path("leaflet", "marker-shadow.png"), fileAge)
+	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/leaflet.js"), download.Path("leaflet", "leaflet.js"), fileAge1w)
+	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/leaflet.css"), download.Path("leaflet", "leaflet.css"), fileAge1w)
+	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/images/marker-icon.png"), download.Path("leaflet", "marker-icon.png"), fileAge1w)
+	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/images/marker-icon-2x.png"), download.Path("leaflet", "marker-icon-2x.png"), fileAge1w)
+	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/images/marker-shadow.png"), download.Path("leaflet", "marker-shadow.png"), fileAge1w)
 
 	// download bulma
-	utils.MustDownloadFileIfOlder(bulma_url.Path("css/bulma.min.css"), download.Path("bulma", "bulma.css"), fileAge)
+	utils.MustDownloadFileIfOlder(bulma_url.Path("css/bulma.min.css"), download.Path("bulma", "bulma.css"), fileAge1w)
 
 	js_files := make([]string, 0)
 	js_files = append(js_files, utils.MustCopyHash(download.Path("leaflet/leaflet.js"), "leaflet-HASH.js", *outputDir))
