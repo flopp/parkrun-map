@@ -29,10 +29,10 @@
                 <tr>
                     <td>
                         <a href="{{.Url}}">{{.FixedName}}</a><br>
-                        <a class="is-hidden-tablet is-size-7 is-italic" href="https://www.google.com/maps/search/?api=1&query={{.Lat}}%2C{{.Lon}}">{{.FixedLocation}}</a>
+                        <a class="is-hidden-tablet is-size-7 is-italic" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
                     </td>
                     <td  class="is-hidden-mobile">
-                        <a href="https://www.google.com/maps/search/?api=1&query={{.Lat}}%2C{{.Lon}}">{{.FixedLocation}}</a>
+                        <a href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
                     </td>
                     {{if .LatestRun}}
                         <td class="tnum has-text-right"><a href="{{.LatestRun.Url}}">{{.LatestRun.Index}}</a></td>

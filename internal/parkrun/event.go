@@ -141,6 +141,80 @@ func (event Event) FixedLocation() string {
 	return event.Location
 }
 
+var googleMapsUrls map[string]string
+
+func (event Event) GoogleMapsUrl() string {
+	if googleMapsUrls == nil {
+		googleMapsUrls = make(map[string]string)
+
+		googleMapsUrls["aachenerweiher"] = "https://maps.app.goo.gl/gktwZJVrqsirFma7A"
+		googleMapsUrls["allerpark"] = "https://maps.app.goo.gl/viU3mCPcVfMiLb8RA"
+		googleMapsUrls["alstervorland"] = "https://maps.app.goo.gl/nzFz8ds8yBCSPq9aA"
+		googleMapsUrls["bahnstadtpromenade"] = "https://maps.app.goo.gl/y9xjkARDxHbwaRd3A"
+		googleMapsUrls["bugasee"] = "https://maps.app.goo.gl/nQAYeuPuELrezZC49"
+		googleMapsUrls["dietenbach"] = "https://maps.app.goo.gl/8mjy464YdjBKqmR1A"
+		googleMapsUrls["dreilaendergarten"] = "https://maps.app.goo.gl/Ncezh996xdM6YnrV9"
+		googleMapsUrls["ebenberg"] = "https://maps.app.goo.gl/v2oDppZt5VDkqc868"
+		googleMapsUrls["ehrenbreitstein"] = "https://maps.app.goo.gl/VCdwKTUdxT8K7JvWA"
+		googleMapsUrls["emmerwiesen"] = "https://maps.app.goo.gl/MRUt6XqQgeMErnXP9"
+		googleMapsUrls["friedrichsau"] = "https://maps.app.goo.gl/DJJZCmyTZC2JT6ks8"
+		googleMapsUrls["fuldaaue"] = "https://maps.app.goo.gl/ik8YRD92dfJ4EMRe7"
+		googleMapsUrls["georgengarten"] = "https://maps.app.goo.gl/viMQE7RHzjhz5u8L7"
+		googleMapsUrls["globe"] = "https://maps.app.goo.gl/4rv49Tm1inbFd76h8"
+		googleMapsUrls["gruenerweg"] = "https://maps.app.goo.gl/nta1yjbphkXFtf4E9"
+		googleMapsUrls["hasenheide"] = "https://maps.app.goo.gl/WBznzk2a3TKsjEFD6"
+		googleMapsUrls["havelkanal"] = "https://maps.app.goo.gl/7TUSEr1KyoRxbmfQ8"
+		googleMapsUrls["hockgraben"] = "https://maps.app.goo.gl/yGYerpCpG2gbG8nd9"
+		googleMapsUrls["kastanienallee"] = "https://maps.app.goo.gl/iWmCZSdtF4TguKFGA"
+		googleMapsUrls["kemnadersee"] = "https://maps.app.goo.gl/jAP4ZGfDcFScpHK89"
+		googleMapsUrls["kiessee"] = "https://maps.app.goo.gl/dgFaKHnqUWrt5XFE6"
+		googleMapsUrls["kraeherwald"] = "https://maps.app.goo.gl/SQtTyVHupKn5FDZn9"
+		googleMapsUrls["kuechenholz"] = "https://maps.app.goo.gl/DgogwFVSrqU281Le6"
+		googleMapsUrls["kurtschumacherpromenade"] = "https://maps.app.goo.gl/GKDejRda5ir2WcJv5"
+		googleMapsUrls["lahnwiesen"] = "https://maps.app.goo.gl/DpW4Xuzr9VbGQAak9"
+		googleMapsUrls["landesgartenschaupark"] = "https://maps.app.goo.gl/KvWPa2Q6yRED86jz9"
+		googleMapsUrls["leinpfad"] = "https://maps.app.goo.gl/efT8fKk5bDpnvWbL7"
+		googleMapsUrls["lousberg"] = "https://maps.app.goo.gl/ihumiC3xKAa16hHW9"
+		googleMapsUrls["luitpold"] = "https://maps.app.goo.gl/w2UxEFGWBuhQq9X68"
+		googleMapsUrls["maaraue"] = "https://maps.app.goo.gl/Tf5cqkQzHoFY8kHd7"
+		googleMapsUrls["mattheiserweiher"] = "https://maps.app.goo.gl/FstemrgLn3XZFjJM9"
+		googleMapsUrls["monrepos"] = "https://maps.app.goo.gl/oQUjxeNSkL2HymFe6"
+		googleMapsUrls["nidda"] = "https://maps.app.goo.gl/fUvUWeqBp8eGbKBC7"
+		googleMapsUrls["neckarau"] = "https://maps.app.goo.gl/y2mf1JWysMn9GvXy5"
+		googleMapsUrls["neckaruferesslingen"] = "https://maps.app.goo.gl/tEqiJTSJQbGUWsFA9"
+		googleMapsUrls["obersee"] = "https://maps.app.goo.gl/VjyTtqHZFTGVKBft6"
+		googleMapsUrls["oberwald"] = "https://maps.app.goo.gl/VCS8PPaw2bUiKNWE9"
+		googleMapsUrls["offenthal"] = "https://maps.app.goo.gl/dW7WQaySgG5ibDau6"
+		googleMapsUrls["prestelsee"] = "https://maps.app.goo.gl/mVWfRAqjsD844Kg29"
+		googleMapsUrls["priessnitzgrund"] = "https://maps.app.goo.gl/Cgw3ePYLSQDyszMCA"
+		googleMapsUrls["prinzenpark"] = "https://maps.app.goo.gl/k9zPGx8kCegMLnGv9"
+		googleMapsUrls["rheinaue"] = "https://maps.app.goo.gl/4Bd7qpAdVLnNY7ZW6"
+		googleMapsUrls["rheinpark"] = "https://maps.app.goo.gl/oK7jMizoDhZYB1oB8"
+		googleMapsUrls["riemer"] = "https://maps.app.goo.gl/fLJzPER422ezkUu78"
+		googleMapsUrls["rosensteinpark"] = "https://maps.app.goo.gl/VzhGMisjcrWnm5WD8"
+		googleMapsUrls["rubbenbruchsee"] = "https://maps.app.goo.gl/7NuAQshN5EHZ6phV8"
+		googleMapsUrls["seewoog"] = "https://maps.app.goo.gl/3FBjKEi8M2Q6VzUG8"
+		googleMapsUrls["schwanenteich"] = "https://maps.app.goo.gl/LE4RJQJokrC3kndR7"
+		googleMapsUrls["speyerleinpfad"] = "https://maps.app.goo.gl/KgYAvV7jUTGeCYW1A"
+		googleMapsUrls["sportparkrems"] = "https://maps.app.goo.gl/NeoaGX9k8WEhoPDTA"
+		googleMapsUrls["stadtpark"] = "https://maps.app.goo.gl/AMUEyC33WRPzDybZA"
+		googleMapsUrls["traumschleifebaerenbachpfad"] = "https://maps.app.goo.gl/oWZkfCJYRJ8nDfKD6"
+		googleMapsUrls["unisee"] = "https://maps.app.goo.gl/GorNnFc7GRfLrBxU7"
+		googleMapsUrls["volksgarten"] = "https://maps.app.goo.gl/4xX1KDT7zCbQbkXGA"
+		googleMapsUrls["wertwiesen"] = "https://maps.app.goo.gl/zgxhJuvV14fcEroe6"
+		googleMapsUrls["westpark"] = "https://maps.app.goo.gl/FhZErPa2jXv4esQs5"
+		googleMapsUrls["wienburgpark"] = "https://maps.app.goo.gl/7gTE7B9EiWN9rDyL6"
+		googleMapsUrls["woehrdersee"] = "https://maps.app.goo.gl/1u1SCvAM9LvBZhWy8"
+		googleMapsUrls["ziegelwiese"] = "https://maps.app.goo.gl/m8aqqhcobHdKk61A6"
+	}
+
+	if url, ok := googleMapsUrls[event.Id]; ok {
+		return url
+	}
+
+	return fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%f%%2C%f", event.Lat, event.Lon)
+}
+
 var names map[string]string
 
 func (event Event) FixedName() string {
