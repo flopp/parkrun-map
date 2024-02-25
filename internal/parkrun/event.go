@@ -89,7 +89,7 @@ func (event Event) FixedLocation() string {
 		locations["globe"] = "Schwäbisch Hall"
 		locations["gruenerweg"] = "Bad Urach"
 		locations["hasenheide"] = "Berlin"
-		locations["havelkanal"] = "Henningsdorf bei Berlin"
+		locations["havelkanal"] = "Hennigsdorf bei Berlin"
 		locations["hockgraben"] = "Konstanz"
 		locations["kastanienallee"] = "Tübingen"
 		locations["kemnadersee"] = "Bochum"
