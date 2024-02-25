@@ -1,6 +1,11 @@
-{{range .JsFiles}}
-<script src="/{{.}}"></script>
-{{end}}
-<script data-goatcounter="https://parkrun-map.goatcounter.com/count" async src="/{{.StatsJs}}"></script>
-</body>
-</html>
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p id="footer-content">
+            <strong>parkrun.flopp.net</strong> von <a href="https://florian-pigorsch.de/" target="_blank">Florian Pigorsch</a>. <a href="/info.html">Info</a> - <a href="/impressum.html">Impressum</a> - <a href="/datenschutz.html">Datenschutz</a>
+            <br />
+            Letzte Aktualisierung: <span class="timestamp">{{.Timestamp}}</span>
+        </p>
+    </div>
+</footer>
+
+{{template "tail.html" .}}
