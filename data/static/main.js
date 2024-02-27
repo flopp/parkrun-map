@@ -15,17 +15,17 @@ const loadMap = function (id) {
     ];
     var map = L.map(id).fitBounds(germany);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
     const blueIcon = load_marker("");
     parkruns.forEach(parkrun => {
         let latest = "Letzte Austragung: keine";
         if (parkrun.latest !== null) {
-            latest = `Letzte Austragung:<br><a href="${parkrun.latest.url}">#${parkrun.latest.index}</a> am ${parkrun.latest.date} mit ${parkrun.latest.runners} Teilnehmern`;
+            latest = `Letzte Austragung:<br><a target="_blank" href="${parkrun.latest.url}">#${parkrun.latest.index}</a> am ${parkrun.latest.date} mit ${parkrun.latest.runners} Teilnehmern`;
         }
         const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon}).addTo(map)
-            .bindPopup(`<a href="${parkrun.url}"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
+            .bindPopup(`<a target="_blank" href="${parkrun.url}"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
         parkrun.tracks.forEach(track => {
             const latlngs = [];
             track.forEach(c => {

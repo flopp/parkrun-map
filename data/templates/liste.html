@@ -30,21 +30,21 @@
             {{range .Events}}
                 <tr>
                     <td>
-                        <a href="{{.Url}}">{{.FixedName}}</a>
+                        <a target="_blank" href="{{.Url}}">{{.FixedName}}</a>
                         <div class="is-hidden-tablet">
-                            <a class="is-hidden-tablet is-size-7 is-italic" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
+                            <a target="_blank" class="is-hidden-tablet is-size-7 is-italic" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
                             <br>
                             <span class="is-hidden-tablet is-size-7 is-italic">Seit {{.First}}</span>
                         </div>
                     </td>
                     <td class="is-hidden-mobile">
-                        <a href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
+                        <a target="_blank" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
                     </td>
                     <td class="is-hidden-mobile tnum">
                         {{.First}}
                     </td>
                     {{if .LatestRun}}
-                        <td class="tnum has-text-right"><a href="{{.LatestRun.Url}}">{{.LatestRun.Index}}</a></td>
+                        <td class="tnum has-text-right"><a target="_blank" title="{{.FixedName}} {{.LatestRun.Index}}" href="{{.LatestRun.Url}}">{{.LatestRun.Index}}</a></td>
                         <td class="tnum">{{.LatestRun.DateF}}</td>
                         <td class="tnum has-text-right">{{.LatestRun.RunnerCount}}</td>
                     {{else}}
