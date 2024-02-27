@@ -107,6 +107,16 @@ func (event Event) FixedName() string {
 	return event.Name
 }
 
+func (event Event) First() string {
+	if info, ok := parkrun_infos[event.Id]; ok {
+		if info.First != "" {
+			return info.First
+		}
+	}
+
+	return "?"
+}
+
 func LoadEvents(events_json_file string, parkruns_json_file string) ([]*Event, error) {
 	buf1, err := utils.ReadFile(parkruns_json_file)
 	if err != nil {
