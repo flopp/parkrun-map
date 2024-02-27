@@ -1,0 +1,415 @@
+[
+    {
+        "id": "aachenerweiher",
+        "name": "Aachener Weiher parkrun",
+        "city": "Köln",
+        "googlemaps": "https://maps.app.goo.gl/gktwZJVrqsirFma7A",
+        "first": ""
+    },
+    {
+        "id": "allerpark",
+        "name": "Allerpark parkrun",
+        "city": "Wolfsburg",
+        "googlemaps": "https://maps.app.goo.gl/viU3mCPcVfMiLb8RA",
+        "first": ""
+    },
+    {
+        "id": "alstervorland",
+        "name": "Alstervorland parkrun",
+        "city": "Hamburg",
+        "googlemaps": "https://maps.app.goo.gl/nzFz8ds8yBCSPq9aA",
+        "first": ""
+    },
+    {
+        "id": "bahnstadtpromenade",
+        "name": "Bahnstadt Promenade parkrun",
+        "city": "Heidelberg",
+        "googlemaps": "https://maps.app.goo.gl/y9xjkARDxHbwaRd3A",
+        "first": ""
+    },
+    {
+        "id": "bugasee",
+        "name": "Bugasee parkrun",
+        "city": "Kassel",
+        "googlemaps": "https://maps.app.goo.gl/nQAYeuPuELrezZC49",
+        "first": ""
+    },
+    {
+        "id": "dietenbach",
+        "name": "Dietenbach parkrun",
+        "city": "Freiburg",
+        "googlemaps": "https://maps.app.goo.gl/8mjy464YdjBKqmR1A",
+        "first": ""
+    },
+    {
+        "id": "dreilaendergarten",
+        "name": "Dreiländergarten parkrun",
+        "city": "Weil am Rhein",
+        "googlemaps": "https://maps.app.goo.gl/Ncezh996xdM6YnrV9",
+        "first": ""
+    },
+    {
+        "id": "ebenberg",
+        "name": "Ebenberg parkrun",
+        "city": "Landau in der Pfalz",
+        "googlemaps": "https://maps.app.goo.gl/v2oDppZt5VDkqc868",
+        "first": ""
+    },
+    {
+        "id": "ehrenbreitstein",
+        "name": "Ehrenbreitstein parkrun",
+        "city": "Koblenz",
+        "googlemaps": "https://maps.app.goo.gl/VCdwKTUdxT8K7JvWA",
+        "first": ""
+    },
+    {
+        "id": "emmerwiesen",
+        "name": "Emmerwiesen parkrun",
+        "city": "Bad Pyrmont",
+        "googlemaps": "https://maps.app.goo.gl/MRUt6XqQgeMErnXP9",
+        "first": ""
+    },
+    {
+        "id": "friedrichsau",
+        "name": "Friedrichsau parkrun",
+        "city": "Ulm",
+        "googlemaps": "https://maps.app.goo.gl/DJJZCmyTZC2JT6ks8",
+        "first": ""
+    },
+    {
+        "id": "fuldaaue",
+        "name": "Fuldaaue parkrun",
+        "city": "Fulda",
+        "googlemaps": "https://maps.app.goo.gl/ik8YRD92dfJ4EMRe7",
+        "first": ""
+    },
+    {
+        "id": "georgengarten",
+        "name": "Georgengarten parkrun",
+        "city": "Hannover",
+        "googlemaps": "https://maps.app.goo.gl/viMQE7RHzjhz5u8L7",
+        "first": ""
+    },
+    {
+        "id": "globe",
+        "name": "Globe parkrun",
+        "city": "Schwäbisch Hall",
+        "googlemaps": "https://maps.app.goo.gl/4rv49Tm1inbFd76h8",
+        "first": ""
+    },
+    {
+        "id": "gruenerweg",
+        "name": "Grüner Weg parkrun",
+        "city": "Bad Urach",
+        "googlemaps": "https://maps.app.goo.gl/nta1yjbphkXFtf4E9",
+        "first": ""
+    },
+    {
+        "id": "hasenheide",
+        "name": "Hasenheide parkrun",
+        "city": "Berlin",
+        "googlemaps": "https://maps.app.goo.gl/WBznzk2a3TKsjEFD6",
+        "first": ""
+    },
+    {
+        "id": "havelkanal",
+        "name": "Havelkanal parkrun",
+        "city": "Hennigsdorf",
+        "googlemaps": "https://maps.app.goo.gl/7TUSEr1KyoRxbmfQ8",
+        "first": ""
+    },
+    {
+        "id": "hockgraben",
+        "name": "Hockgraben parkrun",
+        "city": "Konstanz",
+        "googlemaps": "https://maps.app.goo.gl/yGYerpCpG2gbG8nd9",
+        "first": ""
+    },
+    {
+        "id": "kastanienallee",
+        "name": "Kastanienallee parkrun",
+        "city": "Tübingen",
+        "googlemaps": "https://maps.app.goo.gl/iWmCZSdtF4TguKFGA",
+        "first": ""
+    },
+    {
+        "id": "kemnadersee",
+        "name": "Kemnader See parkrun",
+        "city": "Bochum",
+        "googlemaps": "https://maps.app.goo.gl/jAP4ZGfDcFScpHK89",
+        "first": ""
+    },
+    {
+        "id": "kiessee",
+        "name": "Kiessee parkrun",
+        "city": "Göttingen",
+        "googlemaps": "https://maps.app.goo.gl/dgFaKHnqUWrt5XFE6",
+        "first": ""
+    },
+    {
+        "id": "kraeherwald",
+        "name": "Kräherwald parkrun",
+        "city": "Stuttgart",
+        "googlemaps": "https://maps.app.goo.gl/SQtTyVHupKn5FDZn9",
+        "first": ""
+    },
+    {
+        "id": "kuechenholz",
+        "name": "Küchenholz parkrun",
+        "city": "Leipzig",
+        "googlemaps": "https://maps.app.goo.gl/DgogwFVSrqU281Le6",
+        "first": ""
+    },
+    {
+        "id": "kurtschumacherpromenade",
+        "name": "Kurt-Schumacher-Promenade parkrun",
+        "city": "Würzburg",
+        "googlemaps": "https://maps.app.goo.gl/GKDejRda5ir2WcJv5",
+        "first": ""
+    },
+    {
+        "id": "lahnwiesen",
+        "name": "Lahnwiesen parkrun",
+        "city": "Marburg",
+        "googlemaps": "https://maps.app.goo.gl/DpW4Xuzr9VbGQAak9",
+        "first": ""
+    },
+    {
+        "id": "landesgartenschaupark",
+        "name": "Landesgartenschau Park parkrun",
+        "city": "Neumarkt in der Oberpfalz",
+        "googlemaps": "https://maps.app.goo.gl/KvWPa2Q6yRED86jz9",
+        "first": ""
+    },
+    {
+        "id": "leinpfad",
+        "name": "Leinpfad parkrun",
+        "city": "Merzig",
+        "googlemaps": "https://maps.app.goo.gl/efT8fKk5bDpnvWbL7",
+        "first": ""
+    },
+    {
+        "id": "lousberg",
+        "name": "Lousberg parkrun",
+        "city": "Aachen",
+        "googlemaps": "https://maps.app.goo.gl/ihumiC3xKAa16hHW9",
+        "first": ""
+    },
+    {
+        "id": "luitpold",
+        "name": "Luitpold parkrun",
+        "city": "Ingolstadt",
+        "googlemaps": "https://maps.app.goo.gl/w2UxEFGWBuhQq9X68",
+        "first": ""
+    },
+    {
+        "id": "maaraue",
+        "name": "Maaraue parkrun",
+        "city": "Mainz",
+        "googlemaps": "https://maps.app.goo.gl/Tf5cqkQzHoFY8kHd7",
+        "first": ""
+    },
+    {
+        "id": "mattheiserweiher",
+        "name": "Mattheiser Weiher parkrun",
+        "city": "Trier",
+        "googlemaps": "https://maps.app.goo.gl/FstemrgLn3XZFjJM9",
+        "first": ""
+    },
+    {
+        "id": "monrepos",
+        "name": "Monrepos parkrun",
+        "city": "Ludwigsburg",
+        "googlemaps": "https://maps.app.goo.gl/oQUjxeNSkL2HymFe6",
+        "first": ""
+    },
+    {
+        "id": "neckarau",
+        "name": "Neckarau parkrun",
+        "city": "Mannheim",
+        "googlemaps": "https://maps.app.goo.gl/y2mf1JWysMn9GvXy5",
+        "first": ""
+    },
+    {
+        "id": "neckaruferesslingen",
+        "name": "Neckarufer parkrun",
+        "city": "Esslingen",
+        "googlemaps": "https://maps.app.goo.gl/tEqiJTSJQbGUWsFA9",
+        "first": ""
+    },
+    {
+        "id": "nidda",
+        "name": "Nidda parkrun",
+        "city": "Frankfurt am Main",
+        "googlemaps": "https://maps.app.goo.gl/fUvUWeqBp8eGbKBC7",
+        "first": ""
+    },
+    {
+        "id": "obersee",
+        "name": "Obersee parkrun",
+        "city": "Bielefeld",
+        "googlemaps": "https://maps.app.goo.gl/VjyTtqHZFTGVKBft6",
+        "first": ""
+    },
+    {
+        "id": "oberwald",
+        "name": "Oberwald parkrun",
+        "city": "Karlsruhe",
+        "googlemaps": "https://maps.app.goo.gl/VCS8PPaw2bUiKNWE9",
+        "first": ""
+    },
+    {
+        "id": "offenthal",
+        "name": "Offenthal parkrun",
+        "city": "Offenthal",
+        "googlemaps": "https://maps.app.goo.gl/dW7WQaySgG5ibDau6",
+        "first": ""
+    },
+    {
+        "id": "prestelsee",
+        "name": "Prestelsee parkrun",
+        "city": "Graben-Neudorf",
+        "googlemaps": "https://maps.app.goo.gl/mVWfRAqjsD844Kg29",
+        "first": ""
+    },
+    {
+        "id": "priessnitzgrund",
+        "name": "Prießnitzgrund parkrun",
+        "city": "Dresden",
+        "googlemaps": "https://maps.app.goo.gl/Cgw3ePYLSQDyszMCA",
+        "first": ""
+    },
+    {
+        "id": "prinzenpark",
+        "name": "Prinzenpark parkrun",
+        "city": "Braunschweig",
+        "googlemaps": "https://maps.app.goo.gl/k9zPGx8kCegMLnGv9",
+        "first": ""
+    },
+    {
+        "id": "rheinaue",
+        "name": "Rheinaue parkrun",
+        "city": "Bonn",
+        "googlemaps": "https://maps.app.goo.gl/4Bd7qpAdVLnNY7ZW6",
+        "first": ""
+    },
+    {
+        "id": "rheinpark",
+        "name": "Rheinpark parkrun",
+        "city": "Köln",
+        "googlemaps": "https://maps.app.goo.gl/oK7jMizoDhZYB1oB8",
+        "first": ""
+    },
+    {
+        "id": "riemer",
+        "name": "Riemer parkrun",
+        "city": "München",
+        "googlemaps": "https://maps.app.goo.gl/fLJzPER422ezkUu78",
+        "first": ""
+    },
+    {
+        "id": "rosensteinpark",
+        "name": "Rosensteinpark parkrun",
+        "city": "Stuttgart",
+        "googlemaps": "https://maps.app.goo.gl/VzhGMisjcrWnm5WD8",
+        "first": ""
+    },
+    {
+        "id": "rubbenbruchsee",
+        "name": "Rubbenbruchsee parkrun",
+        "city": "Osnabrück",
+        "googlemaps": "https://maps.app.goo.gl/7NuAQshN5EHZ6phV8",
+        "first": ""
+    },
+    {
+        "id": "schwanenteich",
+        "name": "Schwanenteich parkrun",
+        "city": "Giessen",
+        "googlemaps": "https://maps.app.goo.gl/LE4RJQJokrC3kndR7",
+        "first": ""
+    },
+    {
+        "id": "seewoog",
+        "name": "Seewoog parkrun",
+        "city": "Ramstein-Miesenbach",
+        "googlemaps": "https://maps.app.goo.gl/3FBjKEi8M2Q6VzUG8",
+        "first": ""
+    },
+    {
+        "id": "speyerleinpfad",
+        "name": "Speyer Leinpfad parkrun",
+        "city": "Speyer",
+        "googlemaps": "https://maps.app.goo.gl/KgYAvV7jUTGeCYW1A",
+        "first": ""
+    },
+    {
+        "id": "sportparkrems",
+        "name": "Sportpark Rems parkrun",
+        "city": "Schorndorf",
+        "googlemaps": "https://maps.app.goo.gl/NeoaGX9k8WEhoPDTA",
+        "first": ""
+    },
+    {
+        "id": "stadtpark",
+        "name": "Stadtpark parkrun",
+        "city": "Fürth",
+        "googlemaps": "https://maps.app.goo.gl/AMUEyC33WRPzDybZA",
+        "first": ""
+    },
+    {
+        "id": "traumschleifebaerenbachpfad",
+        "name": "Traumschleife Bärenbachpfad parkrun",
+        "city": "Baumholder",
+        "googlemaps": "https://maps.app.goo.gl/oWZkfCJYRJ8nDfKD6",
+        "first": ""
+    },
+    {
+        "id": "unisee",
+        "name": "Unisee parkrun",
+        "city": "Bremen",
+        "googlemaps": "https://maps.app.goo.gl/GorNnFc7GRfLrBxU7",
+        "first": ""
+    },
+    {
+        "id": "volksgarten",
+        "name": "Volksgarten parkrun",
+        "city": "Düsseldorf",
+        "googlemaps": "https://maps.app.goo.gl/4xX1KDT7zCbQbkXGA",
+        "first": ""
+    },
+    {
+        "id": "wertwiesen",
+        "name": "Wertwiesen parkrun",
+        "city": "Heilbronn",
+        "googlemaps": "https://maps.app.goo.gl/zgxhJuvV14fcEroe6",
+        "first": ""
+    },
+    {
+        "id": "westpark",
+        "name": "Westpark parkrun",
+        "city": "München",
+        "googlemaps": "https://maps.app.goo.gl/FhZErPa2jXv4esQs5",
+        "first": ""
+    },
+    {
+        "id": "wienburgpark",
+        "name": "Wienburgpark parkrun",
+        "city": "Münster",
+        "googlemaps": "https://maps.app.goo.gl/7gTE7B9EiWN9rDyL6",
+        "first": ""
+    },
+    {
+        "id": "woehrdersee",
+        "name": "Wöhrder See parkrun",
+        "city": "Nürnberg",
+        "googlemaps": "https://maps.app.goo.gl/1u1SCvAM9LvBZhWy8",
+        "first": ""
+    },
+    {
+        "id": "ziegelwiese",
+        "name": "Ziegelwiese parkrun",
+        "city": "Halle (Saale)",
+        "googlemaps": "https://maps.app.goo.gl/m8aqqhcobHdKk61A6",
+        "first": ""
+    }
+]

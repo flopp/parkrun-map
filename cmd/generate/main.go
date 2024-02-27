@@ -99,8 +99,10 @@ func main() {
 		panic(fmt.Errorf("while downloading %s to %s: %w", events_json_url, events_json_file, err))
 	}
 
+	parkruns_json_file := data.Path("parkruns.json")
+
 	// parse parkrun events (only returns German events!)
-	events, err := parkrun.LoadEvents(events_json_file)
+	events, err := parkrun.LoadEvents(events_json_file, parkruns_json_file)
 	if err != nil {
 		panic(fmt.Errorf("while parsing %s: %w", events_json_file, err))
 	}
