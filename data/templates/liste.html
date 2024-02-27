@@ -30,9 +30,12 @@
             {{range .Events}}
                 <tr>
                     <td>
-                        <a href="{{.Url}}">{{.FixedName}}</a><br>
-                        <a class="is-hidden-tablet is-size-7 is-italic" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a><br>
-                        <span class="is-hidden-tablet is-size-7 is-italic">Seit {{.First}}</span>
+                        <a href="{{.Url}}">{{.FixedName}}</a>
+                        <div class="is-hidden-tablet">
+                            <a class="is-hidden-tablet is-size-7 is-italic" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
+                            <br>
+                            <span class="is-hidden-tablet is-size-7 is-italic">Seit {{.First}}</span>
+                        </div>
                     </td>
                     <td class="is-hidden-mobile">
                         <a href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
