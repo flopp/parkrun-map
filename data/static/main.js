@@ -19,13 +19,19 @@ const loadMap = function (id) {
     }).addTo(map);
 
     const blueIcon = load_marker("");
+    const redIcon = load_marker("red");
     parkruns.forEach(parkrun => {
         let latest = "Letzte Austragung: keine";
         if (parkrun.latest !== null) {
             latest = `Letzte Austragung:<br><a target="_blank" href="${parkrun.latest.url}">#${parkrun.latest.index}</a> am ${parkrun.latest.date} mit ${parkrun.latest.runners} Teilnehmern`;
         }
-        const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon}).addTo(map)
-            .bindPopup(`<a target="_blank" href="${parkrun.url}"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
+        if (parkrun.active) {
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon}).addTo(map)
+                .bindPopup(`<a target="_blank" href="${parkrun.url}"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
+        } else {
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: redIcon}).addTo(map)
+                .bindPopup(`<a target="_blank" href="${parkrun.url}"><b>${parkrun.name}</b></a> <span class="tag is-danger is-light">archiviert</span><br>${parkrun.location}<br><br>${latest}`);
+        }
         parkrun.tracks.forEach(track => {
             const latlngs = [];
             track.forEach(c => {

@@ -411,5 +411,41 @@
         "city": "Halle (Saale), ST",
         "googlemaps": "https://maps.app.goo.gl/m8aqqhcobHdKk61A6",
         "first": "19.10.2019"
+    },
+    {
+        "id": "pieschenerallee",
+        "name": "Pieschener Allee parkrun",
+        "city": "Leipzig, SN",
+        "googlemaps": "https://maps.app.goo.gl/1WzEpcaCRtcwfqoU7",
+        "first": "17.11.2018",
+        "status": "geschlossen",
+        "coordinates": "51.063731 13.727762"
+    },
+    {
+        "id": "kurpark",
+        "name": "Kurpark parkrun",
+        "city": "Bad Liebenzell, BW",
+        "googlemaps": "https://maps.app.goo.gl/P3RZGEMNjNg2XzUn7",
+        "first": "",
+        "status": "geschlossen",
+        "coordinates": "48.769287 8.731631"
+    },
+    {
+        "id": "roethelheimpark",
+        "name": "Röthelheimpark parkrun",
+        "city": "Erlangen, BY",
+        "googlemaps": "https://maps.app.goo.gl/52mY6QozPPpm2MHu8",
+        "first": "",
+        "status": "geschlossen",
+        "coordinates": "49.587304 11.027033"
+    },
+    {
+        "id": "wittelsbacherpark",
+        "name": "Wittelsbacher Park parkrun",
+        "city": "Augsburg, BY",
+        "googlemaps": "https://maps.app.goo.gl/71auEwp1fT4CQW1AA",
+        "first": "",
+        "status": "geschlossen",
+        "coordinates": "48.358180 10.882256"
     }
 ]

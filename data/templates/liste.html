@@ -5,7 +5,7 @@
             parkruns in Deutschland
         </h1>
         <p class="subtitle">
-            Es gibt momentan {{len .Events}} aktive parkrun-Standorte in Deutschland.
+            Es gibt momentan {{.ActiveEvents}} aktive{{if .ArchivedEvents}} (und {{.ArchivedEvents}} archivierte){{end}} parkrun-Standorte in Deutschland.
             Hier ist die Liste aller parkruns, jeweils mit Informationen zur letzten Austragung.
         </p>
 
@@ -30,7 +30,11 @@
             {{range .Events}}
                 <tr>
                     <td>
+                        {{if .Active}}
                         <a target="_blank" href="{{.Url}}">{{.FixedName}}</a>
+                        {{else}}
+                        <a target="_blank" href="{{.Url}}">{{.FixedName}}</a> <span class="tag is-danger is-light">archiviert</span>
+                        {{end}}
                         <div class="is-hidden-tablet">
                             <a target="_blank" class="is-hidden-tablet is-size-7 is-italic" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
                             <br>

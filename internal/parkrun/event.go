@@ -41,6 +41,11 @@ type Event struct {
 	GoogleMapsId string
 	Tracks       [][]Coordinates
 	LatestRun    *Run
+	Status       string
+}
+
+func (event Event) Active() bool {
+	return event.Status == ""
 }
 
 func (event Event) Url() string {
@@ -68,11 +73,32 @@ func (event Event) LastRun() string {
 }
 
 type ParkrunInfo struct {
-	Id         string
-	Name       string
-	City       string
-	GoogleMaps string
-	First      string
+	Id          string
+	Name        string
+	City        string
+	GoogleMaps  string
+	First       string
+	Status      string
+	Coordinates string
+}
+
+func (info ParkrunInfo) ParseCoordinates() (float64, float64, error) {
+	if info.Coordinates == "" {
+		return 0, 0, nil
+	}
+	r := regexp.MustCompile(`^\s*(-?[0-9.]+)\s+(-?[0-9.]+)\s*$`)
+	if m := r.FindStringSubmatch(info.Coordinates); m != nil {
+		lat, err := strconv.ParseFloat(m[1], 64)
+		if err != nil {
+			return 0, 0, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
+		}
+		lon, err := strconv.ParseFloat(m[2], 64)
+		if err != nil {
+			return 0, 0, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
+		}
+		return lat, lon, nil
+	}
+	return 0, 0, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
 }
 
 var parkrun_infos map[string]*ParkrunInfo
@@ -128,7 +154,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string) ([]*Event, e
 	}
 	parkrun_infos = make(map[string]*ParkrunInfo)
 	for _, info := range infos {
-		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First}
+		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates}
 	}
 
 	buf, err := utils.ReadFile(events_json_file)
@@ -172,6 +198,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string) ([]*Event, e
 		return nil, fmt.Errorf("cannot get 'events/features' from 'events.json")
 	}
 
+	eventMap := make(map[string]*Event)
 	eventList := make([]*Event, 0)
 	features := featuresI.([]interface{})
 	for _, featureI := range features {
@@ -229,7 +256,23 @@ func LoadEvents(events_json_file string, parkruns_json_file string) ([]*Event, e
 		lat := coordinates[1].(float64)
 		lon := coordinates[0].(float64)
 
-		eventList = append(eventList, &Event{id, name, longName, location, lat, lon, "", nil, nil})
+		event := &Event{id, name, longName, location, lat, lon, "", nil, nil, ""}
+		eventList = append(eventList, event)
+		eventMap[name] = event
+	}
+
+	for _, info := range parkrun_infos {
+		if _, found := eventMap[info.Id]; found {
+			continue
+		}
+		fmt.Println(info.Name)
+
+		lat, lon, err := info.ParseCoordinates()
+		if err != nil {
+			return nil, err
+		}
+		event := &Event{0, info.Id, info.Name, info.City, lat, lon, "", nil, nil, info.Status}
+		eventList = append(eventList, event)
 	}
 
 	sort.Slice(eventList, func(i, j int) bool {

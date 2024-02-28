@@ -14,14 +14,16 @@ import (
 )
 
 type RenderData struct {
-	Events    []*parkrun.Event
-	JsFiles   []string
-	CssFiles  []string
-	StatsJs   string
-	Title     string
-	Canonical string
-	Nav       string
-	Timestamp string
+	Events         []*parkrun.Event
+	ActiveEvents   int
+	ArchivedEvents int
+	JsFiles        []string
+	CssFiles       []string
+	StatsJs        string
+	Title          string
+	Canonical      string
+	Nav            string
+	Timestamp      string
 }
 
 func (data *RenderData) set(title, canonical, nav string) {
@@ -174,12 +176,22 @@ func main() {
 	utils.MustCopyHash(download.Path("leaflet/marker-icon.png"), "images/marker-icon.png", *outputDir)
 	utils.MustCopyHash(download.Path("leaflet/marker-icon-2x.png"), "images/marker-icon-2x.png", *outputDir)
 	utils.MustCopyHash(download.Path("leaflet/marker-shadow.png"), "images/marker-shadow.png", *outputDir)
-
+	utils.MustCopyHash(data.Path("static/marker-red-icon.png"), "images/marker-red-icon.png", *outputDir)
+	utils.MustCopyHash(data.Path("static/marker-red-icon-2x.png"), "images/marker-red-icon-2x.png", *outputDir)
 	statsJs := modifyGoatcounterLinkSelector(download.Path("goatcounter"), "stats.js")
 	statsJs = utils.MustCopyHash(download.Path("goatcounter", statsJs), "stats-HASH.js", *outputDir)
 
 	// render templates to output folder
-	renderData := RenderData{events, js_files, css_files, statsJs, "", "", "", now.Format("2006-01-02 15:04:05")}
+	active := 0
+	archived := 0
+	for _, event := range events {
+		if event.Active() {
+			active += 1
+		} else {
+			archived += 1
+		}
+	}
+	renderData := RenderData{events, active, archived, js_files, css_files, statsJs, "", "", "", now.Format("2006-01-02 15:04:05")}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("parkruns in Deutschland - Karte", "https://parkrun.flopp.net/", "map")
 	if err := renderData.render(filepath.Join(*outputDir, "index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
