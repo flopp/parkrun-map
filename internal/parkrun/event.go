@@ -265,8 +265,6 @@ func LoadEvents(events_json_file string, parkruns_json_file string) ([]*Event, e
 		if _, found := eventMap[info.Id]; found {
 			continue
 		}
-		fmt.Println(info.Name)
-
 		lat, lon, err := info.ParseCoordinates()
 		if err != nil {
 			return nil, err
