@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"html/template"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"time"
@@ -81,6 +82,11 @@ func modifyGoatcounterLinkSelector(dir, file string) string {
 	return file2
 }
 
+func randomDuration(min, max time.Duration) time.Duration {
+	delta := max - min
+	return min + time.Duration(rand.Int63n(int64(delta+1)))
+}
+
 func main() {
 	dataDir := flag.String("data", "data", "the data directory")
 	downloadDir := flag.String("download", ".download", "the download directory")
@@ -106,7 +112,7 @@ func main() {
 	parkruns_json_file := data.Path("parkruns.json")
 
 	// parse parkrun events (only returns German events!)
-	events, err := parkrun.LoadEvents(events_json_file, parkruns_json_file)
+	events, err := parkrun.LoadEvents(events_json_file, parkruns_json_file, true /* germanOnly */)
 	if err != nil {
 		panic(fmt.Errorf("while parsing %s: %w", events_json_file, err))
 	}
@@ -131,14 +137,14 @@ func main() {
 
 		course_page_url := event.CoursePageUrl()
 		course_page_file := download.Path("parkrun", event.Id, "course_page")
-		utils.MustDownloadFileIfOlder(course_page_url, course_page_file, fileAge1w)
+		utils.MustDownloadFileIfOlder(course_page_url, course_page_file, now.Add(randomDuration(-24*14*time.Hour, -24*7*time.Hour)))
 		if err := event.LoadCoursePage(course_page_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", course_page_file, err))
 		}
 
 		kml_url := fmt.Sprintf("https://www.google.com/maps/d/kml?mid=%s&forcekml=1", event.GoogleMapsId)
 		kml_file := download.Path("parkrun", event.Id, "kml")
-		utils.MustDownloadFileIfOlder(kml_url, kml_file, fileAge1w)
+		utils.MustDownloadFileIfOlder(kml_url, kml_file, now.Add(randomDuration(-24*14*time.Hour, -24*7*time.Hour)))
 
 		if err := event.LoadKML(kml_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", kml_file, err))

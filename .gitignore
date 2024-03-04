@@ -1,5 +1,7 @@
 .download
+.download-world
 .output
+.output-world
 .repo
 scripts.DS_Store
 .DS_Store

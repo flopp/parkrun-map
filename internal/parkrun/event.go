@@ -38,6 +38,7 @@ type Event struct {
 	Location     string
 	Lat          float64
 	Lon          float64
+	CountryUrl   string
 	GoogleMapsId string
 	Tracks       [][]Coordinates
 	LatestRun    *Run
@@ -53,7 +54,10 @@ func (event Event) Url() string {
 }
 
 func (event Event) CoursePageUrl() string {
-	return fmt.Sprintf("https://parkrun.com.de/%s/course", event.Id)
+	if event.CountryUrl == "" {
+		return fmt.Sprintf("https://parkrun.com.de/%s/course", event.Id)
+	}
+	return fmt.Sprintf("https://%s/%s/course", event.CountryUrl, event.Id)
 }
 
 func (event Event) WikiUrl() string {
@@ -143,7 +147,7 @@ func (event Event) First() string {
 	return "?"
 }
 
-func LoadEvents(events_json_file string, parkruns_json_file string) ([]*Event, error) {
+func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly bool) ([]*Event, error) {
 	buf1, err := utils.ReadFile(parkruns_json_file)
 	if err != nil {
 		return nil, err
@@ -236,8 +240,12 @@ func LoadEvents(events_json_file string, parkruns_json_file string) ([]*Event, e
 		longName := longNameI.(string)
 		location := locationI.(string)
 		countryCode := fmt.Sprintf("%.0f", countryCodeI.(float64))
-		if countryCode != "32" {
+		if germanyOnly && countryCode != "32" {
 			continue
+		}
+		countryUrl, ok := countryLookup[countryCode]
+		if !ok {
+			return nil, fmt.Errorf("cannot lookup country code '%s' for '%s'", countryCode, name)
 		}
 
 		geometryI, ok := feature["geometry"]
@@ -256,7 +264,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string) ([]*Event, e
 		lat := coordinates[1].(float64)
 		lon := coordinates[0].(float64)
 
-		event := &Event{id, name, longName, location, lat, lon, "", nil, nil, ""}
+		event := &Event{id, name, longName, location, lat, lon, countryUrl, "", nil, nil, ""}
 		eventList = append(eventList, event)
 		eventMap[name] = event
 	}
@@ -269,7 +277,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string) ([]*Event, e
 		if err != nil {
 			return nil, err
 		}
-		event := &Event{0, info.Id, info.Name, info.City, lat, lon, "", nil, nil, info.Status}
+		event := &Event{0, info.Id, info.Name, info.City, lat, lon, "", "", nil, nil, info.Status}
 		eventList = append(eventList, event)
 	}
 
