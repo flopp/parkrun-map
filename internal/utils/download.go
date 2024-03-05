@@ -29,7 +29,7 @@ func AlwaysDownload(url string, filePath string) error {
 	if err != nil {
 		return err
 	}
-	req.Header.Add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36")
+	req.Header.Add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36")
 	client := &http.Client{}
 	response, err := client.Do(req)
 	if err != nil {

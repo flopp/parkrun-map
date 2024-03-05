@@ -419,7 +419,7 @@ func (event *Event) LoadWiki(filePath string) error {
 }
 
 // <iframe src="https://www.google.com/maps/d/embed?t=h&mid=1jzu9KWQBw__FbZHD3RW6KqLY9CxMzQAa" width="450" height="450"></iframe>
-var reMapsId = regexp.MustCompile(`<iframe src="https://www.google.com/maps/[^"]*mid=([^"&]+)("|&)`)
+var reMapsId = regexp.MustCompile(`<iframe src="https://www\.google\.[^/]+/maps/[^"]*mid=([^"&]+)("|&)`)
 
 func (event *Event) LoadCoursePage(filePath string) error {
 	buf, err := utils.ReadFile(filePath)
@@ -466,6 +466,10 @@ type Point struct {
 
 type LineString struct {
 	Coordinates string `xml:"coordinates"`
+}
+
+func escape(s string) string {
+	return strings.ReplaceAll(s, "\\", "\\\\")
 }
 
 var reCoordinatesStart = regexp.MustCompile(`^\s*<coordinates>\s*$`)

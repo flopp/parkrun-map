@@ -87,6 +87,71 @@ func randomDuration(min, max time.Duration) time.Duration {
 	return min + time.Duration(rand.Int63n(int64(delta+1)))
 }
 
+func renderJs(events []*parkrun.Event, filePath string) error {
+	if err := os.MkdirAll(filepath.Dir(filePath), 0770); err != nil {
+		return err
+	}
+
+	out, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	fmt.Fprintf(out, "var parkruns = [\n")
+	for i, event := range events {
+		if i != 0 {
+			fmt.Fprintf(out, ",\n")
+		}
+		fmt.Fprintf(out, "{\n")
+		fmt.Fprintf(out, "\"url\": \"%s\",\n", event.Url())
+		fmt.Fprintf(out, "\"name\": \"%s\",\n", event.FixedName())
+		fmt.Fprintf(out, "\"lat\": %f, \"lon\": %f,\n", event.Lat, event.Lon)
+		fmt.Fprintf(out, "\"location\": \"%s\",\n", event.FixedLocation())
+		fmt.Fprintf(out, "\"googleMapsUrl\": \"%s\",\n", event.GoogleMapsUrl())
+		fmt.Fprintf(out, "\"tracks\": [\n")
+		for it, track := range event.Tracks {
+			if it != 0 {
+				fmt.Fprintf(out, ",\n")
+			}
+			fmt.Fprintf(out, "[\n")
+			for ic, coord := range track {
+				if ic != 0 {
+					fmt.Fprintf(out, ",")
+				}
+				fmt.Fprintf(out, "[%f, %f]", coord.Lat, coord.Lon)
+			}
+			fmt.Fprintf(out, "]\n")
+		}
+		fmt.Fprintf(out, "],\n")
+
+		if event.Active() {
+			fmt.Fprintf(out, "\"active\": true,\n")
+		} else {
+			fmt.Fprintf(out, "\"active\": false,\n")
+		}
+		if event.LatestRun != nil {
+			fmt.Fprintf(out, "\"latest\": {\n")
+			fmt.Fprintf(out, "\"index\": %d,\n", event.LatestRun.Index)
+			fmt.Fprintf(out, "\"url\": \"%s\",\n", event.LatestRun.Url())
+			fmt.Fprintf(out, "\"date\": \"%s\",\n", event.LatestRun.DateF())
+			fmt.Fprintf(out, "\"runners\": %d\n", event.LatestRun.RunnerCount)
+			fmt.Fprintf(out, "}\n")
+		} else {
+			fmt.Fprintf(out, "\"latest\": null\n")
+		}
+
+		/*
+		   "tracks" : "{{.EncodedTracks}}",
+
+		*/
+		fmt.Fprintf(out, "}\n")
+	}
+	fmt.Fprintf(out, "];")
+
+	return nil
+}
+
 func main() {
 	dataDir := flag.String("data", "data", "the data directory")
 	downloadDir := flag.String("download", ".download", "the download directory")
@@ -174,7 +239,13 @@ func main() {
 	// download goatcounter
 	utils.MustDownloadFileIfOlder("https://gc.zgo.at/count.js", download.Path("goatcounter", "stats.js"), fileAge1w)
 
+	// render data
+	if err := renderJs(events, download.Path("data.js")); err != nil {
+		panic(fmt.Errorf("failed to render data: %v", err))
+	}
+
 	js_files := make([]string, 0)
+	js_files = append(js_files, utils.MustCopyHash(download.Path("data.js"), "data-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(download.Path("leaflet/leaflet.js"), "leaflet-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(data.Path("static", "main.js"), "main-HASH.js", *outputDir))
 	css_files := make([]string, 0)
@@ -188,7 +259,6 @@ func main() {
 	utils.MustCopyHash(data.Path("static/marker-red-icon-2x.png"), "images/marker-red-icon-2x.png", *outputDir)
 	statsJs := modifyGoatcounterLinkSelector(download.Path("goatcounter"), "stats.js")
 	statsJs = utils.MustCopyHash(download.Path("goatcounter", statsJs), "stats-HASH.js", *outputDir)
-
 	// render templates to output folder
 	active := 0
 	archived := 0

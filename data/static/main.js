@@ -6,6 +6,44 @@ var on_load = function(f) {
     }
 }
 
+const updateTracks = function(map, parkruns) {
+    const z = map.getZoom();
+    const bounds = map.getBounds();
+
+    if (z > 10) {
+        parkruns.forEach((parkrun, index, array) => {
+            if (bounds.contains([parkrun.lat, parkrun.lon])) {
+                if (!parkrun.polylines_visible) {
+                    array[index].polylines_visible = true;
+                    if (parkrun.polylines === null) {
+                        array[index].polylines = [];
+                        parkrun.tracks.forEach(latlngs => {
+                            array[index].polylines.push(L.polyline(latlngs, {color: 'red'}));
+                        });
+                    }
+                    parkrun.polylines.forEach(p => {
+                        p.addTo(map);
+                    });
+                }
+            } else if (parkrun.polylines_visible) {
+                array[index].polylines_visible = false;
+                parkrun.polylines.forEach(p => {
+                    p.removeFrom(map);
+                });
+            }
+        });
+    } else {
+        parkruns.forEach((parkrun, index, array) => {
+            if (parkrun.polylines_visible) {
+                array[index].polylines_visible = false;
+                parkrun.polylines.forEach(p => {
+                    p.removeFrom(map);
+                });
+            }
+        });
+    }
+};
+
 const loadMap = function (id) {
     const germany = [
         [50.913868, 5.603027],
@@ -20,7 +58,8 @@ const loadMap = function (id) {
 
     const blueIcon = load_marker("");
     const redIcon = load_marker("red");
-    parkruns.forEach(parkrun => {
+
+    parkruns.forEach((parkrun, index, array) => {
         let latest = "Letzte Austragung: keine";
         if (parkrun.latest !== null) {
             latest = `Letzte Austragung:<br><a target="_blank" href="${parkrun.latest.url}">#${parkrun.latest.index}</a> am ${parkrun.latest.date} mit ${parkrun.latest.runners} Teilnehmern`;
@@ -32,15 +71,18 @@ const loadMap = function (id) {
             const marker = L.marker([parkrun.lat, parkrun.lon], {icon: redIcon}).addTo(map)
                 .bindPopup(`<a target="_blank" href="${parkrun.url}"><b>${parkrun.name}</b></a> <span class="tag is-danger is-light">archiviert</span><br>${parkrun.location}<br><br>${latest}`);
         }
-        parkrun.tracks.forEach(track => {
-            const latlngs = [];
-            track.forEach(c => {
-                latlngs.push([c.Lat, c.Lon]);
-            });
-            const polyline = L.polyline(latlngs, {color: 'red'});
-            polyline.addTo(map);
-        });
+        array[index].polylines = null;
+        array[index].polylines_visible = false;
     });
+
+    map.on('zoomend', function() {
+        updateTracks(map, parkruns);
+    });
+
+    map.on('moveend', function() {
+        updateTracks(map, parkruns);
+    });
+    updateTracks(map, parkruns);
 };
 
 var load_marker = function (color) {
