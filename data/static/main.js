@@ -7,32 +7,8 @@ var on_load = function(f) {
 }
 
 const updateTracks = function(map, parkruns) {
-    const z = map.getZoom();
-    const bounds = map.getBounds();
-
-    if (z > 10) {
-        parkruns.forEach((parkrun, index, array) => {
-            if (bounds.contains([parkrun.lat, parkrun.lon])) {
-                if (!parkrun.polylines_visible) {
-                    array[index].polylines_visible = true;
-                    if (parkrun.polylines === null) {
-                        array[index].polylines = [];
-                        parkrun.tracks.forEach(latlngs => {
-                            array[index].polylines.push(L.polyline(latlngs, {color: 'red'}));
-                        });
-                    }
-                    parkrun.polylines.forEach(p => {
-                        p.addTo(map);
-                    });
-                }
-            } else if (parkrun.polylines_visible) {
-                array[index].polylines_visible = false;
-                parkrun.polylines.forEach(p => {
-                    p.removeFrom(map);
-                });
-            }
-        });
-    } else {
+    // zoomed out => hide all tracks
+    if (map.getZoom() <= 10) {
         parkruns.forEach((parkrun, index, array) => {
             if (parkrun.polylines_visible) {
                 array[index].polylines_visible = false;
@@ -41,7 +17,34 @@ const updateTracks = function(map, parkruns) {
                 });
             }
         });
+        return;
     }
+
+
+    // show tracks within bounds
+    const bounds = map.getBounds();
+    parkruns.forEach((parkrun, index, array) => {
+        if (bounds.contains([parkrun.lat, parkrun.lon])) {
+            if (!parkrun.polylines_visible) {
+                array[index].polylines_visible = true;
+                // newly create leaflet polyline
+                if (parkrun.polylines === null) {
+                    array[index].polylines = [];
+                    parkrun.tracks.forEach(latlngs => {
+                        array[index].polylines.push(L.polyline(latlngs, {color: 'red'}));
+                    });
+                }
+                parkrun.polylines.forEach(p => {
+                    p.addTo(map);
+                });
+            }
+        } else if (parkrun.polylines_visible) {
+            array[index].polylines_visible = false;
+            parkrun.polylines.forEach(p => {
+                p.removeFrom(map);
+            });
+        }
+    });
 };
 
 const loadMap = function (id) {
@@ -62,7 +65,7 @@ const loadMap = function (id) {
     parkruns.forEach((parkrun, index, array) => {
         let latest = "Letzte Austragung: keine";
         if (parkrun.latest !== null) {
-            latest = `Letzte Austragung:<br><a target="_blank" href="${parkrun.latest.url}">#${parkrun.latest.index}</a> am ${parkrun.latest.date} mit ${parkrun.latest.runners} Teilnehmern`;
+            latest = `Letzte Austragung:<br><a target="_blank" href="${parkrun.url}/results/${parkrun.latest.index}">#${parkrun.latest.index}</a> am ${parkrun.latest.date} mit ${parkrun.latest.runners} Teilnehmern`;
         }
         if (parkrun.active) {
             const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon}).addTo(map)

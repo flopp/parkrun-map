@@ -31,13 +31,20 @@ type Coordinates struct {
 	Lat, Lon float64
 }
 
+var (
+	InvalidCoordinates = Coordinates{100, 0}
+)
+
+func (c Coordinates) IsValid() bool {
+	return c.Lat <= 90
+}
+
 type Event struct {
 	EventId      int
 	Id           string
 	Name         string
 	Location     string
-	Lat          float64
-	Lon          float64
+	Coords       Coordinates
 	CountryUrl   string
 	GoogleMapsId string
 	Tracks       [][]Coordinates
@@ -86,23 +93,23 @@ type ParkrunInfo struct {
 	Coordinates string
 }
 
-func (info ParkrunInfo) ParseCoordinates() (float64, float64, error) {
+func (info ParkrunInfo) ParseCoordinates() (Coordinates, error) {
 	if info.Coordinates == "" {
-		return 0, 0, nil
+		return InvalidCoordinates, nil
 	}
-	r := regexp.MustCompile(`^\s*(-?[0-9.]+)\s+(-?[0-9.]+)\s*$`)
+	r := regexp.MustCompile(`^\s*(-?[0-9\.]+)\s+(-?[0-9\.]+)\s*$`)
 	if m := r.FindStringSubmatch(info.Coordinates); m != nil {
 		lat, err := strconv.ParseFloat(m[1], 64)
 		if err != nil {
-			return 0, 0, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
+			return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
 		}
 		lon, err := strconv.ParseFloat(m[2], 64)
 		if err != nil {
-			return 0, 0, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
+			return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
 		}
-		return lat, lon, nil
+		return Coordinates{lat, lon}, nil
 	}
-	return 0, 0, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
+	return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
 }
 
 var parkrun_infos map[string]*ParkrunInfo
@@ -124,7 +131,7 @@ func (event Event) GoogleMapsUrl() string {
 		}
 	}
 
-	return fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%f%%2C%f", event.Lat, event.Lon)
+	return fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%f%%2C%f", event.Coords.Lat, event.Coords.Lon)
 }
 
 func (event Event) FixedName() string {
@@ -264,20 +271,23 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 		lat := coordinates[1].(float64)
 		lon := coordinates[0].(float64)
 
-		event := &Event{id, name, longName, location, lat, lon, countryUrl, "", nil, nil, ""}
+		event := &Event{id, name, longName, location, Coordinates{lat, lon}, countryUrl, "", nil, nil, ""}
 		eventList = append(eventList, event)
 		eventMap[name] = event
 	}
 
 	for _, info := range parkrun_infos {
-		if _, found := eventMap[info.Id]; found {
+		coordinates, err := info.ParseCoordinates()
+		if err != nil {
+			return nil, fmt.Errorf("when parsing coordinates of '%s': %v", info.Name, info.Coordinates)
+		}
+		if event, found := eventMap[info.Id]; found {
+			if coordinates.IsValid() {
+				event.Coords = coordinates
+			}
 			continue
 		}
-		lat, lon, err := info.ParseCoordinates()
-		if err != nil {
-			return nil, err
-		}
-		event := &Event{0, info.Id, info.Name, info.City, lat, lon, "", "", nil, nil, info.Status}
+		event := &Event{0, info.Id, info.Name, info.City, coordinates, "", "", nil, nil, info.Status}
 		eventList = append(eventList, event)
 	}
 

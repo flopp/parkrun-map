@@ -39,7 +39,8 @@
         "name": "Dietenbach parkrun",
         "city": "Freiburg, BW",
         "googlemaps": "https://maps.app.goo.gl/8mjy464YdjBKqmR1A",
-        "first": "23.10.2021"
+        "first": "23.10.2021",
+        "coordinates": "48.001255 7.806419"
     },
     {
         "id": "dreilaendergarten",

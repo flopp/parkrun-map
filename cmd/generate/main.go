@@ -105,9 +105,9 @@ func renderJs(events []*parkrun.Event, filePath string) error {
 		}
 		fmt.Fprintf(out, "{\n")
 		fmt.Fprintf(out, "\"url\": \"%s\",\n", event.Url())
-		fmt.Fprintf(out, "\"name\": \"%s\",\n", event.FixedName())
-		fmt.Fprintf(out, "\"lat\": %f, \"lon\": %f,\n", event.Lat, event.Lon)
-		fmt.Fprintf(out, "\"location\": \"%s\",\n", event.FixedLocation())
+		fmt.Fprintf(out, "\"name\": \"%s\",\n", event.Name)
+		fmt.Fprintf(out, "\"lat\": %.5f, \"lon\": %f,\n", event.Coords.Lat, event.Coords.Lon)
+		fmt.Fprintf(out, "\"location\": \"%s\",\n", event.Location)
 		fmt.Fprintf(out, "\"googleMapsUrl\": \"%s\",\n", event.GoogleMapsUrl())
 		fmt.Fprintf(out, "\"tracks\": [\n")
 		for it, track := range event.Tracks {
@@ -119,7 +119,7 @@ func renderJs(events []*parkrun.Event, filePath string) error {
 				if ic != 0 {
 					fmt.Fprintf(out, ",")
 				}
-				fmt.Fprintf(out, "[%f, %f]", coord.Lat, coord.Lon)
+				fmt.Fprintf(out, "[%.5f,%.5f]", coord.Lat, coord.Lon)
 			}
 			fmt.Fprintf(out, "]\n")
 		}
@@ -133,7 +133,6 @@ func renderJs(events []*parkrun.Event, filePath string) error {
 		if event.LatestRun != nil {
 			fmt.Fprintf(out, "\"latest\": {\n")
 			fmt.Fprintf(out, "\"index\": %d,\n", event.LatestRun.Index)
-			fmt.Fprintf(out, "\"url\": \"%s\",\n", event.LatestRun.Url())
 			fmt.Fprintf(out, "\"date\": \"%s\",\n", event.LatestRun.DateF())
 			fmt.Fprintf(out, "\"runners\": %d\n", event.LatestRun.RunnerCount)
 			fmt.Fprintf(out, "}\n")
