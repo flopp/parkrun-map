@@ -109,19 +109,19 @@ func renderJs(events []*parkrun.Event, filePath string) error {
 		fmt.Fprintf(out, "\"lat\": %.5f, \"lon\": %f,\n", event.Coords.Lat, event.Coords.Lon)
 		fmt.Fprintf(out, "\"location\": \"%s\",\n", event.Location)
 		fmt.Fprintf(out, "\"googleMapsUrl\": \"%s\",\n", event.GoogleMapsUrl())
-		fmt.Fprintf(out, "\"tracks\": [\n")
+		fmt.Fprintf(out, "\"tracks\": [")
 		for it, track := range event.Tracks {
 			if it != 0 {
-				fmt.Fprintf(out, ",\n")
+				fmt.Fprintf(out, ",")
 			}
-			fmt.Fprintf(out, "[\n")
+			fmt.Fprintf(out, "[")
 			for ic, coord := range track {
 				if ic != 0 {
 					fmt.Fprintf(out, ",")
 				}
 				fmt.Fprintf(out, "[%.5f,%.5f]", coord.Lat, coord.Lon)
 			}
-			fmt.Fprintf(out, "]\n")
+			fmt.Fprintf(out, "]")
 		}
 		fmt.Fprintf(out, "],\n")
 

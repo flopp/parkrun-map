@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/flopp/parkrun-map/internal/utils"
+	simplifier "github.com/yrsh/simplify-go"
 )
 
 type Run struct {
@@ -533,6 +534,33 @@ func (event *Event) LoadKML(filePath string) error {
 	if len(track) > 0 {
 		return fmt.Errorf("unterminated coordinates list")
 	}
+
+	allowedPoints := 100
+	initialPrecision := 0.00001
+	deltaPrecision := 0.000001
+	simplified := make([][]Coordinates, 0, len(event.Tracks))
+	for _, track := range event.Tracks {
+		if len(track) > allowedPoints {
+			precision := initialPrecision
+			s := make([][]float64, 0, len(track))
+			for _, c := range track {
+				s = append(s, []float64{c.Lat, c.Lon})
+			}
+			for len(s) > allowedPoints {
+				s = simplifier.Simplify(s, precision, true)
+				precision += deltaPrecision
+			}
+			track = track[:0]
+			for _, c := range s {
+				track = append(track, Coordinates{c[0], c[1]})
+			}
+			simplified = append(simplified, track)
+		} else {
+			simplified = append(simplified, track)
+		}
+	}
+
+	event.Tracks = simplified
 
 	return nil
 }
