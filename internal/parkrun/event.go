@@ -3,6 +3,8 @@ package parkrun
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
@@ -58,12 +60,12 @@ func (event Event) Active() bool {
 }
 
 func (event Event) Url() string {
-	return fmt.Sprintf("https://parkrun.com.de/%s", event.Id)
+	return fmt.Sprintf("https://%s/%s", event.CountryUrl, event.Id)
 }
 
 func (event Event) CoursePageUrl() string {
 	if event.CountryUrl == "" {
-		return fmt.Sprintf("https://parkrun.com.de/%s/course", event.Id)
+		return fmt.Sprintf("https://%s/%s/course", event.CountryUrl, event.Id)
 	}
 	return fmt.Sprintf("https://%s/%s/course", event.CountryUrl, event.Id)
 }
@@ -561,6 +563,74 @@ func (event *Event) LoadKML(filePath string) error {
 	}
 
 	event.Tracks = simplified
+
+	return nil
+}
+
+func escapeQuotes(s string) string {
+	return strings.ReplaceAll(s, "\"", "\\\"")
+}
+
+func RenderJs(events []*Event, filePath string) error {
+	if err := os.MkdirAll(filepath.Dir(filePath), 0770); err != nil {
+		return err
+	}
+
+	out, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	fmt.Fprintf(out, "var parkruns = [\n")
+	for i, event := range events {
+		if i != 0 {
+			fmt.Fprintf(out, ",\n")
+		}
+		fmt.Fprintf(out, "{\n")
+		fmt.Fprintf(out, "\"url\": \"%s\",\n", event.Url())
+		fmt.Fprintf(out, "\"name\": \"%s\",\n", escapeQuotes(event.Name))
+		fmt.Fprintf(out, "\"lat\": %.5f, \"lon\": %f,\n", event.Coords.Lat, event.Coords.Lon)
+		fmt.Fprintf(out, "\"location\": \"%s\",\n", escapeQuotes(event.Location))
+		fmt.Fprintf(out, "\"googleMapsUrl\": \"%s\",\n", event.GoogleMapsUrl())
+		fmt.Fprintf(out, "\"tracks\": [")
+		for it, track := range event.Tracks {
+			if it != 0 {
+				fmt.Fprintf(out, ",")
+			}
+			fmt.Fprintf(out, "[")
+			for ic, coord := range track {
+				if ic != 0 {
+					fmt.Fprintf(out, ",")
+				}
+				fmt.Fprintf(out, "[%.5f,%.5f]", coord.Lat, coord.Lon)
+			}
+			fmt.Fprintf(out, "]")
+		}
+		fmt.Fprintf(out, "],\n")
+
+		if event.Active() {
+			fmt.Fprintf(out, "\"active\": true,\n")
+		} else {
+			fmt.Fprintf(out, "\"active\": false,\n")
+		}
+		if event.LatestRun != nil {
+			fmt.Fprintf(out, "\"latest\": {\n")
+			fmt.Fprintf(out, "\"index\": %d,\n", event.LatestRun.Index)
+			fmt.Fprintf(out, "\"date\": \"%s\",\n", event.LatestRun.DateF())
+			fmt.Fprintf(out, "\"runners\": %d\n", event.LatestRun.RunnerCount)
+			fmt.Fprintf(out, "}\n")
+		} else {
+			fmt.Fprintf(out, "\"latest\": null\n")
+		}
+
+		/*
+		   "tracks" : "{{.EncodedTracks}}",
+
+		*/
+		fmt.Fprintf(out, "}\n")
+	}
+	fmt.Fprintf(out, "];")
 
 	return nil
 }

@@ -239,7 +239,7 @@ func main() {
 	utils.MustDownloadFileIfOlder("https://gc.zgo.at/count.js", download.Path("goatcounter", "stats.js"), fileAge1w)
 
 	// render data
-	if err := renderJs(events, download.Path("data.js")); err != nil {
+	if err := parkrun.RenderJs(events, download.Path("data.js")); err != nil {
 		panic(fmt.Errorf("failed to render data: %v", err))
 	}
 

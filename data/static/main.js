@@ -54,7 +54,7 @@ const loadMap = function (id) {
         [50.999929, 15.227051],
         [47.034162, 10.217285]
     ];
-    var map = L.map(id).fitBounds(germany);
+    var map = L.map(id, {preferCanvas: true}).fitBounds(germany);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -68,10 +68,16 @@ const loadMap = function (id) {
             latest = `Letzte Austragung:<br><a target="_blank" href="${parkrun.url}/results/${parkrun.latest.index}">#${parkrun.latest.index}</a> am ${parkrun.latest.date} mit ${parkrun.latest.runners} Teilnehmern`;
         }
         if (parkrun.active) {
-            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon}).addTo(map)
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon});
+            //const marker = L.circleMarker([parkrun.lat, parkrun.lon], {color: "darkblue", fillColor: "blue", fillOpacity: 1, radius: 8});
+            marker
+                .addTo(map)
                 .bindPopup(`<a target="_blank" href="${parkrun.url}"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
         } else {
-            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: redIcon}).addTo(map)
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: redIcon});
+            //const marker = L.circleMarker([parkrun.lat, parkrun.lon], {color: "darkred", fillColor: "red", fillOpacity: 1, radius: 8});
+            marker
+                .addTo(map)
                 .bindPopup(`<a target="_blank" href="${parkrun.url}"><b>${parkrun.name}</b></a> <span class="tag is-danger is-light">archiviert</span><br>${parkrun.location}<br><br>${latest}`);
         }
         array[index].polylines = null;

@@ -30,3 +30,15 @@ upload-local: run-local
 	rsync -a .output/ echeclus.uberspace.de:/var/www/virtual/floppnet/parkrun.flopp.net/
 	ssh echeclus.uberspace.de chmod -R o=u /var/www/virtual/floppnet/parkrun.flopp.net
 
+.phony: run-local-world
+run-local-world:
+	rm -rf .output-world
+	go run cmd/generate-world/main.go \
+    	-data     "data" \
+    	-download ".download-world" \
+    	-output   ".output-world"
+
+.phony: upload-local-world
+upload-local-world: run-local-world
+	rsync -a .output-world/ echeclus.uberspace.de:/var/www/virtual/floppnet/2oc.de/
+	ssh echeclus.uberspace.de chmod -R o=u /var/www/virtual/floppnet/2oc.de
