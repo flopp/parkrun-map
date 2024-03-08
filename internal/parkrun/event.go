@@ -65,7 +65,7 @@ func (event Event) Url() string {
 
 func (event Event) CoursePageUrl() string {
 	if event.CountryUrl == "" {
-		return fmt.Sprintf("https://%s/%s/course", event.CountryUrl, event.Id)
+		return fmt.Sprintf("https://www.parkrun.com.de/%s/course", event.Id)
 	}
 	return fmt.Sprintf("https://%s/%s/course", event.CountryUrl, event.Id)
 }
