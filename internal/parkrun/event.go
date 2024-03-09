@@ -60,6 +60,9 @@ func (event Event) Active() bool {
 }
 
 func (event Event) Url() string {
+	if event.CountryUrl == "" {
+		return fmt.Sprintf("https://www.parkrun.com.de/%s", event.Id)
+	}
 	return fmt.Sprintf("https://%s/%s", event.CountryUrl, event.Id)
 }
 
