@@ -193,6 +193,10 @@ func main() {
 						latestDate = event.LatestRun.Date
 					}
 					dates[event] = event.LatestRun.Date
+					// force download if there's something wrong with the numbers
+					if event.LatestRun.RunnerCount == 0 {
+						dates[event] = time.Time{}
+					}
 				}
 			}
 		}
