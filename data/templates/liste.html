@@ -6,9 +6,13 @@
         </h1>
         <p class="subtitle">
             Es gibt momentan {{.ActiveEvents}} aktive{{if .ArchivedEvents}} (und {{.ArchivedEvents}} archivierte){{end}} parkrun-Standorte in Deutschland.
-            Hier ist die Liste aller parkruns, jeweils mit Informationen zur letzten Austragung.
-            Hinweis: diese Daten werde nur 1x täglich aktualisiert; insbesondere Samstags kann es daher sein, dass veraltete Informationen angezeigt werden).).
         </p>
+
+        <div class="notification is-success is-light">
+            Hier ist die Liste aller parkruns, jeweils mit Informationen zur letzten Austragung.<br>
+            Hinweis: diese Daten werden nur 1x täglich aktualisiert;
+            insbesondere samstags kann es daher sein, dass veraltete Informationen angezeigt werden.
+        </div>
 
         <table class="table is-narrow is-striped is-hoverable is-fullwidth">
             <thead>
