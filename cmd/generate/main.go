@@ -181,11 +181,37 @@ func main() {
 		panic(fmt.Errorf("while parsing %s: %w", events_json_file, err))
 	}
 
-	// pull latest results
+	// Determine dates of currently downloaded events of all active parkruns
+	latestDate := time.Time{}
+	dates := make(map[*parkrun.Event]time.Time)
 	for _, event := range events {
+		if event.Active() {
+			wiki_file := download.Path("parkrun", event.Id, "wiki")
+			if _, err := os.Stat(wiki_file); err == nil {
+				if err := event.LoadWiki(wiki_file); err == nil && event.LatestRun != nil {
+					if event.LatestRun.Date.After(latestDate) {
+						latestDate = event.LatestRun.Date
+					}
+					dates[event] = event.LatestRun.Date
+				}
+			}
+		}
+	}
+
+	// Pull latest results, force update for all events that are definitely outdated
+	for _, event := range events {
+		isOutdated := false
+		if date, found := dates[event]; found && latestDate.After(date) {
+			isOutdated = true
+		}
+
 		wiki_url := event.WikiUrl()
 		wiki_file := download.Path("parkrun", event.Id, "wiki")
-		utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
+		if isOutdated {
+			utils.MustDownloadFile(wiki_url, wiki_file)
+		} else {
+			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
+		}
 		if err := event.LoadWiki(wiki_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", wiki_file, err))
 		}

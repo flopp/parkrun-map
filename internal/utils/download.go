@@ -19,7 +19,7 @@ func SetDownloadDelay(t time.Duration) {
 }
 
 func AlwaysDownload(url string, filePath string) error {
-	//fmt.Printf("-- downloading %s to %s\n", url, filePath)
+	fmt.Printf("-- downloading %s to %s\n", url, filePath)
 
 	time.Sleep(downloadDelay)
 
@@ -48,6 +48,12 @@ func AlwaysDownload(url string, filePath string) error {
 	}
 
 	return WriteFile(filePath, buf.Bytes())
+}
+
+func MustDownloadFile(url string, filePath string) {
+	if err := AlwaysDownload(url, filePath); err != nil {
+		panic(fmt.Errorf("while downloading '%s' to '%s': %v", url, filePath, err))
+	}
 }
 
 func DownloadFileIfOlder(url string, filePath string, maxAge time.Time) error {
