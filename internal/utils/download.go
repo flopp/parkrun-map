@@ -19,7 +19,7 @@ func SetDownloadDelay(t time.Duration) {
 }
 
 func AlwaysDownload(url string, filePath string) error {
-	fmt.Printf("-- downloading %s to %s\n", url, filePath)
+	//fmt.Printf("-- downloading %s to %s\n", url, filePath)
 
 	time.Sleep(downloadDelay)
 
