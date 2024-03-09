@@ -201,14 +201,14 @@ func main() {
 
 		course_page_url := event.CoursePageUrl()
 		course_page_file := download.Path("parkrun", event.Id, "course_page")
-		utils.MustDownloadFileIfOlder(course_page_url, course_page_file, now.Add(randomDuration(-24*14*time.Hour, -24*7*time.Hour)))
+		utils.MustDownloadFileIfOlder(course_page_url, course_page_file, now.Add(randomDuration(-24*28*time.Hour, -24*14*time.Hour)))
 		if err := event.LoadCoursePage(course_page_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", course_page_file, err))
 		}
 
 		kml_url := fmt.Sprintf("https://www.google.com/maps/d/kml?mid=%s&forcekml=1", event.GoogleMapsId)
 		kml_file := download.Path("parkrun", event.Id, "kml")
-		utils.MustDownloadFileIfOlder(kml_url, kml_file, now.Add(randomDuration(-24*14*time.Hour, -24*7*time.Hour)))
+		utils.MustDownloadFileIfOlder(kml_url, kml_file, now.Add(randomDuration(-24*28*time.Hour, -24*14*time.Hour)))
 
 		if err := event.LoadKML(kml_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", kml_file, err))
