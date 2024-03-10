@@ -32,7 +32,7 @@
                     <th></th>
                     <th class="is-hidden-mobile"></th>
                     <th class="is-hidden-mobile"></th>
-                    <th colspan="3" class="has-text-centered">Letzte Austragung</th>
+                    <th colspan="4" class="has-text-centered">Letzte Austragung</th>
                 </tr>
                 <tr>
                     <th>Name</th>
@@ -41,6 +41,7 @@
                     <th class="has-text-right">#</th>
                     <th>Datum</th>
                     <th class="has-text-right" title="Anzahl Teilnehmer">🏃🏻‍♀️</th>
+                    <th class="has-text-right is-hidden-mobile" title="Schnellste Zeit">⏱</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,9 +68,11 @@
                     {{if .LatestRun}}
                         <td class="tnum has-text-right"><a target="_blank" title="{{.FixedName}} {{.LatestRun.Index}}" href="{{.LatestRun.Url}}">{{.LatestRun.Index}}</a></td>
                         <td class="tnum">{{.LatestRun.DateF}}</td>
-                        <td class="tnum has-text-right">{{.LatestRun.RunnerCount}}</td>
+                        <td class="tnum has-text-right">{{.LatestRun.RunnerCount}}<div class="is-hidden-tablet">{{.LatestRun.FastestT}}</div></td>
+                        <td class="is-hidden-mobile tnum has-text-right">{{.LatestRun.FastestT}}
+                        </td>
                     {{else}}
-                        <td colspan="3" class="has-text-centered">- keine -</td>
+                        <td colspan="4" class="has-text-centered">- keine -</td>
                     {{end}}
                 </tr>
                 {{end}}

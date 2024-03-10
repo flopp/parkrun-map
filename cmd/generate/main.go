@@ -161,7 +161,7 @@ func main() {
 	fileAge1d := now.Add(-24 * time.Hour)
 	fileAge1w := now.Add(-24 * 7 * time.Hour)
 
-	utils.SetDownloadDelay(1 * time.Second)
+	utils.SetDownloadDelay(2 * time.Second)
 
 	data := PathBuilder(*dataDir)
 	download := PathBuilder(*downloadDir)
@@ -187,7 +187,7 @@ func main() {
 	for _, event := range events {
 		if event.Active() {
 			wiki_file := download.Path("parkrun", event.Id, "wiki")
-			if _, err := os.Stat(wiki_file); err == nil {
+			if utils.FileExists(wiki_file) {
 				if err := event.LoadWiki(wiki_file); err == nil && event.LatestRun != nil {
 					if event.LatestRun.Date.After(latestDate) {
 						latestDate = event.LatestRun.Date
@@ -217,7 +217,25 @@ func main() {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
 		}
 		if err := event.LoadWiki(wiki_file); err != nil {
-			panic(fmt.Errorf("file parsing %s: %w", wiki_file, err))
+			panic(fmt.Errorf("while parsing %s: %w", wiki_file, err))
+		}
+
+		if event.LatestRun != nil {
+			results_url := event.LatestRun.Url()
+			results_file := download.Path("parkrun", event.Id, "results")
+			if !utils.FileExists(results_file) {
+				utils.MustDownloadFile(results_url, results_file)
+			}
+			if err := event.LatestRun.LoadResults(results_file); err != nil {
+				panic(fmt.Errorf("while parsing %s: %w", results_file, err))
+			}
+			if event.LatestRun.Index != event.LatestRun.Results.Index {
+				event.LatestRun.Results = nil
+				utils.MustDownloadFile(results_url, results_file)
+				if err := event.LatestRun.LoadResults(results_file); err != nil {
+					panic(fmt.Errorf("while parsing %s: %w", results_file, err))
+				}
+			}
 		}
 
 		/*
@@ -320,4 +338,6 @@ func main() {
 	if err := renderData.render(filepath.Join(*outputDir, "impressum.html"), t.Path("impressum.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'impressum.html': %v", err))
 	}
+
+	// Die schnellsten
 }
