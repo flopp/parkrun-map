@@ -228,13 +228,13 @@ func main() {
 			}
 			if err := event.LatestRun.LoadResults(results_file); err != nil {
 				//panic(fmt.Errorf("while parsing %s: %w", results_file, err))
-				fmt.Printf("while parsing %s: %w\n", results_file, err)
+				fmt.Printf("while parsing %s: %v\n", results_file, err)
 			} else if event.LatestRun.Index != event.LatestRun.Results.Index {
 				event.LatestRun.Results = nil
 				utils.MustDownloadFile(results_url, results_file)
 				if err := event.LatestRun.LoadResults(results_file); err != nil {
 					//panic(fmt.Errorf("while parsing %s: %w", results_file, err))
-					fmt.Printf("while parsing %s: %w\n", results_file, err)
+					fmt.Printf("while parsing %s: %v\n", results_file, err)
 				}
 			}
 		}
