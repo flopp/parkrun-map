@@ -219,26 +219,26 @@ func main() {
 		if err := event.LoadWiki(wiki_file); err != nil {
 			panic(fmt.Errorf("while parsing %s: %w", wiki_file, err))
 		}
-
-		if event.LatestRun != nil {
-			results_url := event.LatestRun.Url()
-			results_file := download.Path("parkrun", event.Id, "results")
-			if !utils.FileExists(results_file) {
-				utils.MustDownloadFile(results_url, results_file)
-			}
-			if err := event.LatestRun.LoadResults(results_file); err != nil {
-				//panic(fmt.Errorf("while parsing %s: %w", results_file, err))
-				fmt.Printf("while parsing %s: %v\n", results_file, err)
-			} else if event.LatestRun.Index != event.LatestRun.Results.Index {
-				event.LatestRun.Results = nil
-				utils.MustDownloadFile(results_url, results_file)
+		/*
+			if event.LatestRun != nil {
+				results_url := event.LatestRun.Url()
+				results_file := download.Path("parkrun", event.Id, "results")
+				if !utils.FileExists(results_file) {
+					utils.MustDownloadFile(results_url, results_file)
+				}
 				if err := event.LatestRun.LoadResults(results_file); err != nil {
 					//panic(fmt.Errorf("while parsing %s: %w", results_file, err))
 					fmt.Printf("while parsing %s: %v\n", results_file, err)
+				} else if event.LatestRun.Index != event.LatestRun.Results.Index {
+					event.LatestRun.Results = nil
+					utils.MustDownloadFile(results_url, results_file)
+					if err := event.LatestRun.LoadResults(results_file); err != nil {
+						//panic(fmt.Errorf("while parsing %s: %w", results_file, err))
+						fmt.Printf("while parsing %s: %v\n", results_file, err)
+					}
 				}
 			}
-		}
-
+		*/
 		/*
 			report_url := event.ReportUrl()
 			report_file := download.Path("parkrun", event.Id, "report")
