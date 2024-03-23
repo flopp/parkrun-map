@@ -1,0 +1,18 @@
+{{template "header.html" .}}
+<section class="section">
+    <div class="container">
+        <h1 class="title">{{.Event.FixedName}}</h1>
+
+        <table class="table">
+            {{if .Event.Active}}{{else}}<tr><td>Status</td><td>{{.Event.Status}}</td></tr>{{end}}
+            <tr><td>Ort</td><td>{{.Event.FixedLocation}}</td></tr>
+            <tr><td>Webseite</td><td><a href="{{.Event.Url}}" target="_blank">{{.Event.Url}}</a></td></tr>
+            <tr><td>Streckenseite</td><td><a href="{{.Event.CoursePageUrl}}" target="_blank">{{.Event.CoursePageUrl}}</a></td></tr>
+            <tr><td>parkrun-Wikiseite</td><td><a href="{{.Event.WikiUrl}}" target="_blank">{{.Event.WikiUrl}}</a></td></tr> 
+            <tr><td>Google Maps</td><td><a href="{{.Event.GoogleMapsUrl}}" target="_blank">{{.Event.GoogleMapsUrl}}</a></td></tr>
+            {{if .Event.StravaSegment}}<tr><td>Strava-Segment</td><td><a href="{{.Event.StravaSegment}}" target="_blank">{{.Event.StravaSegment}}</a></td></tr>{{end}}
+            
+        </table>
+    </div>
+</section>
+{{template "footer.html" .}}
