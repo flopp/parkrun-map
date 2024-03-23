@@ -4,35 +4,40 @@
         "name": "Aachener Weiher parkrun",
         "city": "Köln, NRW",
         "googlemaps": "https://maps.app.goo.gl/gktwZJVrqsirFma7A",
-        "first": "23.03.2019"
+        "first": "23.03.2019",
+        "stravasegment": "https://www.strava.com/segments/20101656"
     },
     {
         "id": "allerpark",
         "name": "Allerpark parkrun",
         "city": "Wolfsburg, NDS",
         "googlemaps": "https://maps.app.goo.gl/viU3mCPcVfMiLb8RA",
-        "first": "11.12.2021"
+        "first": "11.12.2021",
+        "stravasegment": "https://www.strava.com/segments/30466836"
     },
     {
         "id": "alstervorland",
         "name": "Alstervorland parkrun",
         "city": "Hamburg, HH",
         "googlemaps": "https://maps.app.goo.gl/nzFz8ds8yBCSPq9aA",
-        "first": "12.01.2019"
+        "first": "12.01.2019",
+        "stravasegment": "https://www.strava.com/segments/19604504"
     },
     {
         "id": "bahnstadtpromenade",
         "name": "Bahnstadt Promenade parkrun",
         "city": "Heidelberg, BW",
         "googlemaps": "https://maps.app.goo.gl/y9xjkARDxHbwaRd3A",
-        "first": "30.09.2023"
+        "first": "30.09.2023",
+        "stravasegment": "https://www.strava.com/segments/35443555"
     },
     {
         "id": "bugasee",
         "name": "Bugasee parkrun",
         "city": "Kassel, HE",
         "googlemaps": "https://maps.app.goo.gl/nQAYeuPuELrezZC49",
-        "first": "02.08.2019"
+        "first": "02.08.2019",
+        "stravasegment": "https://www.strava.com/segments/22561079"
     },
     {
         "id": "dietenbach",
@@ -40,56 +45,64 @@
         "city": "Freiburg, BW",
         "googlemaps": "https://maps.app.goo.gl/8mjy464YdjBKqmR1A",
         "first": "23.10.2021",
-        "coordinates": "48.001255 7.806419"
+        "coordinates": "48.001255 7.806419",
+        "stravasegment": "https://www.strava.com/segments/30062146"
     },
     {
         "id": "dreilaendergarten",
         "name": "Dreiländergarten parkrun",
         "city": "Weil am Rhein, BW",
         "googlemaps": "https://maps.app.goo.gl/Ncezh996xdM6YnrV9",
-        "first": "11.09.2021"
+        "first": "11.09.2021",
+        "stravasegment": "https://www.strava.com/segments/30965184"
     },
     {
         "id": "ebenberg",
         "name": "Ebenberg parkrun",
         "city": "Landau in der Pfalz, RLP",
         "googlemaps": "https://maps.app.goo.gl/v2oDppZt5VDkqc868",
-        "first": "09.09.2023"
+        "first": "09.09.2023",
+        "stravasegment": "https://www.strava.com/segments/34680942"
     },
     {
         "id": "ehrenbreitstein",
         "name": "Ehrenbreitstein parkrun",
         "city": "Koblenz, RLP",
         "googlemaps": "https://maps.app.goo.gl/VCdwKTUdxT8K7JvWA",
-        "first": "13.01.2024"
+        "first": "13.01.2024",
+        "stravasegment": "https://www.strava.com/segments/35744794"
     },
     {
         "id": "emmerwiesen",
         "name": "Emmerwiesen parkrun",
         "city": "Bad Pyrmont, NDS",
         "googlemaps": "https://maps.app.goo.gl/MRUt6XqQgeMErnXP9",
-        "first": "17.06.2023"
+        "first": "17.06.2023",
+        "stravasegment": "https://www.strava.com/segments/34556163"
     },
     {
         "id": "friedrichsau",
         "name": "Friedrichsau parkrun",
         "city": "Ulm, BW",
         "googlemaps": "https://maps.app.goo.gl/DJJZCmyTZC2JT6ks8",
-        "first": "26.03.2022"
+        "first": "26.03.2022",
+        "stravasegment": "https://www.strava.com/segments/31828928"
     },
     {
         "id": "fuldaaue",
         "name": "Fuldaaue parkrun",
         "city": "Fulda, HE",
         "googlemaps": "https://maps.app.goo.gl/ik8YRD92dfJ4EMRe7",
-        "first": "07.05.2022"
+        "first": "07.05.2022",
+        "stravasegment": "https://www.strava.com/segments/31605271"
     },
     {
         "id": "georgengarten",
         "name": "Georgengarten parkrun",
         "city": "Hannover, NDS",
         "googlemaps": "https://maps.app.goo.gl/viMQE7RHzjhz5u8L7",
-        "first": "02.12.2017"
+        "first": "02.12.2017",
+        "stravasegment": "https://www.strava.com/segments/19798215"
     },
     {
         "id": "globe",
@@ -103,28 +116,32 @@
         "name": "Grüner Weg parkrun",
         "city": "Bad Urach, BW",
         "googlemaps": "https://maps.app.goo.gl/nta1yjbphkXFtf4E9",
-        "first": "30.11.2019"
+        "first": "30.11.2019",
+        "stravasegment": "https://www.strava.com/segments/22209540"
     },
     {
         "id": "hasenheide",
         "name": "Hasenheide parkrun",
         "city": "Berlin, BE",
         "googlemaps": "https://maps.app.goo.gl/WBznzk2a3TKsjEFD6",
-        "first": "06.01.2018"
+        "first": "06.01.2018",
+        "stravasegment": "https://www.strava.com/segments/17085426"
     },
     {
         "id": "havelkanal",
         "name": "Havelkanal parkrun",
         "city": "Hennigsdorf, BB",
         "googlemaps": "https://maps.app.goo.gl/7TUSEr1KyoRxbmfQ8",
-        "first": "22.04.2023"
+        "first": "22.04.2023",
+        "stravasegment": "https://www.strava.com/segments/34205241"
     },
     {
         "id": "hockgraben",
         "name": "Hockgraben parkrun",
         "city": "Konstanz, BW",
         "googlemaps": "https://maps.app.goo.gl/yGYerpCpG2gbG8nd9",
-        "first": "14.08.2021"
+        "first": "14.08.2021",
+        "stravasegment": "https://www.strava.com/segments/31397440"
     },
     {
         "id": "kastanienallee",
@@ -138,77 +155,88 @@
         "name": "Kemnader See parkrun",
         "city": "Bochum, NRW",
         "googlemaps": "https://maps.app.goo.gl/jAP4ZGfDcFScpHK89",
-        "first": "15.10.2022"
+        "first": "15.10.2022",
+        "stravasegment": "https://www.strava.com/segments/33012518"
     },
     {
         "id": "kiessee",
         "name": "Kiessee parkrun",
         "city": "Göttingen, NDS",
         "googlemaps": "https://maps.app.goo.gl/dgFaKHnqUWrt5XFE6",
-        "first": "18.05.2019"
+        "first": "18.05.2019",
+        "stravasegment": "https://www.strava.com/segments/21575619"
     },
     {
         "id": "kraeherwald",
         "name": "Kräherwald parkrun",
         "city": "Stuttgart, BW",
         "googlemaps": "https://maps.app.goo.gl/SQtTyVHupKn5FDZn9",
-        "first": "05.05.2018"
+        "first": "05.05.2018",
+        "stravasegment": "https://www.strava.com/segments/17280391"
     },
     {
         "id": "kuechenholz",
         "name": "Küchenholz parkrun",
         "city": "Leipzig, SN",
         "googlemaps": "https://maps.app.goo.gl/DgogwFVSrqU281Le6",
-        "first": "02.12.2017"
+        "first": "02.12.2017",
+        "stravasegment": "https://www.strava.com/segments/16473962"
     },
     {
         "id": "kurtschumacherpromenade",
         "name": "Kurt-Schumacher-Promenade parkrun",
         "city": "Würzburg, BY",
         "googlemaps": "https://maps.app.goo.gl/GKDejRda5ir2WcJv5",
-        "first": "08.02.2020"
+        "first": "08.02.2020",
+        "stravasegment": "https://www.strava.com/segments/22677193"
     },
     {
         "id": "lahnwiesen",
         "name": "Lahnwiesen parkrun",
         "city": "Marburg, HE",
         "googlemaps": "https://maps.app.goo.gl/DpW4Xuzr9VbGQAak9",
-        "first": "07.03.2020"
+        "first": "07.03.2020",
+        "stravasegment": "https://www.strava.com/segments/29958570"
     },
     {
         "id": "landesgartenschaupark",
         "name": "Landesgartenschau Park parkrun",
         "city": "Neumarkt in der Oberpfalz, BY",
         "googlemaps": "https://maps.app.goo.gl/KvWPa2Q6yRED86jz9",
-        "first": "04.09.2021"
+        "first": "04.09.2021",
+        "stravasegment": "https://www.strava.com/segments/29018267"
     },
     {
         "id": "leinpfad",
         "name": "Leinpfad parkrun",
         "city": "Merzig, SL",
         "googlemaps": "https://maps.app.goo.gl/efT8fKk5bDpnvWbL7",
-        "first": "05.01.2019"
+        "first": "05.01.2019",
+        "stravasegment": "https://www.strava.com/segments/19582135"
     },
     {
         "id": "lousberg",
         "name": "Lousberg parkrun",
         "city": "Aachen, NRW",
         "googlemaps": "https://maps.app.goo.gl/ihumiC3xKAa16hHW9",
-        "first": "20.01.2024"
+        "first": "20.01.2024",
+        "stravasegment": "https://www.strava.com/segments/35215705"
     },
     {
         "id": "luitpold",
         "name": "Luitpold parkrun",
         "city": "Ingolstadt, BY",
         "googlemaps": "https://maps.app.goo.gl/w2UxEFGWBuhQq9X68",
-        "first": "11.05.2019"
+        "first": "11.05.2019",
+        "stravasegment": "https://www.strava.com/segments/29605507"
     },
     {
         "id": "maaraue",
         "name": "Maaraue parkrun",
         "city": "Mainz, RLP",
         "googlemaps": "https://maps.app.goo.gl/Tf5cqkQzHoFY8kHd7",
-        "first": "30.10.2021"
+        "first": "30.10.2021",
+        "stravasegment": "https://www.strava.com/segments/26663905"
     },
     {
         "id": "mattheiserweiher",
@@ -222,133 +250,152 @@
         "name": "Monrepos parkrun",
         "city": "Ludwigsburg, BW",
         "googlemaps": "https://maps.app.goo.gl/oQUjxeNSkL2HymFe6",
-        "first": "01.06.2019"
+        "first": "01.06.2019",
+        "stravasegment": "https://www.strava.com/segments/21009312"
     },
     {
         "id": "neckarau",
         "name": "Neckarau parkrun",
         "city": "Mannheim, BW",
         "googlemaps": "https://maps.app.goo.gl/y2mf1JWysMn9GvXy5",
-        "first": "02.12.2017"
+        "first": "02.12.2017",
+        "stravasegment": "https://www.strava.com/segments/16589535"
     },
     {
         "id": "neckaruferesslingen",
         "name": "Neckarufer parkrun",
         "city": "Esslingen, BW",
         "googlemaps": "https://maps.app.goo.gl/tEqiJTSJQbGUWsFA9",
-        "first": "06.04.2019"
+        "first": "06.04.2019",
+        "stravasegment": "https://www.strava.com/segments/36261204"
     },
     {
         "id": "nidda",
         "name": "Nidda parkrun",
         "city": "Frankfurt am Main, HE",
         "googlemaps": "https://maps.app.goo.gl/fUvUWeqBp8eGbKBC7",
-        "first": "06.01.2018"
+        "first": "06.01.2018",
+        "stravasegment": "https://www.strava.com/segments/16817438"
     },
     {
         "id": "obersee",
         "name": "Obersee parkrun",
         "city": "Bielefeld, NRW",
         "googlemaps": "https://maps.app.goo.gl/VjyTtqHZFTGVKBft6",
-        "first": "09.10.2021"
+        "first": "09.10.2021",
+        "stravasegment": "https://www.strava.com/segments/33655755"
     },
     {
         "id": "oberwald",
         "name": "Oberwald parkrun",
         "city": "Karlsruhe, BW",
         "googlemaps": "https://maps.app.goo.gl/VCS8PPaw2bUiKNWE9",
-        "first": "25.01.2020"
+        "first": "25.01.2020",
+        "stravasegment": "https://www.strava.com/segments/30187451"
     },
     {
         "id": "offenthal",
         "name": "Offenthal parkrun",
         "city": "Offenthal, HE",
         "googlemaps": "https://maps.app.goo.gl/dW7WQaySgG5ibDau6",
-        "first": "13.11.2021"
+        "first": "13.11.2021",
+        "stravasegment": "https://www.strava.com/segments/31533467"
     },
     {
         "id": "prestelsee",
         "name": "Prestelsee parkrun",
         "city": "Graben-Neudorf, BW",
         "googlemaps": "https://maps.app.goo.gl/mVWfRAqjsD844Kg29",
-        "first": "16.03.2024"
+        "first": "16.03.2024",
+        "stravasegment": "https://www.strava.com/segments/36483929"
     },
     {
         "id": "priessnitzgrund",
         "name": "Prießnitzgrund parkrun",
         "city": "Dresden, SN",
         "googlemaps": "https://maps.app.goo.gl/Cgw3ePYLSQDyszMCA",
-        "first": "09.07.2022"
+        "first": "09.07.2022",
+        "stravasegment": "https://www.strava.com/segments/34877170"
     },
     {
         "id": "prinzenpark",
         "name": "Prinzenpark parkrun",
         "city": "Braunschweig, NDS",
         "googlemaps": "https://maps.app.goo.gl/k9zPGx8kCegMLnGv9",
-        "first": "14.05.2022"
+        "first": "14.05.2022",
+        "stravasegment": "https://www.strava.com/segments/31943156"
     },
     {
         "id": "rheinaue",
         "name": "Rheinaue parkrun",
         "city": "Bonn, NRW",
         "googlemaps": "https://maps.app.goo.gl/4Bd7qpAdVLnNY7ZW6",
-        "first": "02.02.2019"
+        "first": "02.02.2019",
+        "stravasegment": "https://www.strava.com/segments/19793290"
     },
     {
         "id": "rheinpark",
         "name": "Rheinpark parkrun",
         "city": "Köln, NRW",
         "googlemaps": "https://maps.app.goo.gl/oK7jMizoDhZYB1oB8",
-        "first": "18.09.2021"
+        "first": "18.09.2021",
+        "stravasegment": "https://www.strava.com/segments/35582054"
     },
     {
         "id": "riemer",
         "name": "Riemer parkrun",
         "city": "München, BY",
         "googlemaps": "https://maps.app.goo.gl/fLJzPER422ezkUu78",
-        "first": "29.06.2019"
+        "first": "29.06.2019",
+        "stravasegment": "https://www.strava.com/segments/20756531"
     },
     {
         "id": "rosensteinpark",
         "name": "Rosensteinpark parkrun",
         "city": "Stuttgart, BW",
         "googlemaps": "https://maps.app.goo.gl/VzhGMisjcrWnm5WD8",
-        "first": "04.06.2022"
+        "first": "04.06.2022",
+        "stravasegment": "https://www.strava.com/segments/34908332"
     },
     {
         "id": "rubbenbruchsee",
         "name": "Rubbenbruchsee parkrun",
         "city": "Osnabrück, NDS",
         "googlemaps": "https://maps.app.goo.gl/7NuAQshN5EHZ6phV8",
-        "first": "13.01.2018"
+        "first": "13.01.2018",
+        "stravasegment": "https://www.strava.com/segments/16810996"
     },
     {
         "id": "schwanenteich",
         "name": "Schwanenteich parkrun",
         "city": "Giessen, HE",
         "googlemaps": "https://maps.app.goo.gl/LE4RJQJokrC3kndR7",
-        "first": "29.09.2018"
+        "first": "29.09.2018",
+        "stravasegment": "https://www.strava.com/segments/19420938"
     },
     {
         "id": "seewoog",
         "name": "Seewoog parkrun",
         "city": "Ramstein-Miesenbach, RLP",
         "googlemaps": "https://maps.app.goo.gl/3FBjKEi8M2Q6VzUG8",
-        "first": "15.09.2018"
+        "first": "15.09.2018",
+        "stravasegment": "https://www.strava.com/segments/18853135"
     },
     {
         "id": "speyerleinpfad",
         "name": "Speyer Leinpfad parkrun",
         "city": "Speyer, RLP",
         "googlemaps": "https://maps.app.goo.gl/KgYAvV7jUTGeCYW1A",
-        "first": "30.11.2019"
+        "first": "30.11.2019",
+        "stravasegment": "https://www.strava.com/segments/22371837"
     },
     {
         "id": "sportparkrems",
         "name": "Sportpark Rems parkrun",
         "city": "Schorndorf, BW",
         "googlemaps": "https://maps.app.goo.gl/NeoaGX9k8WEhoPDTA",
-        "first": "17.07.2021"
+        "first": "17.07.2021",
+        "stravasegment": "https://www.strava.com/segments/33446891"
     },
     {
         "id": "stadtpark",
@@ -369,49 +416,56 @@
         "name": "Unisee parkrun",
         "city": "Bremen, HB",
         "googlemaps": "https://maps.app.goo.gl/GorNnFc7GRfLrBxU7",
-        "first": "08.06.2019"
+        "first": "08.06.2019",
+        "stravasegment": "https://www.strava.com/segments/22567516"
     },
     {
         "id": "volksgarten",
         "name": "Volksgarten parkrun",
         "city": "Düsseldorf, NRW",
         "googlemaps": "https://maps.app.goo.gl/4xX1KDT7zCbQbkXGA",
-        "first": "04.05.2019"
+        "first": "04.05.2019",
+        "stravasegment": "https://www.strava.com/segments/20628972"
     },
     {
         "id": "wertwiesen",
         "name": "Wertwiesen parkrun",
         "city": "Heilbronn, BW",
         "googlemaps": "https://maps.app.goo.gl/zgxhJuvV14fcEroe6",
-        "first": "15.07.2023"
+        "first": "15.07.2023",
+        "stravasegment": "https://www.strava.com/segments/35911737"
     },
     {
         "id": "westpark",
         "name": "Westpark parkrun",
         "city": "München, BY",
         "googlemaps": "https://maps.app.goo.gl/FhZErPa2jXv4esQs5",
-        "first": "19.01.2019"
+        "first": "19.01.2019",
+        "stravasegment": "https://www.strava.com/segments/19491458"
     },
     {
         "id": "wienburgpark",
         "name": "Wienburgpark parkrun",
         "city": "Münster, NRW",
         "googlemaps": "https://maps.app.goo.gl/7gTE7B9EiWN9rDyL6",
-        "first": "12.03.2022"
+        "first": "12.03.2022",
+        "stravasegment": "https://www.strava.com/segments/29111198"
     },
     {
         "id": "woehrdersee",
         "name": "Wöhrder See parkrun",
         "city": "Nürnberg, BY",
         "googlemaps": "https://maps.app.goo.gl/1u1SCvAM9LvBZhWy8",
-        "first": "14.04.2018"
+        "first": "14.04.2018",
+        "stravasegment": "https://www.strava.com/segments/32909015"
     },
     {
         "id": "ziegelwiese",
         "name": "Ziegelwiese parkrun",
         "city": "Halle (Saale), ST",
         "googlemaps": "https://maps.app.goo.gl/m8aqqhcobHdKk61A6",
-        "first": "19.10.2019"
+        "first": "19.10.2019",
+        "stravasegment": "https://www.strava.com/segments/22461453"
     },
     {
         "id": "pieschenerallee",
@@ -420,7 +474,8 @@
         "googlemaps": "https://maps.app.goo.gl/1WzEpcaCRtcwfqoU7",
         "first": "17.11.2018",
         "status": "geschlossen",
-        "coordinates": "51.063731 13.727762"
+        "coordinates": "51.063731 13.727762",
+        "stravasegment": "https://www.strava.com/segments/22462962"
     },
     {
         "id": "kurpark",
@@ -438,7 +493,8 @@
         "googlemaps": "https://maps.app.goo.gl/52mY6QozPPpm2MHu8",
         "first": "",
         "status": "geschlossen",
-        "coordinates": "49.587304 11.027033"
+        "coordinates": "49.587304 11.027033",
+        "stravasegment": "https://www.strava.com/segments/29325256"
     },
     {
         "id": "wittelsbacherpark",
@@ -447,6 +503,7 @@
         "googlemaps": "https://maps.app.goo.gl/71auEwp1fT4CQW1AA",
         "first": "",
         "status": "geschlossen",
-        "coordinates": "48.358180 10.882256"
+        "coordinates": "48.358180 10.882256",
+        "stravasegment": "https://www.strava.com/segments/35870676"
     }
 ]

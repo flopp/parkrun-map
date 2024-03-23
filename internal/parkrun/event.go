@@ -271,13 +271,14 @@ func (event Event) LastRun() string {
 }
 
 type ParkrunInfo struct {
-	Id          string
-	Name        string
-	City        string
-	GoogleMaps  string
-	First       string
-	Status      string
-	Coordinates string
+	Id            string
+	Name          string
+	City          string
+	GoogleMaps    string
+	First         string
+	Status        string
+	Coordinates   string
+	StravaSegment string
 }
 
 func (info ParkrunInfo) ParseCoordinates() (Coordinates, error) {
@@ -352,7 +353,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 	}
 	parkrun_infos = make(map[string]*ParkrunInfo)
 	for _, info := range infos {
-		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates}
+		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.StravaSegment}
 	}
 
 	buf, err := utils.ReadFile(events_json_file)
