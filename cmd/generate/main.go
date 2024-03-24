@@ -29,6 +29,7 @@ type RenderData struct {
 	Canonical      string
 	Nav            string
 	Timestamp      string
+	CanonicalUrls  []string
 }
 
 func (data *RenderData) set(title, description, canonical, nav string) {
@@ -38,7 +39,7 @@ func (data *RenderData) set(title, description, canonical, nav string) {
 	data.Nav = nav
 }
 
-func (data RenderData) render(outputFile string, templateFiles ...string) error {
+func (data *RenderData) render(outputFile string, templateFiles ...string) error {
 	// fmt.Printf("-- rendering to %s\n", outputFile)
 
 	tmpl, err := template.ParseFiles(templateFiles...)
@@ -56,7 +57,30 @@ func (data RenderData) render(outputFile string, templateFiles ...string) error 
 	}
 	defer f.Close()
 
-	return tmpl.Execute(f, data)
+	if err = tmpl.Execute(f, data); err != nil {
+		return err
+	}
+
+	data.CanonicalUrls = append(data.CanonicalUrls, data.Canonical)
+	return nil
+}
+
+func (data RenderData) writeSitemap(filePath string) error {
+	f, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	for _, url := range data.CanonicalUrls {
+		if _, err = f.WriteString(url); err != nil {
+			return err
+		}
+		if _, err = f.WriteString("\n"); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 type PathBuilder string
@@ -110,6 +134,7 @@ func main() {
 
 	data := PathBuilder(*dataDir)
 	download := PathBuilder(*downloadDir)
+	output := PathBuilder(*outputDir)
 
 	// fetch parkrun events
 	events_json_url := "https://images.parkrun.com/events.json"
@@ -262,26 +287,26 @@ func main() {
 			archived += 1
 		}
 	}
-	renderData := RenderData{nil, events, active, archived, js_files, css_files, statsJs, "", "", "", "", now.Format("2006-01-02 15:04:05")}
+	renderData := RenderData{nil, events, active, archived, js_files, css_files, statsJs, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("parkrun Karte", "Karte aller deutschen parkruns mit Anzeige der einzelnen Laufstrecken und Informationen zum letzten Event", "https://parkrun.flopp.net/", "map")
-	if err := renderData.render(filepath.Join(*outputDir, "index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'index.html': %v", err))
 	}
 	renderData.set("parkrun Liste", "Liste aller deutschen parkruns mit Informationen zum letzten Event", "https://parkrun.flopp.net/liste.html", "list")
-	if err := renderData.render(filepath.Join(*outputDir, "liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+	if err := renderData.render(output.Path("liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'list.html': %v", err))
 	}
 	renderData.set("parkruns Karte - Info", "Informationen", "https://parkrun.flopp.net/info.html", "info")
-	if err := renderData.render(filepath.Join(*outputDir, "info.html"), t.Path("info.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+	if err := renderData.render(output.Path("info.html"), t.Path("info.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'info.html': %v", err))
 	}
 	renderData.set("parkruns Karte - Datenschutz", "Datenschutzinformationen", "https://parkrun.flopp.net/datenschutz.html", "datenschutz")
-	if err := renderData.render(filepath.Join(*outputDir, "datenschutz.html"), t.Path("datenschutz.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+	if err := renderData.render(output.Path("datenschutz.html"), t.Path("datenschutz.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'datenschutz.html': %v", err))
 	}
 	renderData.set("parkruns Karte - Impressum", "Impressum", "https://parkrun.flopp.net/impressum.html", "impressum")
-	if err := renderData.render(filepath.Join(*outputDir, "impressum.html"), t.Path("impressum.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+	if err := renderData.render(output.Path("impressum.html"), t.Path("impressum.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'impressum.html': %v", err))
 	}
 
@@ -290,8 +315,12 @@ func main() {
 		title := fmt.Sprintf("%s, %s", event.FixedName(), event.FixedLocation())
 		file := fmt.Sprintf("%s.html", event.Id)
 		renderData.set(title, title, fmt.Sprintf("https://parkrun.flopp.net/%s", file), "list")
-		if err := renderData.render(filepath.Join(*outputDir, file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+		if err := renderData.render(output.Path(file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 			panic(fmt.Errorf("while rendering '%s': %v", file, err))
 		}
+	}
+
+	if err := renderData.writeSitemap(output.Path("sitemap.txt")); err != nil {
+		panic(fmt.Errorf("while writing sitemap: %w", err))
 	}
 }

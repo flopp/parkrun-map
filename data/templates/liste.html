@@ -47,11 +47,10 @@
             {{range .Events}}
                 <tr>
                     <td>
-                        <a href="{{.Id}}.html">ℹ️</a>
                         {{if .Active}}
-                        <a target="_blank" href="{{.Url}}">{{.FixedName}}</a>
+                        <a href="{{.Id}}.html">{{.FixedName}}</a>
                         {{else}}
-                        <a target="_blank" href="{{.Url}}">{{.FixedName}}</a> <span class="tag is-danger is-light">archiviert</span>
+                        <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag is-danger is-light">archiviert</span>
                         {{end}}
                         <div class="is-hidden-tablet">
                             <a target="_blank" class="is-hidden-tablet is-size-7 is-italic" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>

@@ -277,9 +277,9 @@ func (event Event) LastRun() string {
 	return fmt.Sprintf("#%d am %s mit %d Teilnehmern", run.Index, run.Date.Format("01.02.2006"), run.RunnerCount)
 }
 
-type Strava struct {
-	Segment string
-	Club    string
+type Link struct {
+	Name string
+	Url  string
 }
 
 type ParkrunInfo struct {
@@ -290,7 +290,8 @@ type ParkrunInfo struct {
 	First       string
 	Status      string
 	Coordinates string
-	Strava      Strava
+	Strava      []Link
+	Social      []Link
 }
 
 func (info ParkrunInfo) ParseCoordinates() (Coordinates, error) {
@@ -341,32 +342,20 @@ func (event Event) GoogleMapsCourseUrl() string {
 	return ""
 }
 
-func (event Event) HasStrava() bool {
+func (event Event) Strava() []Link {
 	if info, ok := parkrun_infos[event.Id]; ok {
-		return info.Strava.Segment != "" || info.Strava.Club != ""
+		return info.Strava
 	}
 
-	return false
+	return nil
 }
 
-func (event Event) StravaSegment() string {
+func (event Event) Social() []Link {
 	if info, ok := parkrun_infos[event.Id]; ok {
-		if info.Strava.Segment != "" {
-			return info.Strava.Segment
-		}
+		return info.Social
 	}
 
-	return ""
-}
-
-func (event Event) StravaClub() string {
-	if info, ok := parkrun_infos[event.Id]; ok {
-		if info.Strava.Club != "" {
-			return info.Strava.Club
-		}
-	}
-
-	return ""
+	return nil
 }
 
 func (event Event) FixedName() string {
@@ -400,7 +389,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 	}
 	parkrun_infos = make(map[string]*ParkrunInfo)
 	for _, info := range infos {
-		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Strava}
+		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Strava, info.Social}
 	}
 
 	buf, err := utils.ReadFile(events_json_file)
