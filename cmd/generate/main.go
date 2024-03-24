@@ -212,7 +212,7 @@ func main() {
 	// fetch external assets (bulma, leaflet)
 
 	// renovate: datasource=npm depName=bulma
-	//bulma_version := "0.9.4"
+	//bulma_version := "1.0.0"
 	bulma_version := "1.0.0"
 	// renovate: datasource=npm depName=leaflet
 	leaflet_version := "1.9.4"
