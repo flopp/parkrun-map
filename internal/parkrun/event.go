@@ -254,6 +254,13 @@ func (event Event) CoursePageUrl() string {
 	return fmt.Sprintf("https://%s/%s/course", event.CountryUrl, event.Id)
 }
 
+func (event Event) ResultsUrl() string {
+	if event.CountryUrl == "" {
+		return fmt.Sprintf("https://www.parkrun.com.de/%s/results/eventhistory", event.Id)
+	}
+	return fmt.Sprintf("https://%s/%s/results/eventhistory", event.CountryUrl, event.Id)
+}
+
 func (event Event) WikiUrl() string {
 	return fmt.Sprintf("https://wiki.parkrun.com/index.php/%s", strings.ReplaceAll(event.Name, " ", "_"))
 }
@@ -270,15 +277,20 @@ func (event Event) LastRun() string {
 	return fmt.Sprintf("#%d am %s mit %d Teilnehmern", run.Index, run.Date.Format("01.02.2006"), run.RunnerCount)
 }
 
+type Strava struct {
+	Segment string
+	Club    string
+}
+
 type ParkrunInfo struct {
-	Id            string
-	Name          string
-	City          string
-	GoogleMaps    string
-	First         string
-	Status        string
-	Coordinates   string
-	StravaSegment string
+	Id          string
+	Name        string
+	City        string
+	GoogleMaps  string
+	First       string
+	Status      string
+	Coordinates string
+	Strava      Strava
 }
 
 func (info ParkrunInfo) ParseCoordinates() (Coordinates, error) {
@@ -329,10 +341,28 @@ func (event Event) GoogleMapsCourseUrl() string {
 	return ""
 }
 
+func (event Event) HasStrava() bool {
+	if info, ok := parkrun_infos[event.Id]; ok {
+		return info.Strava.Segment != "" || info.Strava.Club != ""
+	}
+
+	return false
+}
+
 func (event Event) StravaSegment() string {
 	if info, ok := parkrun_infos[event.Id]; ok {
-		if info.StravaSegment != "" {
-			return info.StravaSegment
+		if info.Strava.Segment != "" {
+			return info.Strava.Segment
+		}
+	}
+
+	return ""
+}
+
+func (event Event) StravaClub() string {
+	if info, ok := parkrun_infos[event.Id]; ok {
+		if info.Strava.Club != "" {
+			return info.Strava.Club
 		}
 	}
 
@@ -370,7 +400,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 	}
 	parkrun_infos = make(map[string]*ParkrunInfo)
 	for _, info := range infos {
-		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.StravaSegment}
+		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Strava}
 	}
 
 	buf, err := utils.ReadFile(events_json_file)

@@ -11,12 +11,12 @@
                 <tr><td>Austragungen</td><td>{{.Event.LatestRun.Index}}</td></tr>
                 <tr><td>Letzte Austragung</td><td><a href="{{.Event.LatestRun.Url}}" target="_blank">#{{.Event.LatestRun.Index}} am {{.Event.LatestRun.DateF}}, {{.Event.LatestRun.RunnerCount}} Teilnehmer</a></td></tr>
             {{end}}
-            <tr><td>Webseite</td><td><a href="{{.Event.Url}}" target="_blank">{{.Event.Url}}</a></td></tr>
-            <tr><td>Streckenseite</td><td><a href="{{.Event.CoursePageUrl}}" target="_blank">{{.Event.CoursePageUrl}}</a></td></tr>
-            <tr><td>parkrun-Wikiseite</td><td><a href="{{.Event.WikiUrl}}" target="_blank">{{.Event.WikiUrl}}</a></td></tr> 
-            <tr><td>Google Maps</td><td><a href="{{.Event.GoogleMapsUrl}}" target="_blank">{{.Event.GoogleMapsUrl}}</a></td></tr>
-            <tr><td>Google Maps (Strecke)</td><td><a href="{{.Event.GoogleMapsCourseUrl}}" target="_blank">{{.Event.GoogleMapsCourseUrl}}</a></td></tr>
-            {{if .Event.StravaSegment}}<tr><td>Strava-Segment</td><td><a href="{{.Event.StravaSegment}}" target="_blank">{{.Event.StravaSegment}}</a></td></tr>{{end}}
+            <tr><td>Webseite</td><td><a href="{{.Event.Url}}" target="_blank">Hauptseite</a>, <a href="{{.Event.CoursePageUrl}}" target="_blank">Strecke</a>, <a href="{{.Event.ResultsUrl}}" target="_blank">Ergebnisse</a>, <a href="{{.Event.WikiUrl}}" target="_blank">Wiki</a></td></tr> 
+            <tr><td>Google Maps</td><td><a href="{{.Event.GoogleMapsUrl}}" target="_blank">Ort</a>, <a href="{{.Event.GoogleMapsCourseUrl}}" target="_blank">Strecke</a></td></tr>
+            {{if .Event.HasStrava}}<tr><td>Strava</td><td>
+                {{if .Event.StravaClub}}<a href="{{.Event.StravaClub}}" target="_blank">Club</a>{{if .Event.StravaSegment}},{{end}}{{end}}
+                {{if .Event.StravaSegment}}<a href="{{.Event.StravaSegment}}" target="_blank">Segment</a>{{end}}
+            </td></tr>{{end}}
         </table>
 
         <div id="parkrun-map" data-id="{{.Event.Id}}"></div>
