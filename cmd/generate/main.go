@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"html/template"
+	"io"
+	"log"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -15,6 +17,7 @@ import (
 )
 
 type RenderData struct {
+	Event          *parkrun.Event
 	Events         []*parkrun.Event
 	ActiveEvents   int
 	ArchivedEvents int
@@ -87,77 +90,19 @@ func randomDuration(min, max time.Duration) time.Duration {
 	return min + time.Duration(rand.Int63n(int64(delta+1)))
 }
 
-func renderJs(events []*parkrun.Event, filePath string) error {
-	if err := os.MkdirAll(filepath.Dir(filePath), 0770); err != nil {
-		return err
-	}
-
-	out, err := os.Create(filePath)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-
-	fmt.Fprintf(out, "var parkruns = [\n")
-	for i, event := range events {
-		if i != 0 {
-			fmt.Fprintf(out, ",\n")
-		}
-		fmt.Fprintf(out, "{\n")
-		fmt.Fprintf(out, "\"url\": \"%s\",\n", event.Url())
-		fmt.Fprintf(out, "\"name\": \"%s\",\n", event.Name)
-		fmt.Fprintf(out, "\"lat\": %.5f, \"lon\": %f,\n", event.Coords.Lat, event.Coords.Lon)
-		fmt.Fprintf(out, "\"location\": \"%s\",\n", event.Location)
-		fmt.Fprintf(out, "\"googleMapsUrl\": \"%s\",\n", event.GoogleMapsUrl())
-		fmt.Fprintf(out, "\"tracks\": [")
-		for it, track := range event.Tracks {
-			if it != 0 {
-				fmt.Fprintf(out, ",")
-			}
-			fmt.Fprintf(out, "[")
-			for ic, coord := range track {
-				if ic != 0 {
-					fmt.Fprintf(out, ",")
-				}
-				fmt.Fprintf(out, "[%.5f,%.5f]", coord.Lat, coord.Lon)
-			}
-			fmt.Fprintf(out, "]")
-		}
-		fmt.Fprintf(out, "],\n")
-
-		if event.Active() {
-			fmt.Fprintf(out, "\"active\": true,\n")
-		} else {
-			fmt.Fprintf(out, "\"active\": false,\n")
-		}
-		if event.LatestRun != nil {
-			fmt.Fprintf(out, "\"latest\": {\n")
-			fmt.Fprintf(out, "\"index\": %d,\n", event.LatestRun.Index)
-			fmt.Fprintf(out, "\"date\": \"%s\",\n", event.LatestRun.DateF())
-			fmt.Fprintf(out, "\"runners\": %d\n", event.LatestRun.RunnerCount)
-			fmt.Fprintf(out, "}\n")
-		} else {
-			fmt.Fprintf(out, "\"latest\": null\n")
-		}
-
-		/*
-		   "tracks" : "{{.EncodedTracks}}",
-
-		*/
-		fmt.Fprintf(out, "}\n")
-	}
-	fmt.Fprintf(out, "];")
-
-	return nil
-}
-
 func main() {
 	dataDir := flag.String("data", "data", "the data directory")
 	downloadDir := flag.String("download", ".download", "the download directory")
 	outputDir := flag.String("output", ".output", "the output directory")
+	verbose := flag.Bool("verbose", false, "verbose logging")
 	flag.Parse()
 
+	if !*verbose {
+		log.SetOutput(io.Discard)
+	}
+
 	now := time.Now()
+	fileAge1h := now.Add(-1 * time.Hour)
 	fileAge1d := now.Add(-24 * time.Hour)
 	fileAge1w := now.Add(-24 * 7 * time.Hour)
 
@@ -212,7 +157,7 @@ func main() {
 		wiki_url := event.WikiUrl()
 		wiki_file := download.Path("parkrun", event.Id, "wiki")
 		if isOutdated {
-			utils.MustDownloadFile(wiki_url, wiki_file)
+			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1h)
 		} else {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
 		}
@@ -267,7 +212,8 @@ func main() {
 	// fetch external assets (bulma, leaflet)
 
 	// renovate: datasource=npm depName=bulma
-	bulma_version := "0.9.4"
+	//bulma_version := "0.9.4"
+	bulma_version := "1.0.0"
 	// renovate: datasource=npm depName=leaflet
 	leaflet_version := "1.9.4"
 
@@ -317,7 +263,7 @@ func main() {
 			archived += 1
 		}
 	}
-	renderData := RenderData{events, active, archived, js_files, css_files, statsJs, "", "", "", "", now.Format("2006-01-02 15:04:05")}
+	renderData := RenderData{nil, events, active, archived, js_files, css_files, statsJs, "", "", "", "", now.Format("2006-01-02 15:04:05")}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("parkrun Karte", "Karte aller deutschen parkruns mit Anzeige der einzelnen Laufstrecken und Informationen zum letzten Event", "https://parkrun.flopp.net/", "map")
 	if err := renderData.render(filepath.Join(*outputDir, "index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
@@ -340,5 +286,13 @@ func main() {
 		panic(fmt.Errorf("while rendering 'impressum.html': %v", err))
 	}
 
-	// Die schnellsten
+	for _, event := range events {
+		renderData.Event = event
+		title := fmt.Sprintf("%s, %s", event.FixedName(), event.FixedLocation())
+		file := fmt.Sprintf("%s.html", event.Id)
+		renderData.set(title, title, fmt.Sprintf("https://parkrun.flopp.net/%s", file), "list")
+		if err := renderData.render(filepath.Join(*outputDir, file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+			panic(fmt.Errorf("while rendering '%s': %v", file, err))
+		}
+	}
 }

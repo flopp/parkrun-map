@@ -47,6 +47,7 @@
             {{range .Events}}
                 <tr>
                     <td>
+                        <a href="{{.Id}}.html">ℹ️</a>
                         {{if .Active}}
                         <a target="_blank" href="{{.Url}}">{{.FixedName}}</a>
                         {{else}}

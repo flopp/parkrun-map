@@ -322,6 +322,23 @@ func (event Event) GoogleMapsUrl() string {
 	return fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%f%%2C%f", event.Coords.Lat, event.Coords.Lon)
 }
 
+func (event Event) GoogleMapsCourseUrl() string {
+	if event.GoogleMapsId != "" {
+		return fmt.Sprintf("https://www.google.com/maps/d/viewer?mid=%s", event.GoogleMapsId)
+	}
+	return ""
+}
+
+func (event Event) StravaSegment() string {
+	if info, ok := parkrun_infos[event.Id]; ok {
+		if info.StravaSegment != "" {
+			return info.StravaSegment
+		}
+	}
+
+	return ""
+}
+
 func (event Event) FixedName() string {
 	if info, ok := parkrun_infos[event.Id]; ok {
 		if info.Name != "" {
@@ -773,6 +790,7 @@ func RenderJs(events []*Event, filePath string) error {
 			fmt.Fprintf(out, ",\n")
 		}
 		fmt.Fprintf(out, "{\n")
+		fmt.Fprintf(out, "\"id\": \"%s\",\n", event.Id)
 		fmt.Fprintf(out, "\"url\": \"%s\",\n", event.Url())
 		fmt.Fprintf(out, "\"name\": \"%s\",\n", escapeQuotes(event.Name))
 		fmt.Fprintf(out, "\"lat\": %.5f, \"lon\": %f,\n", event.Coords.Lat, event.Coords.Lon)

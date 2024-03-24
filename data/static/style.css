@@ -6,3 +6,14 @@ html.has-two-navbars-fixed-top {
         padding-top: 6.5rem;
     }
 }
+
+.navbar.z-top {
+    z-index: 9999;
+}
+
+#parkrun-map {
+    height: 400px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    margin-right: 2em;
+}

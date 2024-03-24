@@ -21,6 +21,7 @@ run: sync
 run-local:
 	rm -rf .output
 	go run cmd/generate/main.go \
+		-verbose \
     	-data     "data" \
     	-download ".download" \
     	-output   ".output"

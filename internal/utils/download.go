@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -19,6 +20,7 @@ func SetDownloadDelay(t time.Duration) {
 }
 
 func AlwaysDownload(url string, filePath string) error {
+	log.Printf("downloading %s to %s\n", url, filePath)
 	//fmt.Printf("-- downloading %s to %s\n", url, filePath)
 
 	time.Sleep(downloadDelay)
@@ -59,6 +61,10 @@ func MustDownloadFile(url string, filePath string) {
 func DownloadFileIfOlder(url string, filePath string, maxAge time.Time) error {
 	if mtime, err := GetMtime(filePath); err == nil && mtime.After(maxAge) {
 		return nil
+	} else if err != nil {
+		log.Printf("force download; file does not exist: %s", filePath)
+	} else {
+		log.Printf("force download; file outdated: mtime=%v limit=%v", mtime, maxAge)
 	}
 
 	return AlwaysDownload(url, filePath)

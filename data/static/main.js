@@ -94,6 +94,47 @@ const loadMap = function (id) {
     updateTracks(map, parkruns);
 };
 
+
+const loadParkrunMap = function (divId) {
+    const div = document.getElementById(divId);
+    const parkrunId = div.dataset.id;
+    
+    let parkrun = null;
+    parkruns.forEach((p) => {
+        if (p.id === parkrunId) {
+            parkrun = p;
+        }
+    });
+
+    if (parkrun == null) {
+        div.style.display = "none";
+    } else {
+        const map = L.map(divId, {preferCanvas: true});
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        const latLng = L.latLng(parkrun.lat, parkrun.lon);
+        const bounds = L.latLngBounds(latLng, latLng);
+        if (parkrun.active) {
+            const blueIcon = load_marker("");
+            const marker = L.marker(latLng, {icon: blueIcon});
+            marker.addTo(map);    
+        } else {
+            const redIcon = load_marker("red");
+            const marker = L.marker(latLng, {icon: redIcon});
+            marker.addTo(map);    
+        }
+
+        parkrun.tracks.forEach(latlngs => {
+            bounds.extend(L.latLngBounds(latlngs));
+            L.polyline(latlngs, {color: 'red'}).addTo(map);
+
+        });
+        map.fitBounds(bounds);
+    }
+};
+
 var load_marker = function (color) {
     let url = "/images/marker-icon.png";
     let url2x = "/images/marker-icon-2x.png";
@@ -119,6 +160,9 @@ var main = () => {
     if (document.querySelector("#map") !== null) {
         mapId = "map";
         loadMap(mapId);
+    } else if (document.querySelector("#parkrun-map") !== null) {
+        mapId = "parkrun-map";
+        loadParkrunMap(mapId);
     }
 };
 
