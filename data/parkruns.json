@@ -5,7 +5,10 @@
         "city": "Köln, NRW",
         "googlemaps": "https://maps.app.goo.gl/gktwZJVrqsirFma7A",
         "first": "23.03.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/20101656"}, {"name": "Club", "url": "https://www.strava.com/clubs/AWparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/20101656"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/AWparkrun"}
+        ]
     },
     {
         "id": "allerpark",
@@ -13,7 +16,10 @@
         "city": "Wolfsburg, NDS",
         "googlemaps": "https://maps.app.goo.gl/viU3mCPcVfMiLb8RA",
         "first": "11.12.2021",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/30466836"}, {"name": "Club", "url": "https://www.strava.com/clubs/allerpark-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/30466836"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/allerpark-parkrun"}
+        ]
     },
     {
         "id": "alstervorland",
@@ -21,7 +27,10 @@
         "city": "Hamburg, HH",
         "googlemaps": "https://maps.app.goo.gl/nzFz8ds8yBCSPq9aA",
         "first": "12.01.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/19604504"}, {"name": "Club", "url": "https://www.strava.com/clubs/ParkRun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/19604504"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/ParkRun"}
+        ]
     },
     {
         "id": "bahnstadtpromenade",
@@ -29,7 +38,10 @@
         "city": "Heidelberg, BW",
         "googlemaps": "https://maps.app.goo.gl/y9xjkARDxHbwaRd3A",
         "first": "30.09.2023",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/35443555"}, {"name": "Club", "url": "https://www.strava.com/clubs/parkrunhd"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/35443555"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/parkrunhd"}
+        ]
     },
     {
         "id": "bugasee",
@@ -37,7 +49,10 @@
         "city": "Kassel, HE",
         "googlemaps": "https://maps.app.goo.gl/nQAYeuPuELrezZC49",
         "first": "02.08.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/22561079"}, {"name": "Club", "url": "https://www.strava.com/clubs/bugaseeparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/22561079"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/bugaseeparkrun"}
+        ]
     },
     {
         "id": "dietenbach",
@@ -46,7 +61,10 @@
         "googlemaps": "https://maps.app.goo.gl/8mjy464YdjBKqmR1A",
         "first": "23.10.2021",
         "coordinates": "48.001255 7.806419",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/30062146"}, {"name": "Club", "url": "https://www.strava.com/clubs/dietenbach"}],
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/30062146"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/dietenbach"}
+        ],
         "social": [
             {"name": "Mastodon", "url": "https://freiburg.social/@dietenbachparkrun"},
             {"name": "Facebook", "url": "https://www.facebook.com/DietenbachParkrunFreiburg"},
@@ -59,7 +77,10 @@
         "city": "Weil am Rhein, BW",
         "googlemaps": "https://maps.app.goo.gl/Ncezh996xdM6YnrV9",
         "first": "11.09.2021",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/30965184"}, {"name": "Club", "url": "https://www.strava.com/clubs/969606"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/30965184"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/969606"}
+        ]
     },
     {
         "id": "ebenberg",
@@ -67,7 +88,10 @@
         "city": "Landau in der Pfalz, RLP",
         "googlemaps": "https://maps.app.goo.gl/v2oDppZt5VDkqc868",
         "first": "09.09.2023",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/34680942"}, {"name": "Club", "url": "https://www.strava.com/clubs/ebenbergparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/34680942"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/ebenbergparkrun"}
+        ]
     },
     {
         "id": "ehrenbreitstein",
@@ -75,7 +99,10 @@
         "city": "Koblenz, RLP",
         "googlemaps": "https://maps.app.goo.gl/VCdwKTUdxT8K7JvWA",
         "first": "13.01.2024",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/35744794"}, {"name": "Club", "url": "https://www.strava.com/clubs/koblenz_parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/35744794"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/koblenz_parkrun"}
+        ]
     },
     {
         "id": "emmerwiesen",
@@ -83,7 +110,9 @@
         "city": "Bad Pyrmont, NDS",
         "googlemaps": "https://maps.app.goo.gl/MRUt6XqQgeMErnXP9",
         "first": "17.06.2023",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/34556163"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/34556163"}
+        ]
     },
     {
         "id": "friedrichsau",
@@ -91,7 +120,10 @@
         "city": "Ulm, BW",
         "googlemaps": "https://maps.app.goo.gl/DJJZCmyTZC2JT6ks8",
         "first": "26.03.2022",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/31828928"}, {"name": "Club", "url": "https://www.strava.com/clubs/1032384"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/31828928"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/1032384"}
+        ]
     },
     {
         "id": "fuldaaue",
@@ -99,7 +131,10 @@
         "city": "Fulda, HE",
         "googlemaps": "https://maps.app.goo.gl/ik8YRD92dfJ4EMRe7",
         "first": "07.05.2022",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/31605271"}, {"name": "Club", "url": "https://www.strava.com/clubs/parkrunfulda"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/31605271"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/parkrunfulda"}
+        ]
     },
     {
         "id": "georgengarten",
@@ -107,7 +142,10 @@
         "city": "Hannover, NDS",
         "googlemaps": "https://maps.app.goo.gl/viMQE7RHzjhz5u8L7",
         "first": "02.12.2017",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/19798215"}, {"name": "Club", "url": "https://www.strava.com/clubs/georgengarten-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/19798215"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/georgengarten-parkrun"}
+        ]
     },
     {
         "id": "globe",
@@ -115,7 +153,9 @@
         "city": "Schwäbisch Hall, BW",
         "googlemaps": "https://maps.app.goo.gl/4rv49Tm1inbFd76h8",
         "first": "28.09.2019",
-        "strava": [{"name": "Club", "url": "https://www.strava.com/clubs/GlobeparkrunSHA"}]
+        "strava": [
+            {"name": "Club", "url": "https://www.strava.com/clubs/GlobeparkrunSHA"}
+        ]
     },
     {
         "id": "gruenerweg",
@@ -123,7 +163,9 @@
         "city": "Bad Urach, BW",
         "googlemaps": "https://maps.app.goo.gl/nta1yjbphkXFtf4E9",
         "first": "30.11.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/22209540"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/22209540"}
+        ]
     },
     {
         "id": "hasenheide",
@@ -131,7 +173,10 @@
         "city": "Berlin, BE",
         "googlemaps": "https://maps.app.goo.gl/WBznzk2a3TKsjEFD6",
         "first": "06.01.2018",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/17085426"}, {"name": "Club", "url": "https://www.strava.com/clubs/hasenheide-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/17085426"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/hasenheide-parkrun"}
+        ]
     },
     {
         "id": "havelkanal",
@@ -139,7 +184,10 @@
         "city": "Hennigsdorf, BB",
         "googlemaps": "https://maps.app.goo.gl/7TUSEr1KyoRxbmfQ8",
         "first": "22.04.2023",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/34205241"}, {"name": "Club", "url": "https://www.strava.com/clubs/havelkanal-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/34205241"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/havelkanal-parkrun"}
+        ]
     },
     {
         "id": "hockgraben",
@@ -147,7 +195,10 @@
         "city": "Konstanz, BW",
         "googlemaps": "https://maps.app.goo.gl/yGYerpCpG2gbG8nd9",
         "first": "14.08.2021",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/31397440"}, {"name": "Club", "url": "https://www.strava.com/clubs/hockgrabenparkrunkn"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/31397440"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/hockgrabenparkrunkn"}
+        ]
     },
     {
         "id": "kastanienallee",
@@ -155,7 +206,9 @@
         "city": "Tübingen, BW",
         "googlemaps": "https://maps.app.goo.gl/iWmCZSdtF4TguKFGA",
         "first": "16.10.2021",
-        "strava": [{"name": "Club", "url": "https://www.strava.com/clubs/parkrun-tuebingen"}]
+        "strava": [
+            {"name": "Club", "url": "https://www.strava.com/clubs/parkrun-tuebingen"}
+        ]
     },
     {
         "id": "kemnadersee",
@@ -163,7 +216,10 @@
         "city": "Bochum, NRW",
         "googlemaps": "https://maps.app.goo.gl/jAP4ZGfDcFScpHK89",
         "first": "15.10.2022",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/33012518"}, {"name": "Club", "url": "https://www.strava.com/clubs/Kemnader-See-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/33012518"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/Kemnader-See-parkrun"}
+        ]
     },
     {
         "id": "kiessee",
@@ -171,7 +227,10 @@
         "city": "Göttingen, NDS",
         "googlemaps": "https://maps.app.goo.gl/dgFaKHnqUWrt5XFE6",
         "first": "18.05.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/21575619"}, {"name": "Club", "url": "https://www.strava.com/clubs/kiesseeparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/21575619"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/kiesseeparkrun"}
+        ]
     },
     {
         "id": "kraeherwald",
@@ -179,7 +238,10 @@
         "city": "Stuttgart, BW",
         "googlemaps": "https://maps.app.goo.gl/SQtTyVHupKn5FDZn9",
         "first": "05.05.2018",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/17280391"}, {"name": "Club", "url": "https://www.strava.com/clubs/323240"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/17280391"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/323240"}
+        ]
     },
     {
         "id": "kuechenholz",
@@ -187,7 +249,10 @@
         "city": "Leipzig, SN",
         "googlemaps": "https://maps.app.goo.gl/DgogwFVSrqU281Le6",
         "first": "02.12.2017",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/16473962"}, {"name": "Club", "url": "https://www.strava.com/clubs/Kuechenholz-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/16473962"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/Kuechenholz-parkrun"}
+        ]
     },
     {
         "id": "kurtschumacherpromenade",
@@ -195,7 +260,10 @@
         "city": "Würzburg, BY",
         "googlemaps": "https://maps.app.goo.gl/GKDejRda5ir2WcJv5",
         "first": "08.02.2020",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/22677193"}, {"name": "Club", "url": "https://www.strava.com/clubs/parkrunwuerzburg"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/22677193"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/parkrunwuerzburg"}
+        ]
     },
     {
         "id": "lahnwiesen",
@@ -203,7 +271,10 @@
         "city": "Marburg, HE",
         "googlemaps": "https://maps.app.goo.gl/DpW4Xuzr9VbGQAak9",
         "first": "07.03.2020",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/29958570"}, {"name": "Club", "url": "https://www.strava.com/clubs/lahnwiesen-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/29958570"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/lahnwiesen-parkrun"}
+        ]
     },
     {
         "id": "landesgartenschaupark",
@@ -211,7 +282,10 @@
         "city": "Neumarkt in der Oberpfalz, BY",
         "googlemaps": "https://maps.app.goo.gl/KvWPa2Q6yRED86jz9",
         "first": "04.09.2021",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/29018267"}, {"name": "Club", "url": "https://www.strava.com/clubs/landesgartenschaupark_parkrun_neumarkt"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/29018267"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/landesgartenschaupark_parkrun_neumarkt"}
+        ]
     },
     {
         "id": "leinpfad",
@@ -219,7 +293,10 @@
         "city": "Merzig, SL",
         "googlemaps": "https://maps.app.goo.gl/efT8fKk5bDpnvWbL7",
         "first": "05.01.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/19582135"}, {"name": "Club", "url": "https://www.strava.com/clubs/Leinpfad"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/19582135"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/Leinpfad"}
+        ]
     },
     {
         "id": "lousberg",
@@ -227,7 +304,10 @@
         "city": "Aachen, NRW",
         "googlemaps": "https://maps.app.goo.gl/ihumiC3xKAa16hHW9",
         "first": "20.01.2024",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/35215705"}, {"name": "Club", "url": "https://www.strava.com/clubs/Lousberg_parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/35215705"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/Lousberg_parkrun"}
+        ]
     },
     {
         "id": "luitpold",
@@ -235,7 +315,10 @@
         "city": "Ingolstadt, BY",
         "googlemaps": "https://maps.app.goo.gl/w2UxEFGWBuhQq9X68",
         "first": "11.05.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/29605507"}, {"name": "Club", "url": "https://www.strava.com/clubs/luitpold-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/29605507"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/luitpold-parkrun"}
+        ]
     },
     {
         "id": "maaraue",
@@ -243,7 +326,10 @@
         "city": "Mainz, RLP",
         "googlemaps": "https://maps.app.goo.gl/Tf5cqkQzHoFY8kHd7",
         "first": "30.10.2021",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/26663905"}, {"name": "Club", "url": "https://www.strava.com/clubs/maaraueparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/26663905"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/maaraueparkrun"}
+        ]
     },
     {
         "id": "mattheiserweiher",
@@ -251,7 +337,9 @@
         "city": "Trier, RLP",
         "googlemaps": "https://maps.app.goo.gl/FstemrgLn3XZFjJM9",
         "first": "15.07.2023",
-        "strava": [{"name": "Club", "url": "https://www.strava.com/clubs/mattheiserweiher"}]
+        "strava": [
+            {"name": "Club", "url": "https://www.strava.com/clubs/mattheiserweiher"}
+        ]
     },
     {
         "id": "monrepos",
@@ -259,7 +347,10 @@
         "city": "Ludwigsburg, BW",
         "googlemaps": "https://maps.app.goo.gl/oQUjxeNSkL2HymFe6",
         "first": "01.06.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/21009312"}, {"name": "Club", "url": "https://www.strava.com/clubs/monrepos"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/21009312"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/monrepos"}
+        ]
     },
     {
         "id": "neckarau",
@@ -267,7 +358,10 @@
         "city": "Mannheim, BW",
         "googlemaps": "https://maps.app.goo.gl/y2mf1JWysMn9GvXy5",
         "first": "02.12.2017",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/16589535"}, {"name": "Club", "url": "https://www.strava.com/clubs/Neckarauparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/16589535"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/Neckarauparkrun"}
+        ]
     },
     {
         "id": "neckaruferesslingen",
@@ -275,7 +369,10 @@
         "city": "Esslingen, BW",
         "googlemaps": "https://maps.app.goo.gl/tEqiJTSJQbGUWsFA9",
         "first": "06.04.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/36261204"}, {"name": "Club", "url": "https://www.strava.com/clubs/neckaruferparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/36261204"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/neckaruferparkrun"}
+        ]
     },
     {
         "id": "nidda",
@@ -283,7 +380,9 @@
         "city": "Frankfurt am Main, HE",
         "googlemaps": "https://maps.app.goo.gl/fUvUWeqBp8eGbKBC7",
         "first": "06.01.2018",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/16817438"}],
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/16817438"}
+        ],
         "social": [
             {"name": "Mastodon", "url": "https://frankfurt.social/@niddaparkrun"},
             {"name": "Facebook", "url": "https://www.facebook.com/niddaparkrun"}
@@ -295,7 +394,9 @@
         "city": "Bielefeld, NRW",
         "googlemaps": "https://maps.app.goo.gl/VjyTtqHZFTGVKBft6",
         "first": "09.10.2021",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/33655755"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/33655755"}
+        ]
     },
     {
         "id": "oberwald",
@@ -303,7 +404,10 @@
         "city": "Karlsruhe, BW",
         "googlemaps": "https://maps.app.goo.gl/VCS8PPaw2bUiKNWE9",
         "first": "25.01.2020",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/30187451"}, {"name": "Club", "url": "https://www.strava.com/clubs/oberwald-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/30187451"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/oberwald-parkrun"}
+        ]
     },
     {
         "id": "offenthal",
@@ -311,7 +415,10 @@
         "city": "Offenthal, HE",
         "googlemaps": "https://maps.app.goo.gl/dW7WQaySgG5ibDau6",
         "first": "13.11.2021",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/31533467"}, {"name": "Club", "url": "https://www.strava.com/clubs/Offenthal-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/31533467"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/Offenthal-parkrun"}
+        ]
     },
     {
         "id": "prestelsee",
@@ -319,7 +426,9 @@
         "city": "Graben-Neudorf, BW",
         "googlemaps": "https://maps.app.goo.gl/mVWfRAqjsD844Kg29",
         "first": "16.03.2024",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/36483929"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/36483929"}
+        ]
     },
     {
         "id": "priessnitzgrund",
@@ -327,7 +436,10 @@
         "city": "Dresden, SN",
         "googlemaps": "https://maps.app.goo.gl/Cgw3ePYLSQDyszMCA",
         "first": "09.07.2022",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/34877170"}, {"name": "Club", "url": "https://www.strava.com/clubs/priessnitzgrundparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/34877170"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/priessnitzgrundparkrun"}
+        ]
     },
     {
         "id": "prinzenpark",
@@ -335,7 +447,10 @@
         "city": "Braunschweig, NDS",
         "googlemaps": "https://maps.app.goo.gl/k9zPGx8kCegMLnGv9",
         "first": "14.05.2022",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/31943156"}, {"name": "Club", "url": "https://www.strava.com/clubs/prinzenparkparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/31943156"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/prinzenparkparkrun"}
+        ]
     },
     {
         "id": "rheinaue",
@@ -343,7 +458,10 @@
         "city": "Bonn, NRW",
         "googlemaps": "https://maps.app.goo.gl/4Bd7qpAdVLnNY7ZW6",
         "first": "02.02.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/19793290"}, {"name": "Club", "url": "https://www.strava.com/clubs/rheinaue-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/19793290"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/rheinaue-parkrun"}
+        ]
     },
     {
         "id": "rheinpark",
@@ -351,7 +469,10 @@
         "city": "Köln, NRW",
         "googlemaps": "https://maps.app.goo.gl/oK7jMizoDhZYB1oB8",
         "first": "18.09.2021",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/35582054"}, {"name": "Club", "url": "https://www.strava.com/clubs/rheinparkparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/35582054"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/rheinparkparkrun"}
+        ]
     },
     {
         "id": "riemer",
@@ -359,7 +480,10 @@
         "city": "München, BY",
         "googlemaps": "https://maps.app.goo.gl/fLJzPER422ezkUu78",
         "first": "29.06.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/20756531"}, {"name": "Club", "url": "https://www.strava.com/clubs/riemerparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/20756531"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/riemerparkrun"}
+        ]
     },
     {
         "id": "rosensteinpark",
@@ -367,7 +491,10 @@
         "city": "Stuttgart, BW",
         "googlemaps": "https://maps.app.goo.gl/VzhGMisjcrWnm5WD8",
         "first": "04.06.2022",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/34908332"}, {"name": "Club", "url": "https://www.strava.com/clubs/1043177"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/34908332"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/1043177"}
+        ]
     },
     {
         "id": "rubbenbruchsee",
@@ -375,7 +502,9 @@
         "city": "Osnabrück, NDS",
         "googlemaps": "https://maps.app.goo.gl/7NuAQshN5EHZ6phV8",
         "first": "13.01.2018",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/16810996"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/16810996"}
+        ]
     },
     {
         "id": "schwanenteich",
@@ -383,7 +512,10 @@
         "city": "Giessen, HE",
         "googlemaps": "https://maps.app.goo.gl/LE4RJQJokrC3kndR7",
         "first": "29.09.2018",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/19420938"}, {"name": "Club", "url": "https://www.strava.com/clubs/schwanenteich"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/19420938"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/schwanenteich"}
+        ]
     },
     {
         "id": "seewoog",
@@ -391,7 +523,10 @@
         "city": "Ramstein-Miesenbach, RLP",
         "googlemaps": "https://maps.app.goo.gl/3FBjKEi8M2Q6VzUG8",
         "first": "15.09.2018",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/18853135"}, {"name": "Club", "url": "https://www.strava.com/clubs/seewoogparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/18853135"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/seewoogparkrun"}
+        ]
     },
     {
         "id": "speyerleinpfad",
@@ -399,7 +534,10 @@
         "city": "Speyer, RLP",
         "googlemaps": "https://maps.app.goo.gl/KgYAvV7jUTGeCYW1A",
         "first": "30.11.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/22371837"}, {"name": "Club", "url": "https://www.strava.com/clubs/speyerleinpfad"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/22371837"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/speyerleinpfad"}
+        ]
     },
     {
         "id": "sportparkrems",
@@ -407,7 +545,10 @@
         "city": "Schorndorf, BW",
         "googlemaps": "https://maps.app.goo.gl/NeoaGX9k8WEhoPDTA",
         "first": "17.07.2021",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/33446891"}, {"name": "Club", "url": "https://www.strava.com/clubs/584092"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/33446891"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/584092"}
+        ]
     },
     {
         "id": "stadtpark",
@@ -415,7 +556,9 @@
         "city": "Fürth, BY",
         "googlemaps": "https://maps.app.goo.gl/AMUEyC33WRPzDybZA",
         "first": "06.05.2023",
-        "strava": [{"name": "Club", "url": "https://www.strava.com/clubs/stadtpark-parkrun"}]
+        "strava": [
+            {"name": "Club", "url": "https://www.strava.com/clubs/stadtpark-parkrun"}
+        ]
     },
     {
         "id": "traumschleifebaerenbachpfad",
@@ -430,7 +573,10 @@
         "city": "Bremen, HB",
         "googlemaps": "https://maps.app.goo.gl/GorNnFc7GRfLrBxU7",
         "first": "08.06.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/22567516"}, {"name": "Club", "url": "https://www.strava.com/clubs/unisee_parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/22567516"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/unisee_parkrun"}
+        ]
     },
     {
         "id": "volksgarten",
@@ -438,7 +584,10 @@
         "city": "Düsseldorf, NRW",
         "googlemaps": "https://maps.app.goo.gl/4xX1KDT7zCbQbkXGA",
         "first": "04.05.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/20628972"}, {"name": "Club", "url": "https://www.strava.com/clubs/volksgarten"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/20628972"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/volksgarten"}
+        ]
     },
     {
         "id": "wertwiesen",
@@ -446,7 +595,10 @@
         "city": "Heilbronn, BW",
         "googlemaps": "https://maps.app.goo.gl/zgxhJuvV14fcEroe6",
         "first": "15.07.2023",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/35911737"}, {"name": "Club", "url": "https://www.strava.com/clubs/wertwiesenparkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/35911737"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/wertwiesenparkrun"}
+        ]
     },
     {
         "id": "westpark",
@@ -454,7 +606,10 @@
         "city": "München, BY",
         "googlemaps": "https://maps.app.goo.gl/FhZErPa2jXv4esQs5",
         "first": "19.01.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/19491458"}, {"name": "Club", "url": "https://www.strava.com/clubs/westpark-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/19491458"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/westpark-parkrun"}
+        ]
     },
     {
         "id": "wienburgpark",
@@ -462,7 +617,10 @@
         "city": "Münster, NRW",
         "googlemaps": "https://maps.app.goo.gl/7gTE7B9EiWN9rDyL6",
         "first": "12.03.2022",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/29111198"}, {"name": "Club", "url": "https://www.strava.com/clubs/wienburgpark-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/29111198"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/wienburgpark-parkrun"}
+        ]
     },
     {
         "id": "woehrdersee",
@@ -470,7 +628,10 @@
         "city": "Nürnberg, BY",
         "googlemaps": "https://maps.app.goo.gl/1u1SCvAM9LvBZhWy8",
         "first": "14.04.2018",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/32909015"}, {"name": "Club", "url": "https://www.strava.com/clubs/woehrdersee-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/32909015"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/woehrdersee-parkrun"}
+        ]
     },
     {
         "id": "ziegelwiese",
@@ -478,7 +639,10 @@
         "city": "Halle (Saale), ST",
         "googlemaps": "https://maps.app.goo.gl/m8aqqhcobHdKk61A6",
         "first": "19.10.2019",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/22461453"}, {"name": "Club", "url": "https://www.strava.com/clubs/ziegelwiese-parkrun"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/22461453"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/ziegelwiese-parkrun"}
+        ]
     },
     {
         "id": "pieschenerallee",
@@ -488,7 +652,9 @@
         "first": "17.11.2018",
         "status": "geschlossen",
         "coordinates": "51.063731 13.727762",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/22462962"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/22462962"}
+        ]
     },
     {
         "id": "kurpark",
@@ -507,7 +673,9 @@
         "first": "",
         "status": "geschlossen",
         "coordinates": "49.587304 11.027033",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/29325256"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/29325256"}
+        ]
     },
     {
         "id": "wittelsbacherpark",
@@ -517,6 +685,8 @@
         "first": "",
         "status": "geschlossen",
         "coordinates": "48.358180 10.882256",
-        "strava": [{"name": "Segment", "url": "https://www.strava.com/segments/35870676"}]
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/35870676"}
+        ]
     }
 ]

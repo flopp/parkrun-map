@@ -72,13 +72,13 @@ const loadMap = function (id) {
             //const marker = L.circleMarker([parkrun.lat, parkrun.lon], {color: "darkblue", fillColor: "blue", fillOpacity: 1, radius: 8});
             marker
                 .addTo(map)
-                .bindPopup(`<a target="_blank" href="${parkrun.url}"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
+                .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
         } else {
             const marker = L.marker([parkrun.lat, parkrun.lon], {icon: redIcon});
             //const marker = L.circleMarker([parkrun.lat, parkrun.lon], {color: "darkred", fillColor: "red", fillOpacity: 1, radius: 8});
             marker
                 .addTo(map)
-                .bindPopup(`<a target="_blank" href="${parkrun.url}"><b>${parkrun.name}</b></a> <span class="tag is-danger is-light">archiviert</span><br>${parkrun.location}<br><br>${latest}`);
+                .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a> <span class="tag is-danger is-light">archiviert</span><br>${parkrun.location}<br><br>${latest}`);
         }
         array[index].polylines = null;
         array[index].polylines_visible = false;
