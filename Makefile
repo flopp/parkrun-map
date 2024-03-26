@@ -5,12 +5,17 @@ all:
 .repo/.git/config:
 	git clone https://github.com/flopp/parkrun-map.git .repo
 
+.phony: .bin/generate-linux
+.bin/generate-linux:
+	mkdir -p .bin
+	GOOS=linux GOARCH=amd64 go build -o .bin/generate-linux cmd/generate/main.go
+	
 .phony: sync
-sync: .repo/.git/config
+sync: .repo/.git/config .bin/generate-linux
 	(cd .repo && git pull --quiet)
 	ssh echeclus.uberspace.de mkdir -p packages/parkrun-map
-	scp scripts/cronjob.sh echeclus.uberspace.de:packages/parkrun-map
-	ssh echeclus.uberspace.de chmod +x packages/parkrun-map/cronjob.sh
+	scp scripts/cronjob.sh .bin/generate-linux echeclus.uberspace.de:packages/parkrun-map
+	ssh echeclus.uberspace.de chmod +x packages/parkrun-map/cronjob.sh packages/parkrun-map/generate-linux
 	rsync -a .repo/ echeclus.uberspace.de:packages/parkrun-map/repo
 
 .phony: run
