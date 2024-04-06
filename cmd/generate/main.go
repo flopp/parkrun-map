@@ -129,6 +129,10 @@ func main() {
 	fileAge1h := now.Add(-1 * time.Hour)
 	fileAge1d := now.Add(-24 * time.Hour)
 	fileAge1w := now.Add(-24 * 7 * time.Hour)
+	isParkrunDay := false
+	if now.Weekday() == time.Saturday && now.Hour() >= 10 {
+		isParkrunDay = true
+	}
 
 	utils.SetDownloadDelay(2 * time.Second)
 
@@ -175,8 +179,10 @@ func main() {
 	// Pull latest results, force update for all events that are definitely outdated
 	for _, event := range events {
 		isOutdated := false
-		if date, found := dates[event]; found && latestDate.After(date) {
-			isOutdated = true
+		if event.Active() {
+			if date, found := dates[event]; found && (latestDate.After(date) || (isParkrunDay && date.Format("2006-01-02") != now.Format(date.Format("2006-01-02")))) {
+				isOutdated = true
+			}
 		}
 
 		wiki_url := event.WikiUrl()
