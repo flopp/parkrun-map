@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"os"
 	"path/filepath"
+	"sort"
 	"time"
 
 	"github.com/flopp/parkrun-map/internal/parkrun"
@@ -226,18 +227,47 @@ func main() {
 
 		course_page_url := event.CoursePageUrl()
 		course_page_file := download.Path("parkrun", event.Id, "course_page")
-		utils.MustDownloadFileIfOlder(course_page_url, course_page_file, now.Add(randomDuration(-24*28*time.Hour, -24*14*time.Hour)))
+		utils.MustDownloadFileIfOlder(course_page_url, course_page_file, now.Add(randomDuration(-24*200*time.Hour, -24*100*time.Hour)))
 		if err := event.LoadCoursePage(course_page_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", course_page_file, err))
 		}
 
 		kml_url := fmt.Sprintf("https://www.google.com/maps/d/kml?mid=%s&forcekml=1", event.GoogleMapsId)
 		kml_file := download.Path("parkrun", event.Id, "kml")
-		utils.MustDownloadFileIfOlder(kml_url, kml_file, now.Add(randomDuration(-24*28*time.Hour, -24*14*time.Hour)))
+		utils.MustDownloadFileIfOlder(kml_url, kml_file, now.Add(randomDuration(-24*200*time.Hour, -24*100*time.Hour)))
 
 		if err := event.LoadKML(kml_file); err != nil {
 			panic(fmt.Errorf("file parsing %s: %w", kml_file, err))
 		}
+	}
+
+	// Determine order
+	for _, event := range events {
+		if event.Active() && event.LatestRun != nil && event.LatestRun.Date.After(latestDate) {
+			latestDate = event.LatestRun.Date
+		}
+		event.Order = 0
+	}
+	orderedEvents := make([]*parkrun.Event, 0, len(events))
+	for _, event := range events {
+		if event.Active() && event.LatestRun != nil && event.LatestRun.Date == latestDate {
+			orderedEvents = append(orderedEvents, event)
+		}
+	}
+	sort.Slice(orderedEvents, func(i, j int) bool {
+		return orderedEvents[i].LatestRun.RunnerCount > orderedEvents[j].LatestRun.RunnerCount
+	})
+	order := 0
+	orderStep := 1
+	last := 0
+	for _, event := range orderedEvents {
+		if event.LatestRun.RunnerCount != last {
+			order += orderStep
+			last = event.LatestRun.RunnerCount
+			orderStep = 0
+		}
+		orderStep += 1
+		event.Order = order
 	}
 
 	// fetch external assets (bulma, leaflet)

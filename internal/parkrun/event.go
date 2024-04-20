@@ -233,6 +233,7 @@ type Event struct {
 	GoogleMapsId string
 	Tracks       [][]Coordinates
 	LatestRun    *Run
+	Order        int
 	Status       string
 }
 
@@ -495,7 +496,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 		lat := coordinates[1].(float64)
 		lon := coordinates[0].(float64)
 
-		event := &Event{id, name, longName, location, Coordinates{lat, lon}, countryUrl, "", nil, nil, ""}
+		event := &Event{id, name, longName, location, Coordinates{lat, lon}, countryUrl, "", nil, nil, 0, ""}
 		eventList = append(eventList, event)
 		eventMap[name] = event
 	}
@@ -511,7 +512,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 			}
 			continue
 		}
-		event := &Event{0, info.Id, info.Name, info.City, coordinates, "", "", nil, nil, info.Status}
+		event := &Event{0, info.Id, info.Name, info.City, coordinates, "", "", nil, nil, 0, info.Status}
 		eventList = append(eventList, event)
 	}
 
