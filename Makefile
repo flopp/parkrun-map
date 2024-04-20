@@ -5,8 +5,7 @@ all:
 .repo/.git/config:
 	git clone https://github.com/flopp/parkrun-map.git .repo
 
-.phony: .bin/generate-linux
-.bin/generate-linux:
+.bin/generate-linux: cmd/generate/main.go internal/parkrun/*.go internal/utils/*.go go.mod 
 	mkdir -p .bin
 	GOOS=linux GOARCH=amd64 go build -o .bin/generate-linux cmd/generate/main.go
 	
