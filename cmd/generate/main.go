@@ -176,12 +176,14 @@ func main() {
 			}
 		}
 	}
+	log.Printf("lastest existing date: %v", latestDate)
 
 	// Pull latest results, force update for all events that are definitely outdated
 	for _, event := range events {
 		isOutdated := false
 		if event.Active() {
-			if date, found := dates[event]; found && (latestDate.After(date) || (isParkrunDay && date.Format("2006-01-02") != now.Format(date.Format("2006-01-02")))) {
+			if date, found := dates[event]; found && (latestDate.After(date) || (isParkrunDay && date.Format("2006-01-02") != now.Format("2006-01-02"))) {
+				log.Printf("%s: outdated! date=%v latestafter=%v parkrunday=%v notatparkrunday=%v", event.Id, date, latestDate.After(date), isParkrunDay, date.Format("2006-01-02") != now.Format("2006-01-02"))
 				isOutdated = true
 			}
 		}
