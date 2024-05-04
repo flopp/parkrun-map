@@ -85,6 +85,13 @@ func (run Run) DateF() string {
 	return run.Date.Format("02.01.2006")
 }
 
+func (run Run) Runners() string {
+	if run.RunnerCount == 0 {
+		return "?"
+	}
+	return fmt.Sprintf("%d", run.RunnerCount)
+}
+
 func fmtDuration(d time.Duration) string {
 	d = d.Round(time.Second)
 	h := d / time.Hour
@@ -275,7 +282,7 @@ func (event Event) LastRun() string {
 	if run == nil {
 		return "n/a"
 	}
-	return fmt.Sprintf("#%d am %s mit %d Teilnehmern", run.Index, run.Date.Format("01.02.2006"), run.RunnerCount)
+	return fmt.Sprintf("#%d am %s mit %s Teilnehmern", run.Index, run.Date.Format("01.02.2006"), run.Runners())
 }
 
 type Link struct {
