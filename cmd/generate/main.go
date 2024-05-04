@@ -127,7 +127,7 @@ func main() {
 	}
 
 	now := time.Now()
-	fileAge1h := now.Add(-1 * time.Hour)
+	//fileAge30min := now.Add(30 * time.Minute)
 	fileAge1d := now.Add(-24 * time.Hour)
 	fileAge1w := now.Add(-24 * 7 * time.Hour)
 	isParkrunDay := false
@@ -189,7 +189,7 @@ func main() {
 		wiki_url := event.WikiUrl()
 		wiki_file := download.Path("parkrun", event.Id, "wiki")
 		if isOutdated {
-			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1h)
+			utils.MustDownloadFile(wiki_url, wiki_file)
 		} else {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
 		}
