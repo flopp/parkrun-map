@@ -66,16 +66,16 @@
                         {{.First}}
                     </td>
                     {{if .LatestRun}}
-                        <td class="tnum has-text-right"><a target="_blank" title="{{.FixedName}} {{.LatestRun.Index}}" href="{{.LatestRun.Url}}">{{.LatestRun.Index}}</a></td>
-                        <td class="tnum">{{.LatestRun.DateF}}</td>
-                        <td class="tnum has-text-right">{{.LatestRun.Runners}}</td>
+                        <td class="tnum has-text-right"><a target="_blank" title="{{.FixedName}} {{.LatestRun.Index}}" href="{{.LatestRun.Url}}"{{if .Outdated}}class="has-text-link-light"{{end}}>{{.LatestRun.Index}}</a></td>
+                        <td class="tnum{{if .Outdated}}has-text-grey-light{{end}}">{{.LatestRun.DateF}}</td>
+                        <td class="tnum has-text-right{{if .Outdated}}has-text-grey-light{{end}}">{{.LatestRun.Runners}}</td>
                         {{if .Order}}
-                        <td class="tnum has-text-right">{{.Order}}</td>
+                        <td class="tnum has-text-right{{if .Outdated}}has-text-grey-light{{end}}">{{.Order}}</td>
                         {{else}}
-                        <td class="tnum has-text-right">-</td>
+                        <td class="tnum has-text-right{{if .Outdated}}has-text-grey-light{{end}}">-</td>
                         {{end}}
                     {{else}}
-                        <td colspan="4" class="has-text-centered">- keine -</td>
+                        <td colspan="4" class="has-text-centered{{if .Outdated}}has-text-grey-light{{end}}">- keine -</td>
                     {{end}}
                 </tr>
                 {{end}}

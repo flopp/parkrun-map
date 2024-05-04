@@ -198,6 +198,9 @@ func main() {
 		if err := event.LoadWiki(wiki_file); err != nil {
 			panic(fmt.Errorf("while parsing %s: %w", wiki_file, err))
 		}
+		if event.LatestRun != nil && event.LatestRun.Date.After(latestDate) {
+			latestDate = event.LatestRun.Date
+		}
 		/*
 			if event.LatestRun != nil {
 				results_url := event.LatestRun.Url()
@@ -243,16 +246,15 @@ func main() {
 		}
 	}
 
-	// Determine order
 	for _, event := range events {
-		if event.Active() && event.LatestRun != nil && event.LatestRun.Date.After(latestDate) {
-			latestDate = event.LatestRun.Date
-		}
-		event.Order = 0
+		event.Current = event.Active() && event.LatestRun != nil && event.LatestRun.Date == latestDate
 	}
+
+	// Determine order
 	orderedEvents := make([]*parkrun.Event, 0, len(events))
 	for _, event := range events {
-		if event.Active() && event.LatestRun != nil && event.LatestRun.Date == latestDate {
+		event.Order = 0
+		if event.Current {
 			orderedEvents = append(orderedEvents, event)
 		}
 	}
