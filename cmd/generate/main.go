@@ -172,6 +172,10 @@ func main() {
 					if event.LatestRun.RunnerCount == 0 {
 						dates[event] = time.Time{}
 					}
+				} else if err != nil {
+					if err := os.Remove(wiki_file); err != nil {
+						panic(err)
+					}
 				}
 			}
 		}
