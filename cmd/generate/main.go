@@ -200,7 +200,8 @@ func main() {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
 		}
 		if err := event.LoadWiki(wiki_file); err != nil {
-			panic(fmt.Errorf("while parsing %s: %w", wiki_file, err))
+			log.Printf("while parsing %s: %w", wiki_file, err)
+			continue
 		}
 		if event.LatestRun != nil && event.LatestRun.Date.After(latestDate) {
 			latestDate = event.LatestRun.Date
