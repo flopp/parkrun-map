@@ -353,6 +353,14 @@
         ]
     },
     {
+        "id": "moorbek",
+        "name": "Moorbek parkrun",
+        "city": "Norderstedt, SH",
+        "googlemaps": "https://maps.app.goo.gl/xChmJS3RGKfpj3NP7",
+        "first": "?",
+        "status": "geplant"
+    },
+    {
         "id": "neckarau",
         "name": "Neckarau parkrun",
         "city": "Mannheim, BW",
@@ -559,6 +567,14 @@
         "strava": [
             {"name": "Club", "url": "https://www.strava.com/clubs/stadtpark-parkrun"}
         ]
+    },
+    {
+        "id": "stadtparkchemnitz",
+        "name": "Stadtpark parkrun, Chemnitz",
+        "city": "Chemnitz, SN",
+        "googlemaps": "https://maps.app.goo.gl/8bjSg9yp9raCgRrE9",
+        "first": "?",
+        "status": "geplant"
     },
     {
         "id": "traumschleifebaerenbachpfad",
