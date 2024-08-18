@@ -5,7 +5,7 @@
             parkruns in Deutschland
         </h1>
         <p class="subtitle">
-            Es gibt momentan {{.ActiveEvents}} aktive{{if .ArchivedEvents}} (und {{.ArchivedEvents}} archivierte){{end}} parkrun-Standorte in Deutschland.
+            Es gibt momentan {{.ActiveEvents}} aktive{{if or .PlannedEvents .ArchivedEvents}} (und {{if .PlannedEvents}}{{.PlannedEvents}} geplante & {{end}}{{.ArchivedEvents}} archivierte){{end}} parkrun-Standorte in Deutschland.
         </p>
 
         <div class="notification is-info">
@@ -50,6 +50,8 @@
                     <td>
                         {{if .Active}}
                         <a href="{{.Id}}.html">{{.FixedName}}</a>
+                        {{else if .Planned}}
+                        <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag is-success is-light">geplant</span>
                         {{else}}
                         <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag is-danger is-light">archiviert</span>
                         {{end}}

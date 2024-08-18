@@ -21,6 +21,7 @@ type RenderData struct {
 	Event          *parkrun.Event
 	Events         []*parkrun.Event
 	ActiveEvents   int
+	PlannedEvents  int
 	ArchivedEvents int
 	JsFiles        []string
 	CssFiles       []string
@@ -160,7 +161,7 @@ func main() {
 	latestDate := time.Time{}
 	dates := make(map[*parkrun.Event]time.Time)
 	for _, event := range events {
-		if event.Active() {
+		if !event.Archived() {
 			wiki_file := download.Path("parkrun", event.Id, "wiki")
 			if utils.FileExists(wiki_file) {
 				if err := event.LoadWiki(wiki_file); err == nil && event.LatestRun != nil {
@@ -185,7 +186,7 @@ func main() {
 	// Pull latest results, force update for all events that are definitely outdated
 	for _, event := range events {
 		isOutdated := false
-		if event.Active() {
+		if !event.Archived() {
 			if date, found := dates[event]; found && (latestDate.After(date) || (isParkrunDay && date.Format("2006-01-02") != now.Format("2006-01-02"))) {
 				log.Printf("%s: outdated! date=%v latestafter=%v parkrunday=%v notatparkrunday=%v", event.Id, date, latestDate.After(date), isParkrunDay, date.Format("2006-01-02") != now.Format("2006-01-02"))
 				isOutdated = true
@@ -252,7 +253,7 @@ func main() {
 	}
 
 	for _, event := range events {
-		event.Current = event.Active() && event.LatestRun != nil && event.LatestRun.Date == latestDate
+		event.Current = !event.Archived() && event.LatestRun != nil && event.LatestRun.Date == latestDate
 	}
 
 	// Determine order
@@ -324,15 +325,18 @@ func main() {
 	statsJs = utils.MustCopyHash(download.Path("goatcounter", statsJs), "stats-HASH.js", *outputDir)
 	// render templates to output folder
 	active := 0
+	planned := 0
 	archived := 0
 	for _, event := range events {
 		if event.Active() {
 			active += 1
+		} else if event.Planned() {
+			planned += 1
 		} else {
 			archived += 1
 		}
 	}
-	renderData := RenderData{nil, events, active, archived, js_files, css_files, statsJs, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
+	renderData := RenderData{nil, events, active, planned, archived, js_files, css_files, statsJs, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("parkrun Karte", "Karte aller deutschen parkruns mit Anzeige der einzelnen Laufstrecken und Informationen zum letzten Event", "https://parkrun.flopp.net/", "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {

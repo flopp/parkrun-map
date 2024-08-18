@@ -357,7 +357,7 @@
         "name": "Moorbek parkrun",
         "city": "Norderstedt, SH",
         "googlemaps": "https://maps.app.goo.gl/xChmJS3RGKfpj3NP7",
-        "first": "?",
+        "first": "",
         "status": "geplant"
     },
     {
@@ -573,7 +573,7 @@
         "name": "Stadtpark parkrun, Chemnitz",
         "city": "Chemnitz, SN",
         "googlemaps": "https://maps.app.goo.gl/8bjSg9yp9raCgRrE9",
-        "first": "?",
+        "first": "",
         "status": "geplant"
     },
     {

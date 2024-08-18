@@ -248,6 +248,12 @@ type Event struct {
 func (event Event) Active() bool {
 	return event.Status == ""
 }
+func (event Event) Planned() bool {
+	return event.Status == "geplant"
+}
+func (event Event) Archived() bool {
+	return !event.Active() && !event.Planned()
+}
 
 func (event Event) Url() string {
 	if event.CountryUrl == "" {
@@ -403,6 +409,9 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 	parkrun_infos = make(map[string]*ParkrunInfo)
 	for _, info := range infos {
 		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Strava, info.Social}
+		if info.Status != "" {
+			fmt.Printf("%s -> %s\n", info.Id, info.Status)
+		}
 	}
 
 	buf, err := utils.ReadFile(events_json_file)
@@ -522,6 +531,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 			if coordinates.IsValid() {
 				event.Coords = coordinates
 			}
+			event.Status = info.Status
 			continue
 		}
 		event := &Event{0, info.Id, info.Name, info.City, coordinates, "", "", nil, nil, false, 0, info.Status}
