@@ -8,6 +8,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/20101656"},
             {"name": "Club", "url": "https://www.strava.com/clubs/AWparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/aachenerweiherparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -19,6 +23,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/30466836"},
             {"name": "Club", "url": "https://www.strava.com/clubs/allerpark-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/allerparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -30,6 +38,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/19604504"},
             {"name": "Club", "url": "https://www.strava.com/clubs/ParkRun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -41,6 +53,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/35443555"},
             {"name": "Club", "url": "https://www.strava.com/clubs/parkrunhd"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -52,6 +68,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/22561079"},
             {"name": "Club", "url": "https://www.strava.com/clubs/bugaseeparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -80,6 +100,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/30965184"},
             {"name": "Club", "url": "https://www.strava.com/clubs/969606"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100068267704898"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -91,6 +115,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/34680942"},
             {"name": "Club", "url": "https://www.strava.com/clubs/ebenbergparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -102,6 +130,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/35744794"},
             {"name": "Club", "url": "https://www.strava.com/clubs/koblenz_parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -112,6 +144,10 @@
         "first": "17.06.2023",
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/34556163"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/emmerwiesenparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -123,6 +159,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/31828928"},
             {"name": "Club", "url": "https://www.strava.com/clubs/1032384"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/friedrichsauparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -134,6 +174,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/31605271"},
             {"name": "Club", "url": "https://www.strava.com/clubs/parkrunfulda"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/fuldaaueparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -145,6 +189,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/19798215"},
             {"name": "Club", "url": "https://www.strava.com/clubs/georgengarten-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100063532904903"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -165,6 +213,10 @@
         "first": "30.11.2019",
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/22209540"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100066490643154"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -176,6 +228,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/17085426"},
             {"name": "Club", "url": "https://www.strava.com/clubs/hasenheide-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -187,6 +243,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/34205241"},
             {"name": "Club", "url": "https://www.strava.com/clubs/havelkanal-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -198,6 +258,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/31397440"},
             {"name": "Club", "url": "https://www.strava.com/clubs/hockgrabenparkrunkn"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/hockgrabenparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -208,6 +272,10 @@
         "first": "16.10.2021",
         "strava": [
             {"name": "Club", "url": "https://www.strava.com/clubs/parkrun-tuebingen"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -219,6 +287,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/33012518"},
             {"name": "Club", "url": "https://www.strava.com/clubs/Kemnader-See-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -230,6 +302,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/21575619"},
             {"name": "Club", "url": "https://www.strava.com/clubs/kiesseeparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -241,6 +317,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/17280391"},
             {"name": "Club", "url": "https://www.strava.com/clubs/323240"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100064709773948"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -252,6 +332,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/16473962"},
             {"name": "Club", "url": "https://www.strava.com/clubs/Kuechenholz-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -263,6 +347,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/22677193"},
             {"name": "Club", "url": "https://www.strava.com/clubs/parkrunwuerzburg"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/KSPparkrunWuerzburg"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -274,6 +362,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/29958570"},
             {"name": "Club", "url": "https://www.strava.com/clubs/lahnwiesen-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -285,6 +377,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/29018267"},
             {"name": "Club", "url": "https://www.strava.com/clubs/landesgartenschaupark_parkrun_neumarkt"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -296,6 +392,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/19582135"},
             {"name": "Club", "url": "https://www.strava.com/clubs/Leinpfad"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -307,6 +407,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/35215705"},
             {"name": "Club", "url": "https://www.strava.com/clubs/Lousberg_parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -318,6 +422,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/29605507"},
             {"name": "Club", "url": "https://www.strava.com/clubs/luitpold-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -329,6 +437,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/26663905"},
             {"name": "Club", "url": "https://www.strava.com/clubs/maaraueparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -339,6 +451,10 @@
         "first": "15.07.2023",
         "strava": [
             {"name": "Club", "url": "https://www.strava.com/clubs/mattheiserweiher"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -350,6 +466,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/21009312"},
             {"name": "Club", "url": "https://www.strava.com/clubs/monrepos"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/parkrunludwigsburg"},
+            {"name": "Instagram", "url": ""} 
         ]
     },
     {
@@ -358,7 +478,11 @@
         "city": "Norderstedt, SH",
         "googlemaps": "https://maps.app.goo.gl/xChmJS3RGKfpj3NP7",
         "first": "07.09.2024",
-        "status": "geplant"
+        "status": "geplant",
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
+        ]
     },
     {
         "id": "neckarau",
@@ -369,6 +493,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/16589535"},
             {"name": "Club", "url": "https://www.strava.com/clubs/Neckarauparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/Neckarauparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -380,6 +508,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/36261204"},
             {"name": "Club", "url": "https://www.strava.com/clubs/neckaruferparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100064871520678"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -393,7 +525,8 @@
         ],
         "social": [
             {"name": "Mastodon", "url": "https://frankfurt.social/@niddaparkrun"},
-            {"name": "Facebook", "url": "https://www.facebook.com/niddaparkrun"}
+            {"name": "Facebook", "url": "https://www.facebook.com/niddaparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -404,6 +537,10 @@
         "first": "09.10.2021",
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/33655755"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -415,6 +552,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/30187451"},
             {"name": "Club", "url": "https://www.strava.com/clubs/oberwald-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/oberwaldparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -426,6 +567,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/31533467"},
             {"name": "Club", "url": "https://www.strava.com/clubs/Offenthal-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/offenthalparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -436,6 +581,10 @@
         "first": "16.03.2024",
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/36483929"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -447,6 +596,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/34877170"},
             {"name": "Club", "url": "https://www.strava.com/clubs/priessnitzgrundparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -458,6 +611,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/31943156"},
             {"name": "Club", "url": "https://www.strava.com/clubs/prinzenparkparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -469,6 +626,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/19793290"},
             {"name": "Club", "url": "https://www.strava.com/clubs/rheinaue-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/rheinaueparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -480,6 +641,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/35582054"},
             {"name": "Club", "url": "https://www.strava.com/clubs/rheinparkparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/Rheinparkparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -491,6 +656,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/20756531"},
             {"name": "Club", "url": "https://www.strava.com/clubs/riemerparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/riemerparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -502,6 +671,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/34908332"},
             {"name": "Club", "url": "https://www.strava.com/clubs/1043177"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -512,6 +685,10 @@
         "first": "13.01.2018",
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/16810996"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -523,6 +700,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/19420938"},
             {"name": "Club", "url": "https://www.strava.com/clubs/schwanenteich"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -534,6 +715,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/18853135"},
             {"name": "Club", "url": "https://www.strava.com/clubs/seewoogparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -545,6 +730,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/22371837"},
             {"name": "Club", "url": "https://www.strava.com/clubs/speyerleinpfad"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/speyerleinpfadparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -556,6 +745,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/33446891"},
             {"name": "Club", "url": "https://www.strava.com/clubs/584092"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -566,6 +759,10 @@
         "first": "06.05.2023",
         "strava": [
             {"name": "Club", "url": "https://www.strava.com/clubs/stadtpark-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -574,14 +771,22 @@
         "city": "Chemnitz, SN",
         "googlemaps": "https://maps.app.goo.gl/8bjSg9yp9raCgRrE9",
         "first": "07.09.2024",
-        "status": "geplant"
+        "status": "geplant",
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
+        ]
     },
     {
         "id": "traumschleifebaerenbachpfad",
         "name": "Traumschleife Bärenbachpfad parkrun",
         "city": "Baumholder, RLP",
         "googlemaps": "https://maps.app.goo.gl/oWZkfCJYRJ8nDfKD6",
-        "first": "17.09.2022"
+        "first": "17.09.2022",
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
+        ]
     },
     {
         "id": "unisee",
@@ -592,6 +797,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/22567516"},
             {"name": "Club", "url": "https://www.strava.com/clubs/unisee_parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -603,6 +812,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/20628972"},
             {"name": "Club", "url": "https://www.strava.com/clubs/volksgarten"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/volksgarten.parkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -614,6 +827,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/35911737"},
             {"name": "Club", "url": "https://www.strava.com/clubs/wertwiesenparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -625,6 +842,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/19491458"},
             {"name": "Club", "url": "https://www.strava.com/clubs/westpark-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/westpark.parkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -636,6 +857,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/29111198"},
             {"name": "Club", "url": "https://www.strava.com/clubs/wienburgpark-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/riemerparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -647,6 +872,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/32909015"},
             {"name": "Club", "url": "https://www.strava.com/clubs/woehrdersee-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -658,6 +887,10 @@
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/22461453"},
             {"name": "Club", "url": "https://www.strava.com/clubs/ziegelwiese-parkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/ziegelwieseparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -670,6 +903,10 @@
         "coordinates": "51.063731 13.727762",
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/22462962"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -679,7 +916,11 @@
         "googlemaps": "https://maps.app.goo.gl/P3RZGEMNjNg2XzUn7",
         "first": "",
         "status": "geschlossen",
-        "coordinates": "48.769287 8.731631"
+        "coordinates": "48.769287 8.731631",
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
+        ]
     },
     {
         "id": "roethelheimpark",
@@ -691,6 +932,10 @@
         "coordinates": "49.587304 11.027033",
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/29325256"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100066681151802"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -703,6 +948,10 @@
         "coordinates": "48.358180 10.882256",
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/35870676"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/wittelsbacherparkparkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     }
 ]

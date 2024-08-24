@@ -297,6 +297,10 @@ type Link struct {
 	Url  string
 }
 
+func (link Link) IsValid() bool {
+	return len(link.Name) > 0 && len(link.Url) > 0
+}
+
 type ParkrunInfo struct {
 	Id          string
 	Name        string
@@ -367,7 +371,13 @@ func (event Event) Strava() []Link {
 
 func (event Event) Social() []Link {
 	if info, ok := parkrun_infos[event.Id]; ok {
-		return info.Social
+		links := make([]Link, 0, len(info.Social))
+		for _, link := range info.Social {
+			if link.IsValid() {
+				links = append(links, link)
+			}
+		}
+		return links
 	}
 
 	return nil
