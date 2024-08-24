@@ -40,7 +40,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/ParkRun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/alstervorlandparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -55,7 +55,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/parkrunhd"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/bahnstadtpromenadeparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -70,7 +70,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/bugaseeparkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100070463914092"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -117,7 +117,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/ebenbergparkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/ebenbergparkrunlandauinpfalz"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -132,7 +132,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/koblenz_parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/ehrenbreitsteinparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -203,6 +203,10 @@
         "first": "28.09.2019",
         "strava": [
             {"name": "Club", "url": "https://www.strava.com/clubs/GlobeparkrunSHA"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/Globe.parkrun"},
+            {"name": "Instagram", "url": ""}
         ]
     },
     {
@@ -230,7 +234,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/hasenheide-parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/hasenheideparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -245,7 +249,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/havelkanal-parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/havelkanalparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -274,7 +278,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/parkrun-tuebingen"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/kastanienalleeparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -289,7 +293,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/Kemnader-See-parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/kemnaderseeparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -304,7 +308,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/kiesseeparkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/kiesseeparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -334,7 +338,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/Kuechenholz-parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/kuechenholzparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -364,7 +368,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/lahnwiesen-parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100067119481793"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -379,7 +383,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/landesgartenschaupark_parkrun_neumarkt"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/LGSParkrunNM"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -394,7 +398,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/Leinpfad"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/Leinpfadparkrunmerzig"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -409,7 +413,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/Lousberg_parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/lousbergparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -424,7 +428,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/luitpold-parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100064539318142"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -439,7 +443,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/maaraueparkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/MaaraueParkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -453,7 +457,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/mattheiserweiher"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/mattheiserweiherparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -480,7 +484,7 @@
         "first": "07.09.2024",
         "status": "geplant",
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/moorbekparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -539,7 +543,7 @@
             {"name": "Segment", "url": "https://www.strava.com/segments/33655755"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100075990675508"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -583,7 +587,7 @@
             {"name": "Segment", "url": "https://www.strava.com/segments/36483929"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/prestelseeparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -598,7 +602,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/priessnitzgrundparkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/Priessnitzgrundparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -613,7 +617,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/prinzenparkparkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/Prinzenparkparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -673,7 +677,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/1043177"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/Rosensteinparkparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -687,7 +691,7 @@
             {"name": "Segment", "url": "https://www.strava.com/segments/16810996"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100063722733366"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -702,7 +706,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/schwanenteich"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/Schwanenteichparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -717,7 +721,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/seewoogparkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/seewoogparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -747,7 +751,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/584092"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/sportparkremsparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -761,7 +765,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/stadtpark-parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/Stadtparkparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -773,7 +777,7 @@
         "first": "07.09.2024",
         "status": "geplant",
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/stadtparkparkrunchemnitz"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -784,7 +788,7 @@
         "googlemaps": "https://maps.app.goo.gl/oWZkfCJYRJ8nDfKD6",
         "first": "17.09.2022",
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/Traumschleifebarenbachpfadparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -799,7 +803,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/unisee_parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/UniseeParkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -829,7 +833,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/wertwiesenparkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/wertwiesenparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -874,7 +878,7 @@
             {"name": "Club", "url": "https://www.strava.com/clubs/woehrdersee-parkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/woehrderseeparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
@@ -918,7 +922,7 @@
         "status": "geschlossen",
         "coordinates": "48.769287 8.731631",
         "social": [
-            {"name": "Facebook", "url": ""},
+            {"name": "Facebook", "url": "https://www.facebook.com/Kurparkparkrun"},
             {"name": "Instagram", "url": ""}
         ]
     },
