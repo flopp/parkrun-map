@@ -488,6 +488,21 @@
         ]
     },
     {
+        "id": "naturlehrpfadwetzlar",
+        "name": "Naturlehrpfad parkrun",
+        "city": "Wetzlar, HE",
+        "googlemaps": "https://maps.app.goo.gl/yBdeXeCt3477iPNPA",
+        "first": "05.10.2024",
+        "status": "geplant",
+        "strava": [
+            {"name": "Club", "url": "https://www.strava.com/clubs/parkrunwetzlar"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/groups/504957636898208"},
+            {"name": "Instagram", "url": "https://www.instagram.com/naturlehrpfad_parkrun_wetzlar/"}
+        ]
+    },
+    {
         "id": "neckarau",
         "name": "Neckarau parkrun",
         "city": "Mannheim, BW",
