@@ -191,6 +191,10 @@ func main() {
 				log.Printf("%s: outdated! date=%v latestafter=%v parkrunday=%v notatparkrunday=%v", event.Id, date, latestDate.After(date), isParkrunDay, date.Format("2006-01-02") != now.Format("2006-01-02"))
 				isOutdated = true
 			}
+			if event.Planned() && isParkrunDay {
+				log.Printf("%s: outdated! planned & parkrunday", event.Id)
+				isOutdated = true
+			}
 		}
 
 		wiki_url := event.WikiUrl()

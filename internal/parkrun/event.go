@@ -552,27 +552,43 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 }
 
 var reDate = regexp.MustCompile(`^\s*(\d+)(st|nd|rd|th)\s+(\S+)\s+(\d\d\d\d)\s*$`)
+var reDate2 = regexp.MustCompile(`^\s*(\d\d)\.(\d\d)\.(\d\d\d\d)\s*$`)
 
 func parseDate(s string) (time.Time, error) {
-	m := reDate.FindStringSubmatch(s)
-	if m == nil {
-		return time.Time{}, fmt.Errorf("regexp failed")
+	dd := ""
+	mm := ""
+	yy := ""
+	if m := reDate.FindStringSubmatch(s); m != nil {
+		dd = m[1]
+		yy = m[4]
+		mm = m[3]
+	} else if m := reDate2.FindStringSubmatch(s); m != nil {
+		dd = m[1]
+		mm = m[2]
+		yy = m[3]
+	} else {
+		return time.Time{}, fmt.Errorf("cannot parse date (regexp failed): %s", s)
 	}
 
-	day, err := strconv.ParseInt(m[1], 10, 0)
+	day, err := strconv.ParseInt(dd, 10, 0)
 	if err != nil {
 		return time.Time{}, err
 	}
-	year, err := strconv.ParseInt(m[4], 10, 0)
+	year, err := strconv.ParseInt(yy, 10, 0)
 	if err != nil {
 		return time.Time{}, err
+	}
+
+	month, err := strconv.ParseInt(yy, 10, 0)
+	if err == nil {
+		return time.Date(int(year), time.Month(month), int(day), 0, 0, 0, 0, time.Local), nil
 	}
 	for month := 1; month <= 12; month += 1 {
-		if m[3] == time.Month(month).String() {
+		if mm == time.Month(month).String() {
 			return time.Date(int(year), time.Month(month), int(day), 0, 0, 0, 0, time.Local), nil
 		}
 	}
-	return time.Time{}, fmt.Errorf("cannot parse month: %s", m[3])
+	return time.Time{}, fmt.Errorf("cannot parse date (month failed): %s", s)
 }
 
 var reLine1 = regexp.MustCompile(`<body><h1>(.*)<br />Event number ([0-9]+)<br />(.*)</h1>`)
