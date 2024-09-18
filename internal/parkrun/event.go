@@ -579,15 +579,18 @@ func parseDate(s string) (time.Time, error) {
 		return time.Time{}, err
 	}
 
-	month, err := strconv.ParseInt(yy, 10, 0)
-	if err == nil {
-		return time.Date(int(year), time.Month(month), int(day), 0, 0, 0, 0, time.Local), nil
-	}
+	// named months
 	for month := 1; month <= 12; month += 1 {
 		if mm == time.Month(month).String() {
 			return time.Date(int(year), time.Month(month), int(day), 0, 0, 0, 0, time.Local), nil
 		}
 	}
+	// numbered months
+	month, err := strconv.ParseInt(mm, 10, 0)
+	if err == nil {
+		return time.Date(int(year), time.Month(month), int(day), 0, 0, 0, 0, time.Local), nil
+	}
+
 	return time.Time{}, fmt.Errorf("cannot parse date (month failed): %s", s)
 }
 
