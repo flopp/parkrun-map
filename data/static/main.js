@@ -61,6 +61,8 @@ const loadMap = function (id) {
 
     const blueIcon = load_marker("");
     const redIcon = load_marker("red");
+    const greenIcon = load_marker("green");
+    const greyIcon = load_marker("grey");
 
     parkruns.forEach((parkrun, index, array) => {
         let latest = "Letzte Austragung: keine";
@@ -73,12 +75,16 @@ const loadMap = function (id) {
             marker
                 .addTo(map)
                 .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a><br>${parkrun.location}<br><br>${latest}`);
-        } else {
-            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: redIcon});
-            //const marker = L.circleMarker([parkrun.lat, parkrun.lon], {color: "darkred", fillColor: "red", fillOpacity: 1, radius: 8});
+        } else if (parkrun.planned) {
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: greenIcon});
             marker
                 .addTo(map)
-                .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a> <span class="tag is-danger is-light">archiviert</span><br>${parkrun.location}<br><br>${latest}`);
+                .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a> <span class="tag is-success is-light">geplant</span><br>${parkrun.location}<br><br>${latest}`);
+        } else {
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: greyIcon});
+            marker
+                .addTo(map)
+                .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a> <span class="tag is-danger is-light">archiviert</span><br>${parkrun.location}<br><br>${latest}`);    
         }
         array[index].polylines = null;
         array[index].polylines_visible = false;

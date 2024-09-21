@@ -323,8 +323,10 @@ func main() {
 	utils.MustCopyHash(download.Path("leaflet/marker-icon.png"), "images/marker-icon.png", *outputDir)
 	utils.MustCopyHash(download.Path("leaflet/marker-icon-2x.png"), "images/marker-icon-2x.png", *outputDir)
 	utils.MustCopyHash(download.Path("leaflet/marker-shadow.png"), "images/marker-shadow.png", *outputDir)
-	utils.MustCopyHash(data.Path("static/marker-red-icon.png"), "images/marker-red-icon.png", *outputDir)
-	utils.MustCopyHash(data.Path("static/marker-red-icon-2x.png"), "images/marker-red-icon-2x.png", *outputDir)
+	for _, color := range []string{"red", "green", "grey"} {
+		utils.MustCopyHash(data.Path(fmt.Sprintf("static/marker-%s-icon.png", color)), fmt.Sprintf("images/marker-%s-icon.png", color), *outputDir)
+		utils.MustCopyHash(data.Path(fmt.Sprintf("static/marker-%s-icon-2x.png", color)), fmt.Sprintf("images/marker-%s-icon-2x.png", color), *outputDir)
+	}
 	statsJs := modifyGoatcounterLinkSelector(download.Path("goatcounter"), "stats.js")
 	statsJs = utils.MustCopyHash(download.Path("goatcounter", statsJs), "stats-HASH.js", *outputDir)
 	// render templates to output folder

@@ -885,6 +885,11 @@ func RenderJs(events []*Event, filePath string) error {
 		} else {
 			fmt.Fprintf(out, "\"active\": false,\n")
 		}
+		if event.Planned() {
+			fmt.Fprintf(out, "\"planned\": true,\n")
+		} else {
+			fmt.Fprintf(out, "\"planned\": false,\n")
+		}
 		if event.LatestRun != nil {
 			fmt.Fprintf(out, "\"latest\": {\n")
 			fmt.Fprintf(out, "\"index\": %d,\n", event.LatestRun.Index)
