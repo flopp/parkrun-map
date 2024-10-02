@@ -5,6 +5,10 @@
         "city": "Köln, NRW",
         "googlemaps": "https://maps.app.goo.gl/gktwZJVrqsirFma7A",
         "first": "23.03.2019",
+        "cafe": {
+            "name": "KAWA COFFEE SNACKS & CO",
+            "googlemaps": "https://maps.app.goo.gl/jBGfGnq46FfBXm8L7"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/20101656"},
             {"name": "Club", "url": "https://www.strava.com/clubs/AWparkrun"}
@@ -36,6 +40,10 @@
         "city": "Hamburg, HH",
         "googlemaps": "https://maps.app.goo.gl/nzFz8ds8yBCSPq9aA",
         "first": "12.01.2019",
+        "cafe": {
+            "name": "AlsterCliff",
+            "googlemaps": "https://maps.app.goo.gl/zVMtZ8ZHpjzS1j4Y7"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/19604504"},
             {"name": "Club", "url": "https://www.strava.com/clubs/ParkRun"}
@@ -51,6 +59,10 @@
         "city": "Heidelberg, BW",
         "googlemaps": "https://maps.app.goo.gl/y9xjkARDxHbwaRd3A",
         "first": "30.09.2023",
+        "cafe": {
+            "name": "Bäcker Görtz",
+            "googlemaps": "https://maps.app.goo.gl/iqUehERQxEc1Fr6u5"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/35443555"},
             {"name": "Club", "url": "https://www.strava.com/clubs/parkrunhd"}
@@ -82,6 +94,10 @@
         "googlemaps": "https://maps.app.goo.gl/8mjy464YdjBKqmR1A",
         "first": "23.10.2021",
         "coordinates": "48.001255 7.806419",
+        "cafe": {
+            "name": "Lio’s - Eis und Mehr",
+            "googlemaps": "https://maps.app.goo.gl/si55WV6ot89uD6dr9"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/30062146"},
             {"name": "Club", "url": "https://www.strava.com/clubs/dietenbach"}
@@ -113,6 +129,10 @@
         "city": "Landau in der Pfalz, RLP",
         "googlemaps": "https://maps.app.goo.gl/v2oDppZt5VDkqc868",
         "first": "09.09.2023",
+        "cafe": {
+            "name": "Nina's Mehlstübchen",
+            "googlemaps": "https://maps.app.goo.gl/eok5E8uydtPkW9k27"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/34680942"},
             {"name": "Club", "url": "https://www.strava.com/clubs/ebenbergparkrun"}
@@ -128,6 +148,10 @@
         "city": "Koblenz, RLP",
         "googlemaps": "https://maps.app.goo.gl/VCdwKTUdxT8K7JvWA",
         "first": "13.01.2024",
+        "cafe": {
+            "name": "Baeckerei Hoefer",
+            "googlemaps": "https://maps.app.goo.gl/miDBWRYuF9ZykVMn6"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/35744794"},
             {"name": "Club", "url": "https://www.strava.com/clubs/koblenz_parkrun"}
@@ -143,6 +167,10 @@
         "city": "Bad Pyrmont, NDS",
         "googlemaps": "https://maps.app.goo.gl/MRUt6XqQgeMErnXP9",
         "first": "17.06.2023",
+        "cafe": {
+            "name": "Hotel an der Hauptallee",
+            "googlemaps": "https://maps.app.goo.gl/1e1F2taeQAkFPKRx5"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/34556163"}
         ],
@@ -157,6 +185,10 @@
         "city": "Ulm, BW",
         "googlemaps": "https://maps.app.goo.gl/DJJZCmyTZC2JT6ks8",
         "first": "26.03.2022",
+        "cafe": {
+            "name": "Café Einstein",
+            "googlemaps": "https://maps.app.goo.gl/bR9rT8FquooP8i3RA"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/31828928"},
             {"name": "Club", "url": "https://www.strava.com/clubs/1032384"}
@@ -187,6 +219,10 @@
         "city": "Hannover, NDS",
         "googlemaps": "https://maps.app.goo.gl/viMQE7RHzjhz5u8L7",
         "first": "02.12.2017",
+        "cafe": {
+            "name": "Bäckerei Steinecke",
+            "googlemaps": "https://maps.app.goo.gl/6KupFTNkttuCc6CM7"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/19798215"},
             {"name": "Club", "url": "https://www.strava.com/clubs/georgengarten-parkrun"}
@@ -202,6 +238,10 @@
         "city": "Schwäbisch Hall, BW",
         "googlemaps": "https://maps.app.goo.gl/4rv49Tm1inbFd76h8",
         "first": "28.09.2019",
+        "cafe": {
+            "name": "Café Ableitner",
+            "googlemaps": "https://maps.app.goo.gl/4dc4AQkKas92P8UE8"
+        },
         "strava": [
             {"name": "Club", "url": "https://www.strava.com/clubs/GlobeparkrunSHA"}
         ],
@@ -216,6 +256,10 @@
         "city": "Bad Urach, BW",
         "googlemaps": "https://maps.app.goo.gl/nta1yjbphkXFtf4E9",
         "first": "30.11.2019",
+        "cafe": {
+            "name": "Intermezzo - Café am Bach",
+            "googlemaps": "https://maps.app.goo.gl/phEy44W4hfXBoFpt9"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/22209540"}
         ],

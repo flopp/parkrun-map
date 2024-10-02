@@ -11,8 +11,11 @@
                 <tr><td>Austragungen</td><td>{{.Event.LatestRun.Index}}</td></tr>
                 <tr><td>Letzte Austragung</td><td><a href="{{.Event.LatestRun.Url}}" target="_blank">#{{.Event.LatestRun.Index}} am {{.Event.LatestRun.DateF}}, {{.Event.LatestRun.RunnerCount}} Teilnehmer</a></td></tr>
             {{end}}
-            <tr><td>Offizielle Webseiten</td><td><a href="{{.Event.Url}}" target="_blank">Hauptseite</a>, <a href="{{.Event.CoursePageUrl}}" target="_blank">Strecke</a>, <a href="{{.Event.ResultsUrl}}" target="_blank">Ergebnisse</a>, <a href="{{.Event.WikiUrl}}" target="_blank">Wiki</a></td></tr> 
+            <tr><td>Offizielle Webseiten</td><td><a href="{{.Event.Url}}" target="_blank">Hauptseite</a>, <a href="{{.Event.CoursePageUrl}}" target="_blank">Streckenbeschreibung</a>, <a href="{{.Event.ResultsUrl}}" target="_blank">Ergebnisliste</a>, <a href="{{.Event.WikiUrl}}" target="_blank">Wiki</a></td></tr> 
             <tr><td>Google Maps</td><td><a href="{{.Event.GoogleMapsUrl}}" target="_blank">Ort</a>, <a href="{{.Event.GoogleMapsCourseUrl}}" target="_blank">Strecke</a></td></tr>
+            {{if .Event.Cafe.IsValid}}
+            <tr><td>Café nach dem Lauf</td><td><a href="{{.Event.Cafe.Url}}" target="_blank">{{.Event.Cafe.Name}}</a>
+            {{end}}
             {{if .Event.Strava}}<tr><td>Strava</td><td>
                 {{range $i,$e := .Event.Strava}}{{if $i}}, {{end}}<a href="{{$e.Url}}" target="_blank">{{$e.Name}}</a>{{end}}
             </td></tr>{{end}}

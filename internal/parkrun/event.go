@@ -309,8 +309,12 @@ type ParkrunInfo struct {
 	First       string
 	Status      string
 	Coordinates string
-	Strava      []Link
-	Social      []Link
+	Cafe        struct {
+		Name       string
+		GoogleMaps string
+	}
+	Strava []Link
+	Social []Link
 }
 
 func (info ParkrunInfo) ParseCoordinates() (Coordinates, error) {
@@ -359,6 +363,13 @@ func (event Event) GoogleMapsCourseUrl() string {
 		return fmt.Sprintf("https://www.google.com/maps/d/viewer?mid=%s", event.GoogleMapsId)
 	}
 	return ""
+}
+
+func (event Event) Cafe() Link {
+	if info, ok := parkrun_infos[event.Id]; ok {
+		return Link{info.Cafe.Name, info.Cafe.GoogleMaps}
+	}
+	return Link{}
 }
 
 func (event Event) Strava() []Link {
@@ -418,7 +429,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 	}
 	parkrun_infos = make(map[string]*ParkrunInfo)
 	for _, info := range infos {
-		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Strava, info.Social}
+		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Cafe, info.Strava, info.Social}
 	}
 
 	buf, err := utils.ReadFile(events_json_file)
