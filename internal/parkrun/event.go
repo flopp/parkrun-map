@@ -231,18 +231,23 @@ func (c Coordinates) IsValid() bool {
 }
 
 type Event struct {
-	EventId      int
-	Id           string
-	Name         string
-	Location     string
-	Coords       Coordinates
-	CountryUrl   string
-	GoogleMapsId string
-	Tracks       [][]Coordinates
-	LatestRun    *Run
-	Current      bool
-	Order        int
-	Status       string
+	EventId                     int
+	Id                          string
+	Name                        string
+	Location                    string
+	Coords                      Coordinates
+	CountryUrl                  string
+	GoogleMapsId                string
+	Tracks                      [][]Coordinates
+	LatestRun                   *Run
+	Current                     bool
+	Order                       int
+	Status                      string
+	SummaryRegistrations        int
+	SummaryRunners              int
+	SummaryIndividualRunners    int
+	SummaryVolunteers           int
+	SummaryIndividualVolunteers int
 }
 
 func (event Event) Active() bool {
@@ -290,6 +295,20 @@ func (event Event) LastRun() string {
 		return "n/a"
 	}
 	return fmt.Sprintf("#%d am %s mit %s Teilnehmern", run.Index, run.Date.Format("01.02.2006"), run.Runners())
+}
+
+func (event Event) SummaryRunnersAvg() string {
+	if event.LatestRun != nil {
+		return fmt.Sprintf("%.1f", float64(event.SummaryRunners)/float64(event.LatestRun.Index))
+	}
+	return "n/a"
+}
+
+func (event Event) SummaryVolunteersAvg() string {
+	if event.LatestRun != nil {
+		return fmt.Sprintf("%.1f", float64(event.SummaryVolunteers)/float64(event.LatestRun.Index))
+	}
+	return "n/a"
 }
 
 type Link struct {
@@ -535,7 +554,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 		lat := coordinates[1].(float64)
 		lon := coordinates[0].(float64)
 
-		event := &Event{id, name, longName, location, Coordinates{lat, lon}, countryUrl, "", nil, nil, false, 0, ""}
+		event := &Event{id, name, longName, location, Coordinates{lat, lon}, countryUrl, "", nil, nil, false, 0, "", 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 		eventMap[name] = event
 	}
@@ -552,7 +571,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 			event.Status = info.Status
 			continue
 		}
-		event := &Event{0, info.Id, info.Name, info.City, coordinates, "", "", nil, nil, false, 0, info.Status}
+		event := &Event{0, info.Id, info.Name, info.City, coordinates, "", "", nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 	}
 
@@ -657,13 +676,14 @@ func (event *Event) LoadWiki(filePath string) error {
 		return err
 	}
 	sbuf := string(buf)
+	lines := strings.Split(sbuf, "\n")
 
 	state := StateStart
 	dateS := ""
 	indexS := ""
 	runnersS := ""
 	reTd := regexp.MustCompile(`^\s*<td>(.*)\s*$`)
-	for _, line := range strings.Split(sbuf, "\n") {
+	for _, line := range lines {
 		if state == StateStart {
 			if strings.Contains(line, "Most_Recent_Event_Summary") {
 				state = StateDate
@@ -709,6 +729,69 @@ func (event *Event) LoadWiki(filePath string) error {
 	}
 
 	event.LatestRun = &Run{event, int(index), date, int(runners), nil}
+
+	// try to find summary table
+	table := make([]string, 0)
+	state = 0
+	for _, line := range lines {
+		if state == 0 {
+			if line == `<th>Past Week` {
+				state = 1
+				table = append(table, line)
+			}
+		} else if state == 1 {
+			table = append(table, line)
+			if line == `</table>` {
+				state = 2
+				break
+			}
+		}
+	}
+	if state == 2 {
+		if err = event.parseWikiSummaryTable(table); err != nil {
+			fmt.Printf("%s: while parsing wiki summary table from '%s': %v\n", event.Id, filePath, err)
+		}
+	}
+
+	return nil
+}
+
+func (event *Event) parseWikiSummaryTable(lines []string) error {
+	event.SummaryRegistrations = 0
+	event.SummaryRunners = 0
+	event.SummaryIndividualRunners = 0
+	event.SummaryVolunteers = 0
+	event.SummaryIndividualVolunteers = 0
+
+	hasValue := false
+	values := []*int{&event.SummaryRegistrations, &event.SummaryRunners, &event.SummaryIndividualRunners, &event.SummaryVolunteers, &event.SummaryIndividualVolunteers}
+	headers := []string{"<th>Registrations", "<th>Runs", "<th>Participants", "<th>Volunteer Occasions", "<th>Volunteers", "</table>"}
+	state := -1
+	reTd := regexp.MustCompile(`^<td>(\d+)$`)
+
+	for _, line := range lines {
+		if line == headers[state+1] {
+			state += 1
+			hasValue = false
+			if state+1 == len(headers) {
+				break
+			}
+		} else if state >= 0 && !hasValue {
+			if m := reTd.FindStringSubmatch(line); m != nil {
+				hasValue = true
+				if i, err := strconv.Atoi(m[1]); err != nil {
+					return fmt.Errorf("cannot parse value: '%s'; error: %v", m[1], err)
+				} else {
+					*(values[state]) = i
+				}
+			}
+		}
+	}
+
+	if state+1 != len(headers) {
+		return fmt.Errorf("cannot find all fields")
+	}
+
 	return nil
 }
 
