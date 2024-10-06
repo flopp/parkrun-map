@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
 	"html/template"
@@ -93,22 +92,6 @@ func (p PathBuilder) Path(items ...string) string {
 		joined = fmt.Sprintf("%s/%s", joined, item)
 	}
 	return joined
-}
-
-func modifyGoatcounterLinkSelector(dir, file string) string {
-	path := filepath.Join(dir, file)
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return file
-	}
-
-	data = bytes.ReplaceAll(data, []byte(`querySelectorAll("*[data-goatcounter-click]")`), []byte(`querySelectorAll("a[target=_blank]")`))
-	data = bytes.ReplaceAll(data, []byte(`(elem.dataset.goatcounterClick || elem.name || elem.id || '')`), []byte(`(elem.dataset.goatcounterClick || elem.name || elem.id || elem.href || '')`))
-	data = bytes.ReplaceAll(data, []byte(`(elem.dataset.goatcounterReferrer || elem.dataset.goatcounterReferral || '')`), []byte(`(elem.dataset.goatcounterReferrer || elem.dataset.goatcounterReferral || window.location.href || '')`))
-	file2 := fmt.Sprintf("mod-%s", file)
-	path2 := filepath.Join(dir, file2)
-	os.WriteFile(path2, data, 0770)
-	return file2
 }
 
 func randomDuration(min, max time.Duration) time.Duration {
@@ -305,7 +288,7 @@ func main() {
 	utils.MustDownloadFileIfOlder(bulma_url.Path("css/bulma.min.css"), download.Path("bulma", "bulma.css"), fileAge1w)
 
 	// download goatcounter
-	utils.MustDownloadFileIfOlder("https://gc.zgo.at/count.js", download.Path("goatcounter", "stats.js"), fileAge1w)
+	utils.MustDownloadFileIfOlder("https://s.flopp.net/tracker.js", download.Path("tracker", "s.js"), fileAge1w)
 
 	// render data
 	if err := parkrun.RenderJs(events, download.Path("data.js")); err != nil {
@@ -327,8 +310,8 @@ func main() {
 		utils.MustCopyHash(data.Path(fmt.Sprintf("static/marker-%s-icon.png", color)), fmt.Sprintf("images/marker-%s-icon.png", color), *outputDir)
 		utils.MustCopyHash(data.Path(fmt.Sprintf("static/marker-%s-icon-2x.png", color)), fmt.Sprintf("images/marker-%s-icon-2x.png", color), *outputDir)
 	}
-	statsJs := modifyGoatcounterLinkSelector(download.Path("goatcounter"), "stats.js")
-	statsJs = utils.MustCopyHash(download.Path("goatcounter", statsJs), "stats-HASH.js", *outputDir)
+	//statsJs := modifyGoatcounterLinkSelector(download.Path("goatcounter"), "stats.js")
+	statsJs := utils.MustCopyHash(download.Path("tracker", "s.js"), "s-HASH.js", *outputDir)
 	// render templates to output folder
 	active := 0
 	planned := 0
