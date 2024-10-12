@@ -637,6 +637,20 @@
         ]
     },
     {
+        "id": "pferdebachtal",
+        "name": "Pferdebachtal parkrun",
+        "city": "Dortmund, NRW",
+        "googlemaps": "https://maps.app.goo.gl/Zk32RJBULu6LC2An6",
+        "first": "02.11.2024",
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/37315029"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=61565986364457"},
+            {"name": "Instagram", "url": "https://www.instagram.com/parkrun_dortmund/"}
+        ]
+    },
+    {
         "id": "prestelsee",
         "name": "Prestelsee parkrun",
         "city": "Graben-Neudorf, BW",
