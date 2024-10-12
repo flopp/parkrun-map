@@ -642,6 +642,7 @@
         "city": "Dortmund, NRW",
         "googlemaps": "https://maps.app.goo.gl/Zk32RJBULu6LC2An6",
         "first": "02.11.2024",
+        "status": "geplant",
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/37315029"}
         ],
