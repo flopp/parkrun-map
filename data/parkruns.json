@@ -323,6 +323,10 @@
         "city": "Tübingen, BW",
         "googlemaps": "https://maps.app.goo.gl/iWmCZSdtF4TguKFGA",
         "first": "16.10.2021",
+        "cafe": {
+            "name": "Suedhang",
+            "googlemaps": "https://maps.app.goo.gl/QiBSvSeM6Hnbp4gP6"
+        },
         "strava": [
             {"name": "Club", "url": "https://www.strava.com/clubs/parkrun-tuebingen"}
         ],
