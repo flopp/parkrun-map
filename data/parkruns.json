@@ -274,6 +274,10 @@
         "city": "Berlin, BE",
         "googlemaps": "https://maps.app.goo.gl/WBznzk2a3TKsjEFD6",
         "first": "06.01.2018",
+        "cafe": {
+            "name": "Blume an der Hasenheide",
+            "googlemaps": "https://maps.app.goo.gl/ugezX11nnrPYBx3dA"
+        },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/17085426"},
             {"name": "Club", "url": "https://www.strava.com/clubs/hasenheide-parkrun"}
