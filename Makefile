@@ -1,6 +1,6 @@
 .phony: all
 all:
-	echo ""
+	echo "run - build & sync"
 
 .repo/.git/config:
 	git clone https://github.com/flopp/parkrun-map.git .repo
