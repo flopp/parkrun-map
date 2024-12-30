@@ -2,5 +2,7 @@ github.com/flopp/go-parkrunparser v0.0.0-20241227063245-658cec73cb04 h1:J49t4XEv
 github.com/flopp/go-parkrunparser v0.0.0-20241227063245-658cec73cb04/go.mod h1:9iKtIGPlok7c4yyiiLg2CSxwMXqeij4iZCMStvUzpRA=
 github.com/flopp/go-parkrunparser v0.0.0-20241230085952-ece4ad0d7640 h1:NFQkXVPEgmOFyQGyfBb7LqzvMMFnqpo8u+BMyI7rGyg=
 github.com/flopp/go-parkrunparser v0.0.0-20241230085952-ece4ad0d7640/go.mod h1:9iKtIGPlok7c4yyiiLg2CSxwMXqeij4iZCMStvUzpRA=
+github.com/flopp/go-parkrunparser v0.0.0-20241230154122-79943bd455bb h1:P2sRcKxciJ/EzlL0rzAgSj0unDmYBTiv3pzWiVZy24M=
+github.com/flopp/go-parkrunparser v0.0.0-20241230154122-79943bd455bb/go.mod h1:9iKtIGPlok7c4yyiiLg2CSxwMXqeij4iZCMStvUzpRA=
 github.com/yrsh/simplify-go v0.0.0-20141205144220-b78647bd27f7 h1:nzTPALG/fBpx7Sbw2luLYfU06d11CrhxjPbmKGpp8gE=
 github.com/yrsh/simplify-go v0.0.0-20141205144220-b78647bd27f7/go.mod h1:dAObpQ3PjphiXHyyZKv7vCf6SIKofuu+Lg+D9qsW4IM=
