@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/flopp/go-parkrunparser"
 	"github.com/flopp/parkrun-map/internal/utils"
 	simplifier "github.com/yrsh/simplify-go"
 )
@@ -231,7 +232,6 @@ func (c Coordinates) IsValid() bool {
 }
 
 type Event struct {
-	EventId                     int
 	Id                          string
 	Name                        string
 	Location                    string
@@ -283,10 +283,6 @@ func (event Event) ResultsUrl() string {
 
 func (event Event) WikiUrl() string {
 	return fmt.Sprintf("https://wiki.parkrun.com/index.php/%s", strings.ReplaceAll(event.Name, " ", "_"))
-}
-
-func (event Event) ReportUrl() string {
-	return fmt.Sprintf("https://results-service.parkrun.com/resultsSystem/App/eventJournoReportHTML.php?evNum=%d", event.EventId)
 }
 
 func (event Event) LastRun() string {
@@ -456,107 +452,21 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 		return nil, err
 	}
 
-	var result map[string]interface{}
-	if err := json.Unmarshal(buf, &result); err != nil {
+	eventsJson, err := parkrunparser.ParseEvents(buf)
+	if err != nil {
 		return nil, err
-	}
-
-	countriesI, ok := result["countries"]
-	if !ok {
-		return nil, fmt.Errorf("cannot get 'countries' from 'events.json")
-	}
-	countries := countriesI.(map[string]interface{})
-
-	countryLookup := make(map[string]string)
-	for countryId, countryI := range countries {
-		country := countryI.(map[string]interface{})
-
-		urlI, ok := country["url"]
-		if !ok {
-			return nil, fmt.Errorf("cannot get 'countries/%s/url' from 'events.json", countryId)
-		}
-
-		if urlI != nil {
-			countryLookup[countryId] = urlI.(string)
-		}
-	}
-
-	eventsI, ok := result["events"]
-	if !ok {
-		return nil, fmt.Errorf("cannot get 'events' from 'events.json")
-	}
-	events := eventsI.(map[string]interface{})
-
-	featuresI, ok := events["features"]
-	if !ok {
-		return nil, fmt.Errorf("cannot get 'events/features' from 'events.json")
 	}
 
 	eventMap := make(map[string]*Event)
 	eventList := make([]*Event, 0)
-	features := featuresI.([]interface{})
-	for _, featureI := range features {
-		feature := featureI.(map[string]interface{})
-
-		idI, ok := feature["id"]
-		if !ok {
-			return nil, fmt.Errorf("cannot get 'events/features/id' from 'events.json")
-		}
-		id := int(idI.(float64))
-
-		propertiesI, ok := feature["properties"]
-		if !ok {
-			return nil, fmt.Errorf("cannot get 'events/features/properties' from 'events.json")
-		}
-
-		properties := propertiesI.(map[string]interface{})
-		nameI, ok := properties["eventname"]
-		if !ok {
-			return nil, fmt.Errorf("cannot get 'events/features/properties/eventname' from 'events.json")
-		}
-		name := nameI.(string)
-		longNameI, ok := properties["EventLongName"]
-		if !ok {
-			return nil, fmt.Errorf("cannot get 'events/features/properties/EventLongName' from 'events.json")
-		}
-		countryCodeI, ok := properties["countrycode"]
-		if !ok {
-			return nil, fmt.Errorf("cannot get 'events/features/properties/countrycode' from 'events.json")
-		}
-		locationI, ok := properties["EventLocation"]
-		if !ok {
-			return nil, fmt.Errorf("cannot get 'events/features/properties/EventLocation' from 'events.json")
-		}
-		longName := longNameI.(string)
-		location := locationI.(string)
-		countryCode := fmt.Sprintf("%.0f", countryCodeI.(float64))
-		if germanyOnly && countryCode != "32" {
+	for _, e := range eventsJson.Events {
+		if germanyOnly && e.Country.Name() != "Germany" {
 			continue
 		}
-		countryUrl, ok := countryLookup[countryCode]
-		if !ok {
-			return nil, fmt.Errorf("cannot lookup country code '%s' for '%s'", countryCode, name)
-		}
 
-		geometryI, ok := feature["geometry"]
-		if !ok {
-			return nil, fmt.Errorf("cannot get 'events/features/geometry' from 'events.json")
-		}
-		geometry := geometryI.(map[string]interface{})
-		coordinatesI, ok := geometry["coordinates"]
-		if !ok {
-			return nil, fmt.Errorf("cannot get 'events/features/geometry/coordinates' from 'events.json")
-		}
-		coordinates, ok := coordinatesI.([]interface{})
-		if !ok || len(coordinates) != 2 {
-			return nil, fmt.Errorf("bad length %d of 'events/features/geometry/coordinates' from 'events.json", len(coordinates))
-		}
-		lat := coordinates[1].(float64)
-		lon := coordinates[0].(float64)
-
-		event := &Event{id, name, longName, location, Coordinates{lat, lon}, countryUrl, "", nil, nil, false, 0, "", 0, 0, 0, 0, 0}
+		event := &Event{e.Name, e.LongName, e.Location, Coordinates{e.Coordinates.Lat, e.Coordinates.Lng}, e.Country.Url, "", nil, nil, false, 0, "", 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
-		eventMap[name] = event
+		eventMap[e.Name] = event
 	}
 
 	for _, info := range parkrun_infos {
@@ -571,7 +481,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 			event.Status = info.Status
 			continue
 		}
-		event := &Event{0, info.Id, info.Name, info.City, coordinates, "", "", nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
+		event := &Event{info.Id, info.Name, info.City, coordinates, "", "", nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 	}
 
@@ -622,44 +532,6 @@ func parseDate(s string) (time.Time, error) {
 	}
 
 	return time.Time{}, fmt.Errorf("cannot parse date (month failed): %s", s)
-}
-
-var reLine1 = regexp.MustCompile(`<body><h1>(.*)<br />Event number ([0-9]+)<br />(.*)</h1>`)
-var reLine2 = regexp.MustCompile(`<p>This week ([0-9]+) people`)
-
-func (event *Event) LoadReport(filePath string) error {
-	buf, err := utils.ReadFile(filePath)
-	if err != nil {
-		return err
-	}
-	sbuf := string(buf)
-
-	match := reLine1.FindStringSubmatch(sbuf)
-	if match == nil {
-		return fmt.Errorf("cannot fine line1 pattern")
-	}
-
-	runIndex, err := strconv.ParseInt(match[2], 10, 32)
-	if err != nil {
-		return fmt.Errorf("cannot parse run index: %s", match[2])
-	}
-
-	date, err := parseDate(match[3])
-	if err != nil {
-		return fmt.Errorf("cannot parse run date: %s; %s", match[3], err)
-	}
-
-	match = reLine2.FindStringSubmatch(sbuf)
-	if match == nil {
-		return fmt.Errorf("cannot fine line2 pattern")
-	}
-	runners, err := strconv.ParseInt(match[1], 10, 32)
-	if err != nil {
-		return fmt.Errorf("cannot parse runners: %s", match[2])
-	}
-
-	event.LatestRun = &Run{event, int(runIndex), date, int(runners), nil}
-	return nil
 }
 
 const (
