@@ -381,6 +381,19 @@
         ]
     },
     {
+        "id": "krupundersee",
+        "name": "Krupunder See parkrun",
+        "city": "Halstenbek, SH",
+        "googlemaps": "https://maps.app.goo.gl/M4i2ABTYikT8oMZw7",
+        "first": "18.01.2025",
+        "status": "geplant",
+        "coordinates": "53.625016 9.876215",
+        "social": [
+            {"name": "Facebook", "url": ""},
+            {"name": "Instagram", "url": ""}
+        ]
+    },
+    {
         "id": "kuechenholz",
         "name": "Küchenholz parkrun",
         "city": "Leipzig, SN",
