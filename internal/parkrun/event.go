@@ -828,7 +828,7 @@ func RenderJs(events []*Event, filePath string) error {
 		fmt.Fprintf(out, "\"url\": \"%s\",\n", event.Url())
 		fmt.Fprintf(out, "\"name\": \"%s\",\n", escapeQuotes(event.Name))
 		fmt.Fprintf(out, "\"lat\": %.5f, \"lon\": %f,\n", event.Coords.Lat, event.Coords.Lon)
-		fmt.Fprintf(out, "\"location\": \"%s\",\n", escapeQuotes(event.Location))
+		fmt.Fprintf(out, "\"location\": \"%s\",\n", escapeQuotes(event.FixedLocation()))
 		fmt.Fprintf(out, "\"googleMapsUrl\": \"%s\",\n", event.GoogleMapsUrl())
 		fmt.Fprintf(out, "\"tracks\": [")
 		for it, track := range event.Tracks {
