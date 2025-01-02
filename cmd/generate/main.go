@@ -114,10 +114,12 @@ func main() {
 	//fileAge30min := now.Add(30 * time.Minute)
 	fileAge1d := now.Add(-24 * time.Hour)
 	fileAge1w := now.Add(-24 * 7 * time.Hour)
-	isParkrunDay := false
-	if now.Weekday() == time.Saturday && now.Hour() >= 10 {
-		isParkrunDay = true
-	}
+
+	// Saturday, October 3rd, January 1st (German special days)
+	isSaturday := now.Weekday() == time.Saturday
+	isOctober3rd := now.Day() == 3 && now.Month() == time.October
+	isJanuary1st := now.Day() == 1 && now.Month() == time.January
+	isParkrunDay := (isSaturday || isOctober3rd || isJanuary1st) && now.Hour() >= 10
 
 	utils.SetDownloadDelay(2 * time.Second)
 
