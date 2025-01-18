@@ -95,8 +95,8 @@
         "first": "23.10.2021",
         "coordinates": "48.001255 7.806419",
         "cafe": {
-            "name": "Lio’s - Eis und Mehr",
-            "googlemaps": "https://maps.app.goo.gl/si55WV6ot89uD6dr9"
+            "name": "Heitzmann - Odessa - Küchenschelle",
+            "googlemaps": ""
         },
         "strava": [
             {"name": "Segment", "url": "https://www.strava.com/segments/30062146"},
@@ -386,11 +386,11 @@
         "city": "Halstenbek, SH",
         "googlemaps": "https://maps.app.goo.gl/M4i2ABTYikT8oMZw7",
         "first": "18.01.2025",
-        "status": "geplant",
+        "status": "",
         "coordinates": "53.625016 9.876215",
         "social": [
-            {"name": "Facebook", "url": ""},
-            {"name": "Instagram", "url": ""}
+            {"name": "Facebook", "url": "https://www.facebook.com/krupundersee"},
+            {"name": "Instagram", "url": "https://www.instagram.com/krupunderseeparkrun/"}
         ]
     },
     {
