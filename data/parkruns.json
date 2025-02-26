@@ -528,6 +528,18 @@
         ]
     },
     {
+        "id": "mauerweg",
+        "name": "Mauerweg parkrun",
+        "city": "Berlin, BE",
+        "googlemaps": "https://maps.app.goo.gl/Tf5cqkQzHoFY8kHd7",
+        "first": "15.03.2025",
+        "status": "geplant",
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/mauerwegparkrun"},
+            {"name": "Instagram", "url": "https://www.instagram.com/mauerwegparkrun/"}
+        ]
+    },
+    {
         "id": "monrepos",
         "name": "Monrepos parkrun",
         "city": "Ludwigsburg, BW",
