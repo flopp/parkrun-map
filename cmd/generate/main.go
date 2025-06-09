@@ -139,7 +139,7 @@ func main() {
 	// parse parkrun events (only returns German events!)
 	events, err := parkrun.LoadEvents(events_json_file, parkruns_json_file, true /* germanOnly */)
 	if err != nil {
-		panic(fmt.Errorf("while parsing %s: %w", events_json_file, err))
+		panic(fmt.Errorf("loading parkrun events: %w", err))
 	}
 
 	// Determine dates of currently downloaded events of all active parkruns

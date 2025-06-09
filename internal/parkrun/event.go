@@ -436,11 +436,11 @@ func (event Event) Outdated() bool {
 func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly bool) ([]*Event, error) {
 	buf1, err := utils.ReadFile(parkruns_json_file)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("reading %s: %w", parkruns_json_file, err)
 	}
 	var infos []ParkrunInfo
 	if err := json.Unmarshal(buf1, &infos); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("parsing %s: %w", parkruns_json_file, err)
 	}
 	parkrun_infos = make(map[string]*ParkrunInfo)
 	for _, info := range infos {
@@ -449,12 +449,12 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 
 	buf, err := utils.ReadFile(events_json_file)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("reading %s: %w", events_json_file, err)
 	}
 
 	eventsJson, err := parkrunparser.ParseEvents(buf)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("parsing %s: %w", events_json_file, err)
 	}
 
 	eventMap := make(map[string]*Event)
