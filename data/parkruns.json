@@ -1072,7 +1072,7 @@
         "status": "geplant",
         "coordinates": "53.058390 8.833314",
         "strava": [
-            {"name": "Segment", "url": "https://www.strava.com/segments/38187401"}
+            {"name": "Segment", "url": "https://www.strava.com/segments/38187401"},
             {"name": "Club", "url": "https://www.strava.com/clubs/werderseeparkrun"}
         ],
         "social": [
