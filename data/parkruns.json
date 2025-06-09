@@ -1053,19 +1053,31 @@
         ]
     },
     {
-        "id": "wittelsbacherpark",
-        "name": "Wittelsbacher Park parkrun",
-        "city": "Augsburg, BY",
-        "googlemaps": "https://maps.app.goo.gl/71auEwp1fT4CQW1AA",
-        "first": "",
-        "status": "geschlossen",
-        "coordinates": "48.358180 10.882256",
+        "id": "mauerweg",
+        "name": "Mauerweg parkrun",
+        "city": "Berlin, BE",
+        "googlemaps": "https://maps.app.goo.gl/Tf5cqkQzHoFY8kHd7",
+        "first": "15.03.2025",
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/mauerwegparkrun"},
+            {"name": "Instagram", "url": "https://www.instagram.com/mauerwegparkrun/"}
+        ]
+    },
+    {
+        "id": "werdersee",
+        "name": "Werdersee parkrun",
+        "city": "Bremen, HB",
+        "googlemaps": "https://maps.app.goo.gl/BwUyamnPzMVpCEwD8",
+        "first": "28.06.2025",
+        "status": "geplant",
+        "coordinates": "53.058390 8.833314",
         "strava": [
-            {"name": "Segment", "url": "https://www.strava.com/segments/35870676"}
+            {"name": "Segment", "url": "https://www.strava.com/segments/38187401"}
+            {"name": "Club", "url": "https://www.strava.com/clubs/werderseeparkrun"}
         ],
         "social": [
-            {"name": "Facebook", "url": "https://www.facebook.com/wittelsbacherparkparkrun"},
-            {"name": "Instagram", "url": "https://www.instagram.com/wittelsbacherparkrun/"}
+            {"name": "Facebook", "url": "https://www.facebook.com/werderseeparkrun"},
+            {"name": "Instagram", "url": "https://www.instagram.com/werdersee_parkrun/"}
         ]
     }
 ]
