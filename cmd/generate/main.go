@@ -99,6 +99,13 @@ func randomDuration(min, max time.Duration) time.Duration {
 	return min + time.Duration(rand.Int63n(int64(delta+1)))
 }
 
+func mustCreateIndexNow(indexnow string, outputDir string) {
+	indexNowFile := filepath.Join(outputDir, fmt.Sprintf("%s.txt", indexnow))
+	if err := os.WriteFile(indexNowFile, []byte(indexnow), 0644); err != nil {
+		panic(fmt.Errorf("while writing indexnow file %s: %w", indexNowFile, err))
+	}
+}
+
 func main() {
 	dataDir := flag.String("data", "data", "the data directory")
 	downloadDir := flag.String("download", ".download", "the download directory")
@@ -312,6 +319,8 @@ func main() {
 		utils.MustCopyHash(data.Path(fmt.Sprintf("static/marker-%s-icon.png", color)), fmt.Sprintf("images/marker-%s-icon.png", color), *outputDir)
 		utils.MustCopyHash(data.Path(fmt.Sprintf("static/marker-%s-icon-2x.png", color)), fmt.Sprintf("images/marker-%s-icon-2x.png", color), *outputDir)
 	}
+	mustCreateIndexNow("thawdud8qq3z98b993auzzqx8rxyramn", *outputDir)
+
 	//statsJs := modifyGoatcounterLinkSelector(download.Path("goatcounter"), "stats.js")
 	statsJs := utils.MustCopyHash(download.Path("tracker", "s.js"), "s-HASH.js", *outputDir)
 	// render templates to output folder
