@@ -57,6 +57,8 @@
         "id": "bahnstadtpromenade",
         "name": "Bahnstadt Promenade parkrun",
         "city": "Heidelberg, BW",
+        "location": "Bahnstadtpromenade",
+        "routetype": "Flacher Hin- und Rückweg mit 2 Wendepunkten auf Asphalt",
         "googlemaps": "https://maps.app.goo.gl/y9xjkARDxHbwaRd3A",
         "first": "30.09.2023",
         "cafe": {
@@ -91,6 +93,8 @@
         "id": "dietenbach",
         "name": "Dietenbach parkrun",
         "city": "Freiburg, BW",
+        "location": "Dietenbachpark",
+        "routetype": "2 Runden",
         "googlemaps": "https://maps.app.goo.gl/8mjy464YdjBKqmR1A",
         "first": "23.10.2021",
         "coordinates": "48.001255 7.806419",
@@ -112,6 +116,8 @@
         "id": "dreilaendergarten",
         "name": "Dreiländergarten parkrun",
         "city": "Weil am Rhein, BW",
+        "location": "DreiLänderGarten Park",
+        "routetype": "2 Runden",
         "googlemaps": "https://maps.app.goo.gl/Ncezh996xdM6YnrV9",
         "first": "11.09.2021",
         "strava": [
@@ -183,6 +189,8 @@
         "id": "friedrichsau",
         "name": "Friedrichsau parkrun",
         "city": "Ulm, BW",
+        "location": "Friedrichsau Park",
+        "routetype": "2 Runden",
         "googlemaps": "https://maps.app.goo.gl/DJJZCmyTZC2JT6ks8",
         "first": "26.03.2022",
         "cafe": {
@@ -306,6 +314,8 @@
         "id": "hockgraben",
         "name": "Hockgraben parkrun",
         "city": "Konstanz, BW",
+        "location": "Hockgrabental",
+        "routetype": "2 Runden",
         "googlemaps": "https://maps.app.goo.gl/yGYerpCpG2gbG8nd9",
         "first": "14.08.2021",
         "strava": [
@@ -642,6 +652,8 @@
         "id": "oberwald",
         "name": "Oberwald parkrun",
         "city": "Karlsruhe, BW",
+        "location": "Oberwald",
+        "routetype": "Eine 8-förmige Runde durch den Wald",
         "googlemaps": "https://maps.app.goo.gl/VCS8PPaw2bUiKNWE9",
         "first": "25.01.2020",
         "strava": [
@@ -761,6 +773,8 @@
         "id": "riemer",
         "name": "Riemer parkrun",
         "city": "München, BY",
+        "location": "Riemer Park",
+        "routetype": "Flache Runde über das ehemalige Flughafengelände",
         "googlemaps": "https://maps.app.goo.gl/fLJzPER422ezkUu78",
         "first": "29.06.2019",
         "strava": [
@@ -951,6 +965,8 @@
         "id": "westpark",
         "name": "Westpark parkrun",
         "city": "München, BY",
+        "location": "Westpark",
+        "routetype": "2 Runden",
         "googlemaps": "https://maps.app.goo.gl/FhZErPa2jXv4esQs5",
         "first": "19.01.2019",
         "strava": [

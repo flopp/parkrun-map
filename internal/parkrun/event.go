@@ -235,9 +235,11 @@ type Event struct {
 	Id                          string
 	Name                        string
 	Location                    string
+	SpecificLocation            string
 	Coords                      Coordinates
 	CountryUrl                  string
 	GoogleMapsId                string
+	RouteType                   string
 	Tracks                      [][]Coordinates
 	LatestRun                   *Run
 	Current                     bool
@@ -320,6 +322,8 @@ type ParkrunInfo struct {
 	Id          string
 	Name        string
 	City        string
+	Location    string
+	RouteType   string
 	GoogleMaps  string
 	First       string
 	Status      string
@@ -444,7 +448,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 	}
 	parkrun_infos = make(map[string]*ParkrunInfo)
 	for _, info := range infos {
-		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Cafe, info.Strava, info.Social}
+		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.Location, info.RouteType, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Cafe, info.Strava, info.Social}
 	}
 
 	buf, err := utils.ReadFile(events_json_file)
@@ -464,7 +468,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 			continue
 		}
 
-		event := &Event{e.Name, e.LongName, e.Location, Coordinates{e.Coordinates.Lat, e.Coordinates.Lng}, e.Country.Url, "", nil, nil, false, 0, "", 0, 0, 0, 0, 0}
+		event := &Event{e.Name, e.LongName, e.Location, "", Coordinates{e.Coordinates.Lat, e.Coordinates.Lng}, e.Country.Url, "", "", nil, nil, false, 0, "", 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 		eventMap[e.Name] = event
 	}
@@ -479,9 +483,11 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 				event.Coords = coordinates
 			}
 			event.Status = info.Status
+			event.SpecificLocation = info.Location
+			event.RouteType = info.RouteType
 			continue
 		}
-		event := &Event{info.Id, info.Name, info.City, coordinates, "", "", nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
+		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, "", "", info.RouteType, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 	}
 
