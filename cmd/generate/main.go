@@ -338,11 +338,11 @@ func main() {
 	}
 	renderData := RenderData{nil, events, active, planned, archived, js_files, css_files, statsJs, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
-	renderData.set("parkrun Karte", "Karte aller deutschen parkruns mit Anzeige der einzelnen Laufstrecken und Informationen zum letzten Event", "https://parkrun.flopp.net/", "map")
+	renderData.set("Karte aller deutschen parkruns", "Karte aller deutschen parkruns mit Anzeige der einzelnen Laufstrecken und Informationen zum letzten Event", "https://parkrun.flopp.net/", "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'index.html': %v", err))
 	}
-	renderData.set("parkrun Liste", "Liste aller deutschen parkruns mit Informationen zum letzten Event", "https://parkrun.flopp.net/liste.html", "list")
+	renderData.set("Liste aller deutschen parkruns", "Liste aller deutschen parkruns mit Informationen zum letzten Event", "https://parkrun.flopp.net/liste.html", "list")
 	if err := renderData.render(output.Path("liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'list.html': %v", err))
 	}
@@ -362,8 +362,9 @@ func main() {
 	for _, event := range events {
 		renderData.Event = event
 		title := fmt.Sprintf("%s, %s", event.FixedName(), event.FixedLocation())
+		description := fmt.Sprintf("Informationen zum %s in %s; Streckenkarte, Statistiken, Links", event.FixedName(), event.FixedLocation())
 		file := fmt.Sprintf("%s.html", event.Id)
-		renderData.set(title, title, fmt.Sprintf("https://parkrun.flopp.net/%s", file), "list")
+		renderData.set(title, description, fmt.Sprintf("https://parkrun.flopp.net/%s", file), "list")
 		if err := renderData.render(output.Path(file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 			panic(fmt.Errorf("while rendering '%s': %v", file, err))
 		}
