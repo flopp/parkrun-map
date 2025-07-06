@@ -197,7 +197,6 @@ func main() {
 		}
 		if err := event.LoadWiki(wiki_file); err != nil {
 			log.Printf("while parsing %s: %v", wiki_file, err)
-			continue
 		} else if event.LatestRun != nil && event.LatestRun.Date.After(latestDate) {
 			latestDate = event.LatestRun.Date
 		}
