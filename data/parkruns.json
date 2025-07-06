@@ -3,6 +3,7 @@
         "id": "aachenerweiher",
         "name": "Aachener Weiher parkrun",
         "city": "Köln, NRW",
+        "routeid": "1f0MCdzKQ19Wb8U7a9a1G2AmazMJfdmjw",
         "googlemaps": "https://maps.app.goo.gl/gktwZJVrqsirFma7A",
         "first": "23.03.2019",
         "cafe": {
@@ -23,6 +24,7 @@
         "id": "allerpark",
         "name": "Allerpark parkrun",
         "city": "Wolfsburg, NDS",
+        "routeid": "1gQ-8VBYqGCWVi1WqWvPYWEoAzVXGA2s",
         "googlemaps": "https://maps.app.goo.gl/viU3mCPcVfMiLb8RA",
         "first": "11.12.2021",
         "strava": [
@@ -38,6 +40,7 @@
         "id": "alstervorland",
         "name": "Alstervorland parkrun",
         "city": "Hamburg, HH",
+        "routeid": "1GiJ7OSgj_JGLbDsqCipbE-Tg4Gu2qJw",
         "googlemaps": "https://maps.app.goo.gl/nzFz8ds8yBCSPq9aA",
         "first": "12.01.2019",
         "cafe": {
@@ -59,6 +62,7 @@
         "city": "Heidelberg, BW",
         "location": "Bahnstadtpromenade",
         "routetype": "Flacher Hin- und Rückweg mit 2 Wendepunkten auf Asphalt",
+        "routeid": "1RXqKvfqNdbSDi0xXqp0w0kGzXsg466A",
         "googlemaps": "https://maps.app.goo.gl/y9xjkARDxHbwaRd3A",
         "first": "30.09.2023",
         "cafe": {
@@ -78,6 +82,7 @@
         "id": "bugasee",
         "name": "Bugasee parkrun",
         "city": "Kassel, HE",
+        "routeid": "1wFa4M-ObbfCVauiQtmQ_IZYHIf4mxJI",
         "googlemaps": "https://maps.app.goo.gl/nQAYeuPuELrezZC49",
         "first": "02.08.2019",
         "strava": [
@@ -95,6 +100,7 @@
         "city": "Freiburg, BW",
         "location": "Dietenbachpark",
         "routetype": "2 Runden",
+        "routeid": "1GnGtJp1rRlw7MNonEY9clUgXhX9pkHIW",
         "googlemaps": "https://maps.app.goo.gl/8mjy464YdjBKqmR1A",
         "first": "23.10.2021",
         "coordinates": "48.001255 7.806419",
@@ -118,6 +124,7 @@
         "city": "Weil am Rhein, BW",
         "location": "DreiLänderGarten Park",
         "routetype": "2 Runden",
+        "routeid": "1VEdfUdaKu9aQXp3gclZZoCmgVaFlIT8",
         "googlemaps": "https://maps.app.goo.gl/Ncezh996xdM6YnrV9",
         "first": "11.09.2021",
         "strava": [
@@ -133,6 +140,7 @@
         "id": "ebenberg",
         "name": "Ebenberg parkrun",
         "city": "Landau in der Pfalz, RLP",
+        "routeid": "1X8OgVgQ_x6jdUCvRqtcsbNFkemA4f6w",
         "googlemaps": "https://maps.app.goo.gl/v2oDppZt5VDkqc868",
         "first": "09.09.2023",
         "cafe": {
@@ -152,6 +160,7 @@
         "id": "ehrenbreitstein",
         "name": "Ehrenbreitstein parkrun",
         "city": "Koblenz, RLP",
+        "routeid": "1P8MeMOlLX_4sh9iiES6auGwuNE1tgYo",
         "googlemaps": "https://maps.app.goo.gl/VCdwKTUdxT8K7JvWA",
         "first": "13.01.2024",
         "cafe": {
@@ -171,6 +180,7 @@
         "id": "emmerwiesen",
         "name": "Emmerwiesen parkrun",
         "city": "Bad Pyrmont, NDS",
+        "routeid": "17i_mLBaP1O5lg8H6YB_zWaLRkT20Nbg",
         "googlemaps": "https://maps.app.goo.gl/MRUt6XqQgeMErnXP9",
         "first": "17.06.2023",
         "cafe": {
@@ -191,6 +201,7 @@
         "city": "Ulm, BW",
         "location": "Friedrichsau Park",
         "routetype": "2 Runden",
+        "routeid": "1_46eA64bcVOZ6S8G5yWp3pLyQe-3IDKu",
         "googlemaps": "https://maps.app.goo.gl/DJJZCmyTZC2JT6ks8",
         "first": "26.03.2022",
         "cafe": {
@@ -210,6 +221,7 @@
         "id": "fuldaaue",
         "name": "Fuldaaue parkrun",
         "city": "Fulda, HE",
+        "routeid": "14W0oY0Jb-sg_qCBD-42hQK84wXs8XkO3",
         "googlemaps": "https://maps.app.goo.gl/ik8YRD92dfJ4EMRe7",
         "first": "07.05.2022",
         "strava": [
@@ -225,6 +237,7 @@
         "id": "georgengarten",
         "name": "Georgengarten parkrun",
         "city": "Hannover, NDS",
+        "routeid": "1pzeqfL5TSwwPc_IELSA90IUlQ63BqDPY",
         "googlemaps": "https://maps.app.goo.gl/viMQE7RHzjhz5u8L7",
         "first": "02.12.2017",
         "cafe": {
@@ -244,6 +257,7 @@
         "id": "globe",
         "name": "Globe parkrun",
         "city": "Schwäbisch Hall, BW",
+        "routeid": "1d-lDrHprMSZeoukRR9fsPziRmjGTTg4",
         "googlemaps": "https://maps.app.goo.gl/4rv49Tm1inbFd76h8",
         "first": "28.09.2019",
         "cafe": {
@@ -262,6 +276,7 @@
         "id": "gruenerweg",
         "name": "Grüner Weg parkrun",
         "city": "Bad Urach, BW",
+        "routeid": "1HbBUum24vji5-5JEo74ZkSdfW4gFWIWB",
         "googlemaps": "https://maps.app.goo.gl/nta1yjbphkXFtf4E9",
         "first": "30.11.2019",
         "cafe": {
@@ -280,6 +295,7 @@
         "id": "hasenheide",
         "name": "Hasenheide parkrun",
         "city": "Berlin, BE",
+        "routeid": "1pkVDkNovhNnuHJimwRJ_pq6BAE4UuE4o",
         "googlemaps": "https://maps.app.goo.gl/WBznzk2a3TKsjEFD6",
         "first": "06.01.2018",
         "cafe": {
@@ -299,6 +315,7 @@
         "id": "havelkanal",
         "name": "Havelkanal parkrun",
         "city": "Hennigsdorf, BB",
+        "routeid": "1ZvOgz8uv7_ugR4uAYW6SKvXJ3NxWWzI",
         "googlemaps": "https://maps.app.goo.gl/7TUSEr1KyoRxbmfQ8",
         "first": "22.04.2023",
         "strava": [
@@ -316,6 +333,7 @@
         "city": "Konstanz, BW",
         "location": "Hockgrabental",
         "routetype": "2 Runden",
+        "routeid": "1Kc4pdSe4Iv1Vr_9B6XnOL-B7xJ9prrQE",
         "googlemaps": "https://maps.app.goo.gl/yGYerpCpG2gbG8nd9",
         "first": "14.08.2021",
         "strava": [
@@ -331,6 +349,7 @@
         "id": "kastanienallee",
         "name": "Kastanienallee parkrun",
         "city": "Tübingen, BW",
+        "routeid": "15olCC7gR3Jpd_c5jkLlq3D20egeJOHkE",
         "googlemaps": "https://maps.app.goo.gl/iWmCZSdtF4TguKFGA",
         "first": "16.10.2021",
         "cafe": {
@@ -349,6 +368,7 @@
         "id": "kemnadersee",
         "name": "Kemnader See parkrun",
         "city": "Bochum, NRW",
+        "routeid": "1SVcyYRonA2VrLWBiCTYuDJpLzVkWSJ8",
         "googlemaps": "https://maps.app.goo.gl/jAP4ZGfDcFScpHK89",
         "first": "15.10.2022",
         "strava": [
@@ -364,6 +384,7 @@
         "id": "kiessee",
         "name": "Kiessee parkrun",
         "city": "Göttingen, NDS",
+        "routeid": "1mLV_Zxe5dBiertVfFv5IreVn2tLT_zke",
         "googlemaps": "https://maps.app.goo.gl/dgFaKHnqUWrt5XFE6",
         "first": "18.05.2019",
         "strava": [
@@ -379,6 +400,7 @@
         "id": "kraeherwald",
         "name": "Kräherwald parkrun",
         "city": "Stuttgart, BW",
+        "routeid": "1xwhsvoqRP6bZXYc3odWpDYbAkQW-Qps6",
         "googlemaps": "https://maps.app.goo.gl/SQtTyVHupKn5FDZn9",
         "first": "05.05.2018",
         "strava": [
@@ -394,6 +416,7 @@
         "id": "krupundersee",
         "name": "Krupunder See parkrun",
         "city": "Halstenbek, SH",
+        "routeid": "1wFa4M-ObbfCVauiQtmQ_IZYHIf4mxJI",
         "googlemaps": "https://maps.app.goo.gl/M4i2ABTYikT8oMZw7",
         "first": "18.01.2025",
         "status": "",
@@ -407,6 +430,7 @@
         "id": "kuechenholz",
         "name": "Küchenholz parkrun",
         "city": "Leipzig, SN",
+        "routeid": "1X8uBevniuLUP588x3-4MLvg2L5_QRKW5",
         "googlemaps": "https://maps.app.goo.gl/DgogwFVSrqU281Le6",
         "first": "02.12.2017",
         "strava": [
@@ -422,6 +446,7 @@
         "id": "kurtschumacherpromenade",
         "name": "Kurt-Schumacher-Promenade parkrun",
         "city": "Würzburg, BY",
+        "routeid": "1c4OfBqDv7fI2VDVx7-TsFVOW_lY7Xo5p",
         "googlemaps": "https://maps.app.goo.gl/GKDejRda5ir2WcJv5",
         "first": "08.02.2020",
         "strava": [
@@ -437,6 +462,7 @@
         "id": "lahnwiesen",
         "name": "Lahnwiesen parkrun",
         "city": "Marburg, HE",
+        "routeid": "1t4ArpzBa1Ay4-ZMjemy8XJOkIQWg-HE",
         "googlemaps": "https://maps.app.goo.gl/DpW4Xuzr9VbGQAak9",
         "first": "07.03.2020",
         "strava": [
@@ -452,6 +478,7 @@
         "id": "landesgartenschaupark",
         "name": "Landesgartenschau Park parkrun",
         "city": "Neumarkt in der Oberpfalz, BY",
+        "routeid": "1pVg1LKiOo9z_XQ5XIvbughQLd0eIFbB3",
         "googlemaps": "https://maps.app.goo.gl/KvWPa2Q6yRED86jz9",
         "first": "04.09.2021",
         "strava": [
@@ -467,6 +494,7 @@
         "id": "leinpfad",
         "name": "Leinpfad parkrun",
         "city": "Merzig, SL",
+        "routeid": "1wT6G8OXt5RryKHBKDgheht5ONSECReSB",
         "googlemaps": "https://maps.app.goo.gl/efT8fKk5bDpnvWbL7",
         "first": "05.01.2019",
         "strava": [
@@ -482,6 +510,7 @@
         "id": "lousberg",
         "name": "Lousberg parkrun",
         "city": "Aachen, NRW",
+        "routeid": "17ozWIX-KlINgbe-enArX1FYF5YBwmNE",
         "googlemaps": "https://maps.app.goo.gl/ihumiC3xKAa16hHW9",
         "first": "20.01.2024",
         "strava": [
@@ -497,6 +526,7 @@
         "id": "luitpold",
         "name": "Luitpold parkrun",
         "city": "Ingolstadt, BY",
+        "routeid": "16aF3gUIU5S0XMAFdZiwjE-7TF1GTKGnW",
         "googlemaps": "https://maps.app.goo.gl/w2UxEFGWBuhQq9X68",
         "first": "11.05.2019",
         "strava": [
@@ -512,6 +542,7 @@
         "id": "maaraue",
         "name": "Maaraue parkrun",
         "city": "Mainz, RLP",
+        "routeid": "1Vl1ZzXRuYwJDYs57aTqg2E0CuVt2Nc4",
         "googlemaps": "https://maps.app.goo.gl/Tf5cqkQzHoFY8kHd7",
         "first": "30.10.2021",
         "strava": [
@@ -527,6 +558,7 @@
         "id": "mattheiserweiher",
         "name": "Mattheiser Weiher parkrun",
         "city": "Trier, RLP",
+        "routeid": "1HCOQKL8Ivn409RT1pzi8H04nQ_x0J58",
         "googlemaps": "https://maps.app.goo.gl/FstemrgLn3XZFjJM9",
         "first": "15.07.2023",
         "strava": [
@@ -541,6 +573,7 @@
         "id": "mauerweg",
         "name": "Mauerweg parkrun",
         "city": "Berlin, BE",
+        "routeid": "1U_IjmyuOKVwoXLy8H5xNGujFEhksYSk",
         "googlemaps": "https://maps.app.goo.gl/Tf5cqkQzHoFY8kHd7",
         "first": "15.03.2025",
         "social": [
@@ -552,6 +585,7 @@
         "id": "monrepos",
         "name": "Monrepos parkrun",
         "city": "Ludwigsburg, BW",
+        "routeid": "1-vKZWmZsbAgF0be4hHAnpFIOMmzkmbQr",
         "googlemaps": "https://maps.app.goo.gl/oQUjxeNSkL2HymFe6",
         "first": "01.06.2019",
         "strava": [
@@ -567,6 +601,7 @@
         "id": "moorbek",
         "name": "Moorbek parkrun",
         "city": "Norderstedt, SH",
+        "routeid": "16SjH6cLbI9XzFOMZ9usTjJMZyEweIkU",
         "googlemaps": "https://maps.app.goo.gl/xChmJS3RGKfpj3NP7",
         "first": "07.09.2024",
         "social": [
@@ -578,6 +613,7 @@
         "id": "naturlehrpfadwetzlar",
         "name": "Naturlehrpfad parkrun",
         "city": "Wetzlar, HE",
+        "routeid": "1YdIgV9IK5sTXQUewZZZur6TN13JX0Bc",
         "googlemaps": "https://maps.app.goo.gl/yBdeXeCt3477iPNPA",
         "first": "05.10.2024",
         "strava": [
@@ -593,6 +629,7 @@
         "id": "neckarau",
         "name": "Neckarau parkrun",
         "city": "Mannheim, BW",
+        "routeid": "1CGrM_LBz667orTl7-VbCWwykY4_SVHz8",
         "googlemaps": "https://maps.app.goo.gl/y2mf1JWysMn9GvXy5",
         "first": "02.12.2017",
         "strava": [
@@ -608,6 +645,7 @@
         "id": "neckaruferesslingen",
         "name": "Neckarufer parkrun",
         "city": "Esslingen, BW",
+        "routeid": "1VhyGv3xuagvjsyQQWMFp1BxirFLJNVI",
         "googlemaps": "https://maps.app.goo.gl/tEqiJTSJQbGUWsFA9",
         "first": "06.04.2019",
         "strava": [
@@ -623,6 +661,7 @@
         "id": "nidda",
         "name": "Nidda parkrun",
         "city": "Frankfurt am Main, HE",
+        "routeid": "1xMFsM7wQSsQHn0RUzyrYxCrvXLT8NbF2",
         "googlemaps": "https://maps.app.goo.gl/fUvUWeqBp8eGbKBC7",
         "first": "06.01.2018",
         "strava": [
@@ -638,6 +677,7 @@
         "id": "obersee",
         "name": "Obersee parkrun",
         "city": "Bielefeld, NRW",
+        "routeid": "1m8ftu2sEKTCSS9TXE0qdqjTleqdY4RI",
         "googlemaps": "https://maps.app.goo.gl/VjyTtqHZFTGVKBft6",
         "first": "09.10.2021",
         "strava": [
@@ -654,6 +694,7 @@
         "city": "Karlsruhe, BW",
         "location": "Oberwald",
         "routetype": "Eine 8-förmige Runde durch den Wald",
+        "routeid": "1E5HCfmhayoCYBDPzLRSDUVdp7QDi_BZX",
         "googlemaps": "https://maps.app.goo.gl/VCS8PPaw2bUiKNWE9",
         "first": "25.01.2020",
         "strava": [
@@ -669,6 +710,7 @@
         "id": "offenthal",
         "name": "Offenthal parkrun",
         "city": "Offenthal, HE",
+        "routeid": "1StjVaPqReXl3XMPQziv8eqTh5wvlYd91",
         "googlemaps": "https://maps.app.goo.gl/dW7WQaySgG5ibDau6",
         "first": "13.11.2021",
         "strava": [
@@ -684,6 +726,7 @@
         "id": "pferdebachtal",
         "name": "Pferdebachtal parkrun",
         "city": "Dortmund, NRW",
+        "routeid": "1F_GvjbmkGkrT0F5teeeBijs3WoaV6f0",
         "googlemaps": "https://maps.app.goo.gl/Zk32RJBULu6LC2An6",
         "first": "02.11.2024",
         "strava": [
@@ -698,6 +741,7 @@
         "id": "prestelsee",
         "name": "Prestelsee parkrun",
         "city": "Graben-Neudorf, BW",
+        "routeid": "1CnAeXQcc6fHVZiGxt_QRsCTfPUGMYRU",
         "googlemaps": "https://maps.app.goo.gl/mVWfRAqjsD844Kg29",
         "first": "16.03.2024",
         "strava": [
@@ -712,6 +756,7 @@
         "id": "priessnitzgrund",
         "name": "Prießnitzgrund parkrun",
         "city": "Dresden, SN",
+        "routeid": "1L35bYeGkhgvcyuYjlk-f1utKb3KJp4I",
         "googlemaps": "https://maps.app.goo.gl/Cgw3ePYLSQDyszMCA",
         "first": "09.07.2022",
         "strava": [
@@ -727,6 +772,7 @@
         "id": "prinzenpark",
         "name": "Prinzenpark parkrun",
         "city": "Braunschweig, NDS",
+        "routeid": "1uDcXebe5Lw7F8jSIh8xOazLAoF63aZA",
         "googlemaps": "https://maps.app.goo.gl/k9zPGx8kCegMLnGv9",
         "first": "14.05.2022",
         "strava": [
@@ -742,6 +788,7 @@
         "id": "rheinaue",
         "name": "Rheinaue parkrun",
         "city": "Bonn, NRW",
+        "routeid": "1ul34I6_6hR-HrUGPJoBMvL7bXSk_iEgS",
         "googlemaps": "https://maps.app.goo.gl/4Bd7qpAdVLnNY7ZW6",
         "first": "02.02.2019",
         "strava": [
@@ -757,6 +804,7 @@
         "id": "rheinpark",
         "name": "Rheinpark parkrun",
         "city": "Köln, NRW",
+        "routeid": "1JqjaKIamSwLTm2aEyDOdmaJidwoF2Uw",
         "googlemaps": "https://maps.app.goo.gl/oK7jMizoDhZYB1oB8",
         "first": "18.09.2021",
         "strava": [
@@ -775,6 +823,7 @@
         "city": "München, BY",
         "location": "Riemer Park",
         "routetype": "Flache Runde über das ehemalige Flughafengelände",
+        "routeid": "18xRCVkBgHoQmefqlANy-xyzFmozdPZE",
         "googlemaps": "https://maps.app.goo.gl/fLJzPER422ezkUu78",
         "first": "29.06.2019",
         "strava": [
@@ -790,6 +839,7 @@
         "id": "rosensteinpark",
         "name": "Rosensteinpark parkrun",
         "city": "Stuttgart, BW",
+        "routeid": "1rqx7oUZKHRaWTPwwNXTVH_enn5IV3VqG",
         "googlemaps": "https://maps.app.goo.gl/VzhGMisjcrWnm5WD8",
         "first": "04.06.2022",
         "strava": [
@@ -805,6 +855,7 @@
         "id": "rubbenbruchsee",
         "name": "Rubbenbruchsee parkrun",
         "city": "Osnabrück, NDS",
+        "routeid": "1ZEbGuX18eqboHUt2zQ4pSyjUcthxq1WN",
         "googlemaps": "https://maps.app.goo.gl/7NuAQshN5EHZ6phV8",
         "first": "13.01.2018",
         "strava": [
@@ -819,6 +870,7 @@
         "id": "schwanenteich",
         "name": "Schwanenteich parkrun",
         "city": "Giessen, HE",
+        "routeid": "1HVIr88ORXdr2vy1ZRMTA7u4ViiR_Me2e",
         "googlemaps": "https://maps.app.goo.gl/LE4RJQJokrC3kndR7",
         "first": "29.09.2018",
         "strava": [
@@ -835,6 +887,7 @@
         "id": "seewoog",
         "name": "Seewoog parkrun",
         "city": "Ramstein-Miesenbach, RLP",
+        "routeid": "1jzu9KWQBw__FbZHD3RW6KqLY9CxMzQAa",
         "googlemaps": "https://maps.app.goo.gl/3FBjKEi8M2Q6VzUG8",
         "first": "15.09.2018",
         "strava": [
@@ -851,6 +904,7 @@
         "id": "speyerleinpfad",
         "name": "Speyer Leinpfad parkrun",
         "city": "Speyer, RLP",
+        "routeid": "1gvNsdsxt8TrZiDCsN2yHbAESIUCG3tyc",
         "googlemaps": "https://maps.app.goo.gl/KgYAvV7jUTGeCYW1A",
         "first": "30.11.2019",
         "strava": [
@@ -866,6 +920,7 @@
         "id": "sportparkrems",
         "name": "Sportpark Rems parkrun",
         "city": "Schorndorf, BW",
+        "routeid": "15OnCqKw1Uw3BqmNAif7OOFtLp2at11Wr",
         "googlemaps": "https://maps.app.goo.gl/NeoaGX9k8WEhoPDTA",
         "first": "17.07.2021",
         "strava": [
@@ -882,6 +937,7 @@
         "id": "stadtpark",
         "name": "Stadtpark parkrun",
         "city": "Fürth, BY",
+        "routeid": "1EGp5LY7IeqI7cAyiETblC57Ot-bCkQI",
         "googlemaps": "https://maps.app.goo.gl/AMUEyC33WRPzDybZA",
         "first": "06.05.2023",
         "strava": [
@@ -896,6 +952,7 @@
         "id": "stadtparkchemnitz",
         "name": "Stadtpark parkrun",
         "city": "Chemnitz, SN",
+        "routeid": "1nKiXdL67bIGGZbzwIYQB4VE923q2suc",
         "googlemaps": "https://maps.app.goo.gl/8bjSg9yp9raCgRrE9",
         "first": "07.09.2024",
         "social": [
@@ -907,6 +964,7 @@
         "id": "traumschleifebaerenbachpfad",
         "name": "Traumschleife Bärenbachpfad parkrun",
         "city": "Baumholder, RLP",
+        "routeid": "1JorZ_hALp7eBLbo0LNutqzlZTny_uDs",
         "googlemaps": "https://maps.app.goo.gl/oWZkfCJYRJ8nDfKD6",
         "first": "17.09.2022",
         "status": "geschlossen",
@@ -919,6 +977,7 @@
         "id": "unisee",
         "name": "Unisee parkrun",
         "city": "Bremen, HB",
+        "routeid": "1oe0Co07r5WtwSfktPzY4dTxSvQ91kAYR",
         "googlemaps": "https://maps.app.goo.gl/GorNnFc7GRfLrBxU7",
         "first": "08.06.2019",
         "strava": [
@@ -934,6 +993,7 @@
         "id": "volksgarten",
         "name": "Volksgarten parkrun",
         "city": "Düsseldorf, NRW",
+        "routeid": "1HKh6GYSiIGGk21PnDci23PxrBQEVrv-m",
         "googlemaps": "https://maps.app.goo.gl/4xX1KDT7zCbQbkXGA",
         "first": "04.05.2019",
         "strava": [
@@ -946,9 +1006,27 @@
         ]
     },
     {
+        "id": "werdersee",
+        "name": "Werdersee parkrun",
+        "city": "Bremen, HB",
+        "routeid": "1uqZvhai-M2nJB_1zbiS1-IqgJQMeV_w",
+        "googlemaps": "https://maps.app.goo.gl/BwUyamnPzMVpCEwD8",
+        "first": "28.06.2025",
+        "coordinates": "53.058390 8.833314",
+        "strava": [
+            {"name": "Segment", "url": "https://www.strava.com/segments/38187401"},
+            {"name": "Club", "url": "https://www.strava.com/clubs/werderseeparkrun"}
+        ],
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/werderseeparkrun"},
+            {"name": "Instagram", "url": "https://www.instagram.com/werdersee_parkrun/"}
+        ]
+    },
+    {
         "id": "wertwiesen",
         "name": "Wertwiesen parkrun",
         "city": "Heilbronn, BW",
+        "routeid": "1eGV2szfICFLpMcncCU3tZlmCdYQnEo0",
         "googlemaps": "https://maps.app.goo.gl/zgxhJuvV14fcEroe6",
         "first": "15.07.2023",
         "strava": [
@@ -967,6 +1045,7 @@
         "city": "München, BY",
         "location": "Westpark",
         "routetype": "2 Runden",
+        "routeid": "1xOGtVxJFi8O-_bM1BbZGKVl2iTde5RQg",
         "googlemaps": "https://maps.app.goo.gl/FhZErPa2jXv4esQs5",
         "first": "19.01.2019",
         "strava": [
@@ -982,6 +1061,7 @@
         "id": "wienburgpark",
         "name": "Wienburgpark parkrun",
         "city": "Münster, NRW",
+        "routeid": "1bGip2IAFXreyy3zvN3c861ky02fksSRL",
         "googlemaps": "https://maps.app.goo.gl/7gTE7B9EiWN9rDyL6",
         "first": "12.03.2022",
         "strava": [
@@ -997,6 +1077,7 @@
         "id": "woehrdersee",
         "name": "Wöhrder See parkrun",
         "city": "Nürnberg, BY",
+        "routeid": "1jUkAKYjaiY2Ua2Cm7VOF7bhH231IYUw",
         "googlemaps": "https://maps.app.goo.gl/1u1SCvAM9LvBZhWy8",
         "first": "14.04.2018",
         "strava": [
@@ -1012,6 +1093,7 @@
         "id": "ziegelwiese",
         "name": "Ziegelwiese parkrun",
         "city": "Halle (Saale), ST",
+        "routeid": "1wAI3f-ClypJ_UrchfWfqAvNlE4fcNBER",
         "googlemaps": "https://maps.app.goo.gl/m8aqqhcobHdKk61A6",
         "first": "19.10.2019",
         "strava": [
@@ -1027,6 +1109,7 @@
         "id": "pieschenerallee",
         "name": "Pieschener Allee parkrun",
         "city": "Dresden, SN",
+        "routeid": "1jbLsNCX6EaDNPP9Je-nmSZDjrihMe0NZ",
         "googlemaps": "https://maps.app.goo.gl/1WzEpcaCRtcwfqoU7",
         "first": "17.11.2018",
         "status": "geschlossen",
@@ -1043,6 +1126,7 @@
         "id": "kurpark",
         "name": "Kurpark parkrun",
         "city": "Bad Liebenzell, BW",
+        "routeid": "1xs0UWiVWQnQe7sv16VfxYMzzaM0Jk1Nf",
         "googlemaps": "https://maps.app.goo.gl/P3RZGEMNjNg2XzUn7",
         "first": "",
         "status": "geschlossen",
@@ -1056,6 +1140,7 @@
         "id": "roethelheimpark",
         "name": "Röthelheimpark parkrun",
         "city": "Erlangen, BY",
+        "routeid": "1nX5fvKjbBpAssLo1hfrfYizVETT9MbHY",
         "googlemaps": "https://maps.app.goo.gl/52mY6QozPPpm2MHu8",
         "first": "",
         "status": "geschlossen",
@@ -1066,34 +1151,6 @@
         "social": [
             {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100066681151802"},
             {"name": "Instagram", "url": ""}
-        ]
-    },
-    {
-        "id": "mauerweg",
-        "name": "Mauerweg parkrun",
-        "city": "Berlin, BE",
-        "googlemaps": "https://maps.app.goo.gl/Tf5cqkQzHoFY8kHd7",
-        "first": "15.03.2025",
-        "social": [
-            {"name": "Facebook", "url": "https://www.facebook.com/mauerwegparkrun"},
-            {"name": "Instagram", "url": "https://www.instagram.com/mauerwegparkrun/"}
-        ]
-    },
-    {
-        "id": "werdersee",
-        "name": "Werdersee parkrun",
-        "city": "Bremen, HB",
-        "googlemaps": "https://maps.app.goo.gl/BwUyamnPzMVpCEwD8",
-        "first": "28.06.2025",
-        "status": "geplant",
-        "coordinates": "53.058390 8.833314",
-        "strava": [
-            {"name": "Segment", "url": "https://www.strava.com/segments/38187401"},
-            {"name": "Club", "url": "https://www.strava.com/clubs/werderseeparkrun"}
-        ],
-        "social": [
-            {"name": "Facebook", "url": "https://www.facebook.com/werderseeparkrun"},
-            {"name": "Instagram", "url": "https://www.instagram.com/werdersee_parkrun/"}
         ]
     }
 ]

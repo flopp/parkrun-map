@@ -325,6 +325,7 @@ type ParkrunInfo struct {
 	City        string
 	Location    string
 	RouteType   string
+	RouteId     string
 	GoogleMaps  string
 	First       string
 	Status      string
@@ -449,7 +450,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 	}
 	parkrun_infos = make(map[string]*ParkrunInfo)
 	for _, info := range infos {
-		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.Location, info.RouteType, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Cafe, info.Strava, info.Social}
+		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.Location, info.RouteType, info.RouteId, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Cafe, info.Strava, info.Social}
 	}
 
 	buf, err := utils.ReadFile(events_json_file)
@@ -486,9 +487,10 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 			event.Status = info.Status
 			event.SpecificLocation = info.Location
 			event.RouteType = info.RouteType
+			event.GoogleMapsId = info.RouteId
 			continue
 		}
-		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, "", "", info.RouteType, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
+		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, "", info.RouteId, info.RouteType, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 	}
 

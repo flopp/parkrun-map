@@ -121,11 +121,13 @@ func main() {
 	fileAge1d := now.Add(-24 * time.Hour)
 	fileAge1w := now.Add(-24 * 7 * time.Hour)
 
-	// Saturday, October 3rd, January 1st (German special days)
-	isSaturday := now.Weekday() == time.Saturday
-	isOctober3rd := now.Day() == 3 && now.Month() == time.October
-	isJanuary1st := now.Day() == 1 && now.Month() == time.January
-	isParkrunDay := (isSaturday || isOctober3rd || isJanuary1st) && now.Hour() >= 10
+	/*
+		// Saturday, October 3rd, January 1st (German special days)
+		isSaturday := now.Weekday() == time.Saturday
+		isOctober3rd := now.Day() == 3 && now.Month() == time.October
+		isJanuary1st := now.Day() == 1 && now.Month() == time.January
+		isParkrunDay := (isSaturday || isOctober3rd || isJanuary1st) && now.Hour() >= 10
+	*/
 
 	utils.SetDownloadDelay(2 * time.Second)
 
@@ -149,92 +151,91 @@ func main() {
 	}
 
 	// Determine dates of currently downloaded events of all active parkruns
-	latestDate := time.Time{}
-	dates := make(map[*parkrun.Event]time.Time)
-	for _, event := range events {
-		if !event.Archived() {
-			wiki_file := download.Path("parkrun", event.Id, "wiki")
-			if utils.FileExists(wiki_file) {
-				if err := event.LoadWiki(wiki_file); err == nil && event.LatestRun != nil {
-					if event.LatestRun.Date.After(latestDate) {
-						latestDate = event.LatestRun.Date
-					}
-					dates[event] = event.LatestRun.Date
-					// force download if there's something wrong with the numbers
-					if event.LatestRun.RunnerCount == 0 {
-						dates[event] = time.Time{}
-					}
-				} else if err != nil {
-					if err := os.Remove(wiki_file); err != nil {
-						panic(err)
+	/*
+		latestDate := time.Time{}
+		dates := make(map[*parkrun.Event]time.Time)
+		for _, event := range events {
+			if !event.Archived() {
+				wiki_file := download.Path("parkrun", event.Id, "wiki")
+				if utils.FileExists(wiki_file) {
+					if err := event.LoadWiki(wiki_file); err == nil && event.LatestRun != nil {
+						if event.LatestRun.Date.After(latestDate) {
+							latestDate = event.LatestRun.Date
+						}
+						dates[event] = event.LatestRun.Date
+						// force download if there's something wrong with the numbers
+						if event.LatestRun.RunnerCount == 0 {
+							dates[event] = time.Time{}
+						}
+					} else if err != nil {
+						if err := os.Remove(wiki_file); err != nil {
+							panic(err)
+						}
 					}
 				}
 			}
 		}
-	}
-	log.Printf("lastest existing date: %v", latestDate)
+		log.Printf("lastest existing date: %v", latestDate)
+	*/
 
 	// Pull latest results, force update for all events that are definitely outdated
-	for _, event := range events {
-		isOutdated := false
-		if !event.Archived() {
-			if date, found := dates[event]; found && (latestDate.After(date) || (isParkrunDay && date.Format("2006-01-02") != now.Format("2006-01-02"))) {
-				log.Printf("%s: outdated! date=%v latestafter=%v parkrunday=%v notatparkrunday=%v", event.Id, date, latestDate.After(date), isParkrunDay, date.Format("2006-01-02") != now.Format("2006-01-02"))
-				isOutdated = true
-			}
-			if event.Planned() && isParkrunDay {
-				log.Printf("%s: outdated! planned & parkrunday", event.Id)
-				isOutdated = true
-			}
-		}
-
-		wiki_url := event.WikiUrl()
-		wiki_file := download.Path("parkrun", event.Id, "wiki")
-		if isOutdated {
-			utils.MustDownloadFile(wiki_url, wiki_file)
-		} else {
-			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
-		}
-		if err := event.LoadWiki(wiki_file); err != nil {
-			log.Printf("while parsing %s: %v", wiki_file, err)
-		} else if event.LatestRun != nil && event.LatestRun.Date.After(latestDate) {
-			latestDate = event.LatestRun.Date
-		}
-		/*
-			if event.LatestRun != nil {
-				results_url := event.LatestRun.Url()
-				results_file := download.Path("parkrun", event.Id, "results")
-				if !utils.FileExists(results_file) {
-					utils.MustDownloadFile(results_url, results_file)
+	/*
+		for _, event := range events {
+				isOutdated := false
+				if !event.Archived() {
+					if date, found := dates[event]; found && (latestDate.After(date) || (isParkrunDay && date.Format("2006-01-02") != now.Format("2006-01-02"))) {
+						log.Printf("%s: outdated! date=%v latestafter=%v parkrunday=%v notatparkrunday=%v", event.Id, date, latestDate.After(date), isParkrunDay, date.Format("2006-01-02") != now.Format("2006-01-02"))
+						isOutdated = true
+					}
+					if event.Planned() && isParkrunDay {
+						log.Printf("%s: outdated! planned & parkrunday", event.Id)
+						isOutdated = true
+					}
 				}
-				if err := event.LatestRun.LoadResults(results_file); err != nil {
-					//panic(fmt.Errorf("while parsing %s: %w", results_file, err))
-					fmt.Printf("while parsing %s: %v\n", results_file, err)
-				} else if event.LatestRun.Index != event.LatestRun.Results.Index {
-					event.LatestRun.Results = nil
-					utils.MustDownloadFile(results_url, results_file)
+
+				wiki_url := event.WikiUrl()
+				wiki_file := download.Path("parkrun", event.Id, "wiki")
+				if isOutdated {
+					utils.MustDownloadFile(wiki_url, wiki_file)
+				} else {
+					utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
+				}
+				if err := event.LoadWiki(wiki_file); err != nil {
+					log.Printf("while parsing %s: %v", wiki_file, err)
+				} else if event.LatestRun != nil && event.LatestRun.Date.After(latestDate) {
+					latestDate = event.LatestRun.Date
+				}
+
+				if event.LatestRun != nil {
+					results_url := event.LatestRun.Url()
+					results_file := download.Path("parkrun", event.Id, "results")
+					if !utils.FileExists(results_file) {
+						utils.MustDownloadFile(results_url, results_file)
+					}
 					if err := event.LatestRun.LoadResults(results_file); err != nil {
 						//panic(fmt.Errorf("while parsing %s: %w", results_file, err))
 						fmt.Printf("while parsing %s: %v\n", results_file, err)
+					} else if event.LatestRun.Index != event.LatestRun.Results.Index {
+						event.LatestRun.Results = nil
+						utils.MustDownloadFile(results_url, results_file)
+						if err := event.LatestRun.LoadResults(results_file); err != nil {
+							//panic(fmt.Errorf("while parsing %s: %w", results_file, err))
+							fmt.Printf("while parsing %s: %v\n", results_file, err)
+						}
 					}
 				}
-			}
-		*/
-		/*
-			report_url := event.ReportUrl()
-			report_file := download.Path("parkrun", event.Id, "report")
-			utils.MustDownloadFileIfOlder(report_url, report_file, fileAge1d)
-			if err := event.LoadReport(report_file); err != nil {
-				panic(fmt.Errorf("file parsing %s: %w", report_file, err))
-			}
-		*/
-
-		course_page_url := event.CoursePageUrl()
-		course_page_file := download.Path("parkrun", event.Id, "course_page")
-		utils.MustDownloadFileIfOlder(course_page_url, course_page_file, now.Add(randomDuration(-24*200*time.Hour, -24*100*time.Hour)))
-		if err := event.LoadCoursePage(course_page_file); err != nil {
-			panic(fmt.Errorf("file parsing %s: %w", course_page_file, err))
 		}
+	*/
+
+	for _, event := range events {
+		/*
+			course_page_url := event.CoursePageUrl()
+			course_page_file := download.Path("parkrun", event.Id, "course_page")
+			utils.MustDownloadFileIfOlder(course_page_url, course_page_file, now.Add(randomDuration(-24*200*time.Hour, -24*100*time.Hour)))
+			if err := event.LoadCoursePage(course_page_file); err != nil {
+				panic(fmt.Errorf("file parsing %s: %w", course_page_file, err))
+			}
+		*/
 
 		kml_url := fmt.Sprintf("https://www.google.com/maps/d/kml?mid=%s&forcekml=1", event.GoogleMapsId)
 		kml_file := download.Path("parkrun", event.Id, "kml")
@@ -245,9 +246,11 @@ func main() {
 		}
 	}
 
-	for _, event := range events {
-		event.Current = !event.Archived() && event.LatestRun != nil && event.LatestRun.Date == latestDate
-	}
+	/*
+		for _, event := range events {
+			event.Current = !event.Archived() && event.LatestRun != nil && event.LatestRun.Date == latestDate
+		}
+	*/
 
 	// Determine order
 	orderedEvents := make([]*parkrun.Event, 0, len(events))
