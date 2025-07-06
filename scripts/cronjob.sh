@@ -8,6 +8,7 @@ TARGET="/var/www/virtual/floppnet/parkrun.flopp.net/"
 rm -rf "${SCRIPT_DIR}/.output"
 
 "${SCRIPT_DIR}/generate-linux"  \
+    -verbose \
     -data     "${SCRIPT_DIR}/repo/data" \
     -download "${SCRIPT_DIR}/.download" \
     -output   "${SCRIPT_DIR}/.output"

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html"
+	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -570,16 +571,19 @@ func (event *Event) LoadWiki(filePath string) error {
 			if m := reTd.FindStringSubmatch(line); m != nil {
 				dateS = strings.TrimSpace(m[1])
 				state = StateIndex
+				log.Printf("parkrun: found date '%s' in wiki file '%s'", dateS, filePath)
 			}
 		} else if state == StateIndex {
 			if m := reTd.FindStringSubmatch(line); m != nil {
 				indexS = strings.TrimSpace(m[1])
 				state = StateRunners
+				log.Printf("parkrun: found index '%s' in wiki file '%s'", indexS, filePath)
 			}
 		} else if state == StateRunners {
 			if m := reTd.FindStringSubmatch(line); m != nil {
 				runnersS = strings.TrimSpace(m[1])
 				state = StateEnd
+				log.Printf("parkrun: found runners '%s' in wiki file '%s'", runnersS, filePath)
 				break
 			}
 		}

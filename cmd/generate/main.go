@@ -24,7 +24,6 @@ type RenderData struct {
 	ArchivedEvents int
 	JsFiles        []string
 	CssFiles       []string
-	StatsJs        string
 	Title          string
 	Description    string
 	Canonical      string
@@ -197,7 +196,7 @@ func main() {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
 		}
 		if err := event.LoadWiki(wiki_file); err != nil {
-			log.Printf("while parsing %s: %w", wiki_file, err)
+			log.Printf("while parsing %s: %v", wiki_file, err)
 			continue
 		}
 		if event.LatestRun != nil && event.LatestRun.Date.After(latestDate) {
@@ -296,9 +295,6 @@ func main() {
 	// download bulma
 	utils.MustDownloadFileIfOlder(bulma_url.Path("css/bulma.min.css"), download.Path("bulma", "bulma.css"), fileAge1w)
 
-	// download goatcounter
-	utils.MustDownloadFileIfOlder("https://s.flopp.net/tracker.js", download.Path("tracker", "s.js"), fileAge1w)
-
 	// render data
 	if err := parkrun.RenderJs(events, download.Path("data.js")); err != nil {
 		panic(fmt.Errorf("failed to render data: %v", err))
@@ -321,8 +317,6 @@ func main() {
 	}
 	mustCreateIndexNow("thawdud8qq3z98b993auzzqx8rxyramn", *outputDir)
 
-	//statsJs := modifyGoatcounterLinkSelector(download.Path("goatcounter"), "stats.js")
-	statsJs := utils.MustCopyHash(download.Path("tracker", "s.js"), "s-HASH.js", *outputDir)
 	// render templates to output folder
 	active := 0
 	planned := 0
@@ -336,7 +330,7 @@ func main() {
 			archived += 1
 		}
 	}
-	renderData := RenderData{nil, events, active, planned, archived, js_files, css_files, statsJs, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
+	renderData := RenderData{nil, events, active, planned, archived, js_files, css_files, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("Karte aller deutschen parkruns", "Karte aller deutschen parkruns mit Anzeige der einzelnen Laufstrecken und Informationen zum letzten Event", "https://parkrun.flopp.net/", "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
