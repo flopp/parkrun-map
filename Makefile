@@ -47,3 +47,10 @@ run-local-world:
 upload-local-world: run-local-world
 	rsync -a .output-world/ echeclus.uberspace.de:/var/www/virtual/floppnet/2oc.de/
 	ssh echeclus.uberspace.de chmod -R o=u /var/www/virtual/floppnet/2oc.de
+
+
+csv:
+	go run cmd/generatecsv/main.go \
+		-verbose \
+    	-data     "data" \
+    	-download ".download"

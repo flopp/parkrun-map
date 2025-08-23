@@ -100,7 +100,7 @@
         "city": "Freiburg, BW",
         "location": "Dietenbachpark",
         "routetype": "2 Runden",
-        "routeid": "1GnGtJp1rRlw7MNonEY9clUgXhX9pkHIW",
+        "routeid": "1lR5Ntl26y0AHCq8iOz44grJfKzQH7xI",
         "googlemaps": "https://maps.app.goo.gl/8mjy464YdjBKqmR1A",
         "first": "23.10.2021",
         "coordinates": "48.001255 7.806419",
@@ -865,6 +865,14 @@
             {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100063722733366"},
             {"name": "Instagram", "url": "https://www.instagram.com/rubbenbruchseeparkrun/"}
         ]
+    },
+    {
+        "id": "schoenbusch",
+        "name": "Schönbusch parkrun",
+        "city": "Aschaffenburg, BY",
+        "routeid": "1n5H7tMUiorLwZLb_IabA4auYaH6bj0A",
+        "googlemaps": "https://maps.app.goo.gl/gSvMrMZ8sGXtVkA46",
+        "first": "13.09.2025"
     },
     {
         "id": "schwanenteich",
