@@ -872,7 +872,10 @@
         "city": "Aschaffenburg, BY",
         "routeid": "1n5H7tMUiorLwZLb_IabA4auYaH6bj0A",
         "googlemaps": "https://maps.app.goo.gl/gSvMrMZ8sGXtVkA46",
-        "first": "13.09.2025"
+        "first": "13.09.2025",
+        "social": [
+            {"name": "Instagram", "url": "https://www.instagram.com/schoenbusch_parkrun/"}
+        ]
     },
     {
         "id": "schwanenteich",
@@ -979,6 +982,21 @@
         "social": [
             {"name": "Facebook", "url": "https://www.facebook.com/Traumschleifebarenbachpfadparkrun"},
             {"name": "Instagram", "url": "https://www.instagram.com/parkrun_baumholder/"}
+        ]
+    },
+    {
+        "id": "uerdingerstadtpark",
+        "name": "Uerdinger Stadtpark parkrun",
+        "city": "Krefeld, NRW",
+        "location": "Uerdinger Stadtpark",
+        "routetype": "2 Runden",
+        "routeid": "1gLVnnKScJtVqco5doI80dsTrTr5JpG4",
+        "googlemaps": "https://maps.app.goo.gl/8FdmKhnQgw8ubAvK6",
+        "first": "04.10.2025",
+        "status": "geplant",
+        "coordinates": "51.362339 6.637604",
+        "social": [
+            {"name": "Instagram", "url": "https://www.instagram.com/uerdinger_stadtpark_parkrun/"}
         ]
     },
     {
