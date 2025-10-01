@@ -10,10 +10,7 @@
 
         <div class="notification is-info">
             <div class="content">
-                Hier ist die Liste aller parkruns, jeweils mit Informationen zur letzten Austragung.
-                <br>
-                Hinweis: diese Daten werden nur 1x täglich aktualisiert;
-                insbesondere samstags kann es daher sein, dass veraltete Informationen angezeigt werden.
+                Hier ist die Liste aller parkruns.
                 <br>
                 Im offiziellen parkrun-Wiki gibt es weitere Statistiken zu Deutschland:
                 <ul>
@@ -24,24 +21,17 @@
             </div>
         </div>
 
-
-
         <table class="table is-narrow is-striped is-hoverable is-fullwidth">
             <thead>
                 <tr>
                     <th></th>
                     <th class="is-hidden-mobile"></th>
                     <th class="is-hidden-mobile"></th>
-                    <th colspan="4" class="has-text-centered">Letzte Austragung</th>
                 </tr>
                 <tr>
                     <th>Name</th>
                     <th class="is-hidden-mobile">Ort</th>
                     <th class="is-hidden-mobile">Seit</th>
-                    <th class="has-text-right">#</th>
-                    <th>Datum</th>
-                    <th class="has-text-right" title="Anzahl Teilnehmer">🏃🏻‍♀️</th>
-                    <th class="has-text-right" title="Rangfolge">🔢</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,18 +57,6 @@
                     <td class="is-hidden-mobile tnum">
                         {{.First}}
                     </td>
-                    {{if .LatestRun}}
-                        <td class="tnum has-text-right"><a target="_blank" title="{{.FixedName}} {{.LatestRun.Index}}" href="{{.LatestRun.Url}}"{{if .Outdated}}class="has-text-link-light"{{end}}>{{.LatestRun.Index}}</a></td>
-                        <td class="tnum{{if .Outdated}} has-text-grey-light{{end}}">{{.LatestRun.DateF}}</td>
-                        <td class="tnum has-text-right{{if .Outdated}} has-text-grey-light{{end}}">{{.LatestRun.Runners}}</td>
-                        {{if .Order}}
-                        <td class="tnum has-text-right{{if .Outdated}} has-text-grey-light{{end}}">{{.Order}}</td>
-                        {{else}}
-                        <td class="tnum has-text-right{{if .Outdated}} has-text-grey-light{{end}}">-</td>
-                        {{end}}
-                    {{else}}
-                        <td colspan="4" class="has-text-centered{{if .Outdated}} has-text-grey-light{{end}}">- keine -</td>
-                    {{end}}
                 </tr>
                 {{end}}
             </tbody>

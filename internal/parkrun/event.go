@@ -3,222 +3,17 @@ package parkrun
 import (
 	"encoding/json"
 	"fmt"
-	"html"
-	"log"
 	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/flopp/go-parkrunparser"
 	"github.com/flopp/parkrun-map/internal/utils"
 	simplifier "github.com/yrsh/simplify-go"
 )
-
-const (
-	SEX_UNKNOWN = iota
-	SEX_FEMALE
-	SEX_MALE
-)
-
-type Participant struct {
-	Id       string
-	Name     string
-	AgeGroup string
-	Sex      int
-	Runs     int64
-	Vols     int64
-	Time     time.Duration
-}
-
-var reAgeGroup1 = regexp.MustCompile(`^[A-Z]([fFmMwW])(\d+-\d+)$`)
-var reAgeGroup2 = regexp.MustCompile(`^[A-Z]([fFmMwW])(\d+)$`)
-var reAgeGroup3 = regexp.MustCompile(`^([fFmMwW])(WC)$`)
-
-func ParseAgeGroup(s string) (string, int, error) {
-	if s == "" {
-		return "??", SEX_UNKNOWN, nil
-	}
-	if match := reAgeGroup1.FindStringSubmatch(s); match != nil {
-		if match[1] == "f" || match[1] == "F" || match[1] == "w" || match[1] == "W" {
-			return match[2], SEX_FEMALE, nil
-		}
-		return match[2], SEX_MALE, nil
-	}
-	if match := reAgeGroup2.FindStringSubmatch(s); match != nil {
-		if match[1] == "f" || match[1] == "F" || match[1] == "w" || match[1] == "W" {
-			return match[2], SEX_FEMALE, nil
-		}
-		return match[2], SEX_MALE, nil
-	}
-	if match := reAgeGroup3.FindStringSubmatch(s); match != nil {
-		if match[1] == "f" || match[1] == "F" || match[1] == "w" || match[1] == "W" {
-			return match[2], SEX_FEMALE, nil
-		}
-		return match[2], SEX_MALE, nil
-	}
-
-	return s, SEX_UNKNOWN, fmt.Errorf("unknown age group: %s", s)
-}
-
-type Results struct {
-	Index int
-	Date  time.Time
-
-	Runners []*Participant
-}
-
-type Run struct {
-	Event       *Event
-	Index       int
-	Date        time.Time
-	RunnerCount int
-	Results     *Results
-}
-
-func (run Run) Url() string {
-	return fmt.Sprintf("https://parkrun.com.de/%s/results/%d/", run.Event.Id, run.Index)
-}
-
-func (run Run) DateF() string {
-	return run.Date.Format("02.01.2006")
-}
-
-func (run Run) Runners() string {
-	if run.RunnerCount == 0 {
-		return "?"
-	}
-	return fmt.Sprintf("%d", run.RunnerCount)
-}
-
-func fmtDuration(d time.Duration) string {
-	d = d.Round(time.Second)
-	h := d / time.Hour
-	d -= h * time.Hour
-	m := d / time.Minute
-	d = d - m*time.Minute
-	s := d / time.Second
-
-	if h == 0 {
-		return fmt.Sprintf("%02d:%02d", m, s)
-	}
-	return fmt.Sprintf("%d:%02d:%02d", h, m, s)
-}
-
-func (run Run) FastestT() string {
-	if run.Results != nil && len(run.Results.Runners) > 0 {
-		return fmtDuration(run.Results.Runners[0].Time)
-	}
-	return "-"
-}
-
-var patternDateIndex = regexp.MustCompile(`<h3><span class="format-date">([^<]+)</span><span class="spacer">[^<]*</span><span>#([0-9]+)</span></h3>`)
-var patternRunnerRow0 = regexp.MustCompile(`<tr class="Results-table-row" [^<]*><td class="Results-table-td Results-table-td--position">\d+</td><td class="Results-table-td Results-table-td--name"><div class="compact">(<a href="[^"]*/\d+")?.*?</tr>`)
-var patternRunnerRow = regexp.MustCompile(`^<tr class="Results-table-row" data-name="([^"]*)" data-agegroup="([^"]*)" data-club="[^"]*" data-gender="[^"]*" data-position="\d+" data-runs="(\d+)" data-vols="(\d+)" data-agegrade="[^"]*" data-achievement="([^"]*)"><td class="Results-table-td Results-table-td--position">\d+</td><td class="Results-table-td Results-table-td--name"><div class="compact"><a href="[^"]*/(\d+)"`)
-var patternRunnerRowUnknown = regexp.MustCompile(`^<tr class="Results-table-row" data-name="([^"]*)" data-agegroup="" data-club="" data-position="\d+" data-runs="0" data-agegrade="0" data-achievement=""><td class="Results-table-td Results-table-td--position">\d+</td><td class="Results-table-td Results-table-td--name"><div class="compact">.*`)
-var patternTime = regexp.MustCompile(`Results-table-td--time[^"]*&#10;                      "><div class="compact">(\d?:?\d\d:\d\d)</div>`)
-
-//var patternVolunteerRow = regexp.MustCompile(`<a href='\./athletehistory/\?athleteNumber=(\d+)'>([^<]+)</a>`)
-
-func (run *Run) LoadResults(filePath string) error {
-	buf, err := utils.ReadFile(filePath)
-	if err != nil {
-		return err
-	}
-	reNewline := regexp.MustCompile(`\r?\n`)
-	sbuf := reNewline.ReplaceAllString(string(buf), " ")
-
-	results := Results{}
-
-	if matchIndex := patternDateIndex.FindStringSubmatch(sbuf); matchIndex == nil {
-		return fmt.Errorf("cannot find run index")
-	} else {
-		s := matchIndex[2]
-		index, err := strconv.Atoi(s)
-		if err != nil {
-			return fmt.Errorf("cannot parse index: %v", err)
-		}
-		results.Index = index
-	}
-
-	matchesR0 := patternRunnerRow0.FindAllStringSubmatch(sbuf, -1)
-	for _, match0 := range matchesR0 {
-		if match := patternRunnerRow.FindStringSubmatch(match0[0]); match != nil {
-			name := html.UnescapeString(match[1])
-
-			ageGroup, sex, err := ParseAgeGroup(match[2])
-			if err != nil {
-				return err
-			}
-
-			runs, err := strconv.Atoi(match[3])
-			if err != nil {
-				return err
-			}
-
-			vols, err := strconv.Atoi(match[4])
-			if err != nil {
-				return err
-			}
-			id := match[6]
-
-			var runTime time.Duration = 0
-			if matchTime := patternTime.FindStringSubmatch(match0[0]); matchTime != nil {
-				split := strings.Split(matchTime[1], ":")
-				if len(split) == 3 {
-					t, err := time.ParseDuration(fmt.Sprintf("%sh%sm%ss", split[0], split[1], split[2]))
-					if err != nil {
-						panic(err)
-					}
-					runTime = t
-				} else if len(split) == 2 {
-					t, err := time.ParseDuration(fmt.Sprintf("%sm%ss", split[0], split[1]))
-					if err != nil {
-						panic(err)
-					}
-					runTime = t
-				} else {
-					panic(fmt.Errorf("cannot parse duration: %s", matchTime[1]))
-				}
-			}
-
-			results.Runners = append(results.Runners, &Participant{id, name, ageGroup, sex, int64(runs), int64(vols), runTime})
-			continue
-		}
-
-		if match := patternRunnerRowUnknown.FindStringSubmatch(match0[0]); match != nil {
-			name := html.UnescapeString(match[1])
-			results.Runners = append(results.Runners, &Participant{"", name, "??", SEX_UNKNOWN, 0, 0, 0})
-			continue
-		}
-
-		return fmt.Errorf("cannot parse table row: %s", match0[0])
-	}
-
-	var runnerWithTime *Participant = nil
-	for _, p := range results.Runners {
-		if p.Time != 0 {
-			runnerWithTime = p
-			break
-		}
-	}
-	if runnerWithTime != nil {
-		for _, p := range results.Runners {
-			if p.Time != 0 {
-				runnerWithTime = p
-			} else {
-				p.Time = runnerWithTime.Time
-			}
-		}
-	}
-
-	run.Results = &results
-
-	return nil
-}
 
 type Coordinates struct {
 	Lat, Lon float64
@@ -233,24 +28,16 @@ func (c Coordinates) IsValid() bool {
 }
 
 type Event struct {
-	Id                          string
-	Name                        string
-	Location                    string
-	SpecificLocation            string
-	Coords                      Coordinates
-	CountryUrl                  string
-	GoogleMapsId                string
-	RouteType                   string
-	Tracks                      [][]Coordinates
-	LatestRun                   *Run
-	Current                     bool
-	Order                       int
-	Status                      string
-	SummaryRegistrations        int
-	SummaryRunners              int
-	SummaryIndividualRunners    int
-	SummaryVolunteers           int
-	SummaryIndividualVolunteers int
+	Id               string
+	Name             string
+	Location         string
+	SpecificLocation string
+	Coords           Coordinates
+	CountryUrl       string
+	GoogleMapsId     string
+	RouteType        string
+	Tracks           [][]Coordinates
+	Status           string
 }
 
 func (event Event) Active() bool {
@@ -286,28 +73,6 @@ func (event Event) ResultsUrl() string {
 
 func (event Event) WikiUrl() string {
 	return fmt.Sprintf("https://wiki.parkrun.com/index.php/%s", strings.ReplaceAll(event.Name, " ", "_"))
-}
-
-func (event Event) LastRun() string {
-	run := event.LatestRun
-	if run == nil {
-		return "n/a"
-	}
-	return fmt.Sprintf("#%d am %s mit %s Teilnehmern", run.Index, run.Date.Format("01.02.2006"), run.Runners())
-}
-
-func (event Event) SummaryRunnersAvg() string {
-	if event.LatestRun != nil {
-		return fmt.Sprintf("%.1f", float64(event.SummaryRunners)/float64(event.LatestRun.Index))
-	}
-	return "n/a"
-}
-
-func (event Event) SummaryVolunteersAvg() string {
-	if event.LatestRun != nil {
-		return fmt.Sprintf("%.1f", float64(event.SummaryVolunteers)/float64(event.LatestRun.Index))
-	}
-	return "n/a"
 }
 
 type Link struct {
@@ -435,10 +200,6 @@ func (event Event) First() string {
 	return "?"
 }
 
-func (event Event) Outdated() bool {
-	return !event.Current
-}
-
 func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly bool) ([]*Event, error) {
 	buf1, err := utils.ReadFile(parkruns_json_file)
 	if err != nil {
@@ -470,7 +231,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 			continue
 		}
 
-		event := &Event{e.Name, e.LongName, e.Location, "", Coordinates{e.Coordinates.Lat, e.Coordinates.Lng}, e.Country.Url, "", "", nil, nil, false, 0, "", 0, 0, 0, 0, 0}
+		event := &Event{e.Name, e.LongName, e.Location, "", Coordinates{e.Coordinates.Lat, e.Coordinates.Lng}, e.Country.Url, "", "", nil, ""}
 		eventList = append(eventList, event)
 		eventMap[e.Name] = event
 	}
@@ -490,7 +251,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 			event.GoogleMapsId = info.RouteId
 			continue
 		}
-		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, "", info.RouteId, info.RouteType, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
+		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, "", info.RouteId, info.RouteType, nil, info.Status}
 		eventList = append(eventList, event)
 	}
 
@@ -498,208 +259,6 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 		return eventList[i].Id < eventList[j].Id
 	})
 	return eventList, nil
-}
-
-var reDate = regexp.MustCompile(`^\s*(\d+)(st|nd|rd|th)\s+(\S+)\s+(\d\d\d\d)\s*$`)
-var reDate2 = regexp.MustCompile(`^\s*(\d\d)\.(\d\d)\.(\d\d\d\d)\s*$`)
-
-func parseDate(s string) (time.Time, error) {
-	dd := ""
-	mm := ""
-	yy := ""
-	if m := reDate.FindStringSubmatch(s); m != nil {
-		dd = m[1]
-		yy = m[4]
-		mm = m[3]
-	} else if m := reDate2.FindStringSubmatch(s); m != nil {
-		dd = m[1]
-		mm = m[2]
-		yy = m[3]
-	} else {
-		return time.Time{}, fmt.Errorf("cannot parse date (regexp failed): %s", s)
-	}
-
-	day, err := strconv.ParseInt(dd, 10, 0)
-	if err != nil {
-		return time.Time{}, err
-	}
-	year, err := strconv.ParseInt(yy, 10, 0)
-	if err != nil {
-		return time.Time{}, err
-	}
-
-	// named months
-	for month := 1; month <= 12; month += 1 {
-		if mm == time.Month(month).String() {
-			return time.Date(int(year), time.Month(month), int(day), 0, 0, 0, 0, time.Local), nil
-		}
-	}
-	// numbered months
-	month, err := strconv.ParseInt(mm, 10, 0)
-	if err == nil {
-		return time.Date(int(year), time.Month(month), int(day), 0, 0, 0, 0, time.Local), nil
-	}
-
-	return time.Time{}, fmt.Errorf("cannot parse date (month failed): %s", s)
-}
-
-const (
-	StateStart = iota
-	StateDate
-	StateIndex
-	StateRunners
-	StateEnd
-)
-
-func (event *Event) LoadWiki(filePath string) error {
-	buf, err := utils.ReadFile(filePath)
-	if err != nil {
-		return err
-	}
-	sbuf := string(buf)
-	lines := strings.Split(sbuf, "\n")
-
-	state := StateStart
-	dateS := ""
-	indexS := ""
-	runnersS := ""
-	reTd := regexp.MustCompile(`^\s*<td>(.*)\s*$`)
-	for _, line := range lines {
-		if state == StateStart {
-			if strings.Contains(line, "Most_Recent_Event_Summary") {
-				state = StateDate
-			}
-		} else if state == StateDate {
-			if m := reTd.FindStringSubmatch(line); m != nil {
-				dateS = strings.TrimSpace(m[1])
-				state = StateIndex
-				log.Printf("parkrun: found date '%s' in wiki file '%s'", dateS, filePath)
-			}
-		} else if state == StateIndex {
-			if m := reTd.FindStringSubmatch(line); m != nil {
-				indexS = strings.TrimSpace(m[1])
-				state = StateRunners
-				log.Printf("parkrun: found index '%s' in wiki file '%s'", indexS, filePath)
-			}
-		} else if state == StateRunners {
-			if m := reTd.FindStringSubmatch(line); m != nil {
-				runnersS = strings.TrimSpace(m[1])
-				state = StateEnd
-				log.Printf("parkrun: found runners '%s' in wiki file '%s'", runnersS, filePath)
-				break
-			}
-		}
-	}
-	if state != StateEnd {
-		return fmt.Errorf("failed to fetch results table")
-	}
-
-	if dateS == "" {
-		// no runs, yet!
-		return nil
-	}
-
-	date, err := parseDate(dateS)
-	if err != nil {
-		return fmt.Errorf("cannot parse run date: %s; %s", dateS, err)
-	}
-	index, err := strconv.ParseInt(indexS, 10, 32)
-	if err != nil {
-		return fmt.Errorf("cannot parse run index: %s", indexS)
-	}
-	runners, err := strconv.ParseInt(runnersS, 10, 32)
-	if err != nil {
-		return fmt.Errorf("cannot parse runners: %s", runnersS)
-	}
-
-	event.LatestRun = &Run{event, int(index), date, int(runners), nil}
-
-	// try to find summary table
-	table := make([]string, 0)
-	state = 0
-	for _, line := range lines {
-		if state == 0 {
-			if line == `<th>Past Week` {
-				state = 1
-				table = append(table, line)
-			}
-		} else if state == 1 {
-			table = append(table, line)
-			if line == `</table>` {
-				state = 2
-				break
-			}
-		}
-	}
-	if state == 2 {
-		if err = event.parseWikiSummaryTable(table); err != nil {
-			fmt.Printf("%s: while parsing wiki summary table from '%s': %v\n", event.Id, filePath, err)
-		}
-	}
-
-	return nil
-}
-
-func (event *Event) parseWikiSummaryTable(lines []string) error {
-	event.SummaryRegistrations = 0
-	event.SummaryRunners = 0
-	event.SummaryIndividualRunners = 0
-	event.SummaryVolunteers = 0
-	event.SummaryIndividualVolunteers = 0
-
-	hasValue := false
-	values := []*int{&event.SummaryRegistrations, &event.SummaryRunners, &event.SummaryIndividualRunners, &event.SummaryVolunteers, &event.SummaryIndividualVolunteers}
-	headers := []string{"<th>Registrations", "<th>Runs", "<th>Participants", "<th>Volunteer Occasions", "<th>Volunteers", "</table>"}
-	state := -1
-	reTd := regexp.MustCompile(`^<td>(\d+)$`)
-
-	for _, line := range lines {
-		if line == headers[state+1] {
-			state += 1
-			hasValue = false
-			if state+1 == len(headers) {
-				break
-			}
-		} else if state >= 0 && !hasValue {
-			if m := reTd.FindStringSubmatch(line); m != nil {
-				hasValue = true
-				if i, err := strconv.Atoi(m[1]); err != nil {
-					return fmt.Errorf("cannot parse value: '%s'; error: %v", m[1], err)
-				} else {
-					*(values[state]) = i
-				}
-			}
-		}
-	}
-
-	if state+1 != len(headers) {
-		return fmt.Errorf("cannot find all fields")
-	}
-
-	return nil
-}
-
-// <iframe src="https://www.google.com/maps/d/embed?t=h&mid=1jzu9KWQBw__FbZHD3RW6KqLY9CxMzQAa" width="450" height="450"></iframe>
-var reMapsId = regexp.MustCompile(`<iframe src="https://www\.google\.[^/]+/maps/[^"]*mid=([^"&]+)("|&)`)
-
-func (event *Event) LoadCoursePage(filePath string) error {
-	buf, err := utils.ReadFile(filePath)
-	if err != nil {
-		return err
-	}
-	sbuf := string(buf)
-
-	event.GoogleMapsId = ""
-	for _, line := range strings.Split(sbuf, "\n") {
-		if m := reMapsId.FindStringSubmatch(line); m != nil {
-			event.GoogleMapsId = m[1]
-		}
-	}
-
-	if event.GoogleMapsId == "" {
-		return fmt.Errorf("cannot find map of course page")
-	}
-	return nil
 }
 
 type KML struct {
@@ -727,10 +286,6 @@ type Point struct {
 
 type LineString struct {
 	Coordinates string `xml:"coordinates"`
-}
-
-func escape(s string) string {
-	return strings.ReplaceAll(s, "\\", "\\\\")
 }
 
 var reCoordinatesStart = regexp.MustCompile(`^\s*<coordinates>\s*$`)
@@ -867,15 +422,6 @@ func RenderJs(events []*Event, filePath string) error {
 			fmt.Fprintf(out, "\"planned\": true,\n")
 		} else {
 			fmt.Fprintf(out, "\"planned\": false,\n")
-		}
-		if event.LatestRun != nil {
-			fmt.Fprintf(out, "\"latest\": {\n")
-			fmt.Fprintf(out, "\"index\": %d,\n", event.LatestRun.Index)
-			fmt.Fprintf(out, "\"date\": \"%s\",\n", event.LatestRun.DateF())
-			fmt.Fprintf(out, "\"runners\": %d\n", event.LatestRun.RunnerCount)
-			fmt.Fprintf(out, "}\n")
-		} else {
-			fmt.Fprintf(out, "\"latest\": null\n")
 		}
 
 		/*
