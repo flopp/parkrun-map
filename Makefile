@@ -1,9 +1,8 @@
 .phony: all
-all:
-	echo "run - build & sync"
+all: run
 
-.phony: run
-run:
+.phony: build
+build:
 	rm -rf .output
 	go run cmd/generate/main.go \
 		-verbose \
@@ -11,7 +10,7 @@ run:
     	-download ".download" \
     	-output   ".output"
 
-.phony: upload
-upload: run
+.phony: run
+run: build
 	rsync -a .output/ echeclus.uberspace.de:/var/www/virtual/floppnet/parkrun.flopp.net/
 	ssh echeclus.uberspace.de chmod -R o=u /var/www/virtual/floppnet/parkrun.flopp.net
