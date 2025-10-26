@@ -257,8 +257,8 @@
         "id": "globe",
         "name": "Globe parkrun",
         "city": "Schwäbisch Hall, BW",
-        "routeid": "1d-lDrHprMSZeoukRR9fsPziRmjGTTg4",
-        "googlemaps": "https://maps.app.goo.gl/4rv49Tm1inbFd76h8",
+        "routeid": "18Wa3CHlA85ZAVaU-ESGIsn9ap7eK97k",
+        "googlemaps": "https://maps.app.goo.gl/JMnExwGrtshQQCzX9",
         "first": "28.09.2019",
         "cafe": {
             "name": "Café Ableitner",
@@ -993,7 +993,6 @@
         "routeid": "1gLVnnKScJtVqco5doI80dsTrTr5JpG4",
         "googlemaps": "https://maps.app.goo.gl/8FdmKhnQgw8ubAvK6",
         "first": "04.10.2025",
-        "status": "geplant",
         "coordinates": "51.362339 6.637604",
         "social": [
             {"name": "Instagram", "url": "https://www.instagram.com/uerdinger_stadtpark_parkrun/"}
