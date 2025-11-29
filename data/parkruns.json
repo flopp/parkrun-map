@@ -347,6 +347,20 @@
         ]
     },
     {
+        "id": "illeruferkempten",
+        "name": "Illerufer parkrun",
+        "city": "Kempten, BY",
+        "location": "entlang der Iller",
+        "routetype": "Hin und zurück",
+        "routeid": "1IkfJ--c1-7pEVbl-RS_5ml9OZy7rP3w",
+        "googlemaps": "https://maps.app.goo.gl/n4Qz7APXzGfGcREx9",
+        "first": "29.11.2025",
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/illeruferparkrunkempten"},
+            {"name": "Instagram", "url": "https://www.instagram.com/parkrun.illerufer/"}
+        ]
+    },
+    {
         "id": "kastanienallee",
         "name": "Kastanienallee parkrun",
         "city": "Tübingen, BW",
