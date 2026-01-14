@@ -738,6 +738,21 @@
         ]
     },
     {
+        "id": "padersee",
+        "name": "Padersee parkrun",
+        "city": "Paderborn, NRW",
+        "location": "Rund um den Padersee",
+        "routetype": "2,5 Runden",
+        "routeid": "1vKk5zewqvBvZghdfVWyoGbg94D5knao",
+        "googlemaps": "https://maps.app.goo.gl/LBhMhYiwrsRAYYU4A",
+        "first": "10.01.2026",
+        "coordinates": "51.734226 8.726411",
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/paderseeparkrun"},
+            {"name": "Instagram", "url": "https://www.instagram.com/padersee_parkrun"}
+        ]
+    },
+    {
         "id": "pferdebachtal",
         "name": "Pferdebachtal parkrun",
         "city": "Dortmund, NRW",
