@@ -1129,6 +1129,17 @@
         ]
     },
     {
+        "id": "wittelsbacherpark",
+        "name": "Wittelsbacher Park parkrun",
+        "city": "Augsburg, BY",
+        "location": "Wittelsbacher Park",
+        "routeid": "1AdKwicsBFMfaGlA8ShXn0wOeuFWSAX7o",
+        "googlemaps": "https://maps.app.goo.gl/F6XCPdrTCzDp2omZA",
+        "first": "",
+        "status": "geschlossen",
+        "coordinates": "48.359835 10.887663"
+    },
+    {
         "id": "woehrdersee",
         "name": "Wöhrder See parkrun",
         "city": "Nürnberg, BY",
