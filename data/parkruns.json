@@ -331,20 +331,6 @@
     {
         "id": "hockgraben",
         "name": "Hockgraben parkrun",
-        "city": "Öhringen, BW",
-        "location": "Hofgarten, Öhriungen",
-        "routetype": "3 Runden",
-        "routeid": "1npbgHt2lZx7CssuPozt-6UKuUO9lKAU",
-        "status": "geplant",
-        "googlemaps": "https://maps.app.goo.gl/wGaHqiPCngc9igBU6",
-        "first": "?",
-        "social": [
-            {"name": "Facebook", "url": "https://www.instagram.com/bringing_parkrun_to_oehringen/"}
-        ]
-    },
-    {
-        "id": "hofgarten",
-        "name": "Hofgarten parkrun",
         "city": "Konstanz, BW",
         "location": "Hockgrabental",
         "routetype": "2 Runden",
@@ -358,6 +344,20 @@
         "social": [
             {"name": "Facebook", "url": "https://www.facebook.com/hockgrabenparkrun"},
             {"name": "Instagram", "url": "https://www.instagram.com/hockgraben_parkrun/"}
+        ]
+    },
+    {
+        "id": "hofgarten",
+        "name": "Hofgarten parkrun",
+        "city": "Öhringen, BW",
+        "location": "Hofgarten",
+        "routetype": "3 Runden",
+        "routeid": "1npbgHt2lZx7CssuPozt-6UKuUO9lKAU",
+        "status": "geplant",
+        "googlemaps": "https://maps.app.goo.gl/wGaHqiPCngc9igBU6",
+        "first": "?",
+        "social": [
+            {"name": "Instagram", "url": "https://www.instagram.com/bringing_parkrun_to_oehringen/"}
         ]
     },
     {
