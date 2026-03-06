@@ -11,6 +11,13 @@ html.has-two-navbars-fixed-top {
     z-index: 9999;
 }
 
+.navbar-brand img {
+    width: var(--bulma-navbar-height);
+    height: var(--bulma-navbar-height);
+    max-height: var(--bulma-navbar-height);
+    margin-right: .5rem;
+}
+
 #parkrun-map {
     height: 400px;
     width: 100%;

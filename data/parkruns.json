@@ -355,7 +355,7 @@
         "routeid": "1npbgHt2lZx7CssuPozt-6UKuUO9lKAU",
         "status": "geplant",
         "googlemaps": "https://maps.app.goo.gl/wGaHqiPCngc9igBU6",
-        "first": "?",
+        "first": "07.03.2026",
         "social": [
             {"name": "Instagram", "url": "https://www.instagram.com/bringing_parkrun_to_oehringen/"}
         ]
@@ -470,6 +470,15 @@
             {"name": "Facebook", "url": "https://www.facebook.com/kuechenholzparkrun"},
             {"name": "Instagram", "url": "https://www.instagram.com/kuechenholzparkrun/"}
         ]
+    },
+    {
+        "id": "kulturparkneubrandenburg",
+        "name": "Kulturpark Neubrandenburg parkrun",
+        "city": "Neubrandenburg, BB",
+        "routeid": "1L4dwgbCyxpd4DgZVuHsSfGNru3eflAI",
+        "googlemaps": "https://maps.app.goo.gl/NPWY1wUq4r7M2Ru17",
+        "first": "21.03.2026",
+        "status": "geplant"
     },
     {
         "id": "kurtschumacherpromenade",
@@ -1013,6 +1022,23 @@
         "social": [
             {"name": "Facebook", "url": "https://www.facebook.com/stadtparkparkrunchemnitz"},
             {"name": "Instagram", "url": "https://www.instagram.com/parkrunchemnitz"}
+        ]
+    },
+    {
+        "id": "talaue",
+        "name": "Talaue parkrun",
+        "city": "Waiblingen, BW",
+        "routeid": "1EOIPR6dJlDVTrTbf91HVh6vHJVxSaB8",
+        "googlemaps": "hhttps://maps.app.goo.gl/8PKXHm3U5hBPVZTp9",
+        "first": "28.03.2026",
+        "status": "geplant",
+        "routetype": "2 Runden",
+        "location": "Naturschutzgebiet Talaue",
+        "strava": [
+            {"name": "Club", "url": "https://www.strava.com/clubs/1644229"}
+        ],
+        "social": [
+            {"name": "Instagram", "url": "https://www.instagram.com/talaue_parkrun_waiblingen"}
         ]
     },
     {

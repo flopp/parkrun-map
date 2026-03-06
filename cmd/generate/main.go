@@ -199,6 +199,8 @@ func main() {
 		utils.MustCopyHash(data.Path(fmt.Sprintf("static/marker-%s-icon.png", color)), fmt.Sprintf("images/marker-%s-icon.png", color), *outputDir)
 		utils.MustCopyHash(data.Path(fmt.Sprintf("static/marker-%s-icon-2x.png", color)), fmt.Sprintf("images/marker-%s-icon-2x.png", color), *outputDir)
 	}
+	utils.MustCopyHash(data.Path("static", "favicon.ico"), "favicon.ico", *outputDir)
+	utils.MustCopyHash(data.Path("static", "favicon.svg"), "favicon.svg", *outputDir)
 	mustCreateIndexNow("thawdud8qq3z98b993auzzqx8rxyramn", *outputDir)
 
 	// render templates to output folder
