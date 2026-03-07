@@ -1,33 +1,16 @@
 {{template "header.html" .}}        
-<section class="section">
-    <div class="container">
-        <h1 class="title">
+    <main class="container">
+        <h1>
             parkruns in Deutschland
         </h1>
-        <p class="subtitle">
+        <article>
             Es gibt momentan {{.ActiveEvents}} aktive{{if or .PlannedEvents .ArchivedEvents}} (und {{if .PlannedEvents}}{{.PlannedEvents}} geplante & {{end}}{{.ArchivedEvents}} archivierte){{end}} parkrun-Standorte in Deutschland.
-        </p>
+        
+            Hier ist die Liste aller parkruns.
+        </article>
 
-        <div class="notification is-info">
-            <div class="content">
-                Hier ist die Liste aller parkruns.
-                <br>
-                Im offiziellen parkrun-Wiki gibt es weitere Statistiken zu Deutschland:
-                <ul>
-                    <li><a href="https://wiki.parkrun.com/index.php/Summary_Statistics_By_Event/Germany" target="_blank">Gesamtstatistik der letzten 7 Tage</a></li>
-                    <li><a href="https://wiki.parkrun.com/index.php/Fastest_15/Germany" target="_blank">Die schnellsten 15 Männer & Frauen der letzten 7 Tage</a></li>
-                    <li><a href="https://wiki.parkrun.com/index.php/Weekly_Totals_History/Germany" target="_blank">Historische Wochen-Entwicklung</a></li>
-                </ul> 
-            </div>
-        </div>
-
-        <table class="table is-narrow is-striped is-hoverable is-fullwidth">
+        <table class="striped">
             <thead>
-                <tr>
-                    <th></th>
-                    <th class="is-hidden-mobile"></th>
-                    <th class="is-hidden-mobile"></th>
-                </tr>
                 <tr>
                     <th>Name</th>
                     <th class="is-hidden-mobile">Ort</th>
@@ -41,26 +24,20 @@
                         {{if .Active}}
                         <a href="{{.Id}}.html">{{.FixedName}}</a>
                         {{else if .Planned}}
-                        <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag is-success is-light">geplant</span>
+                        <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag-green">geplant</span>
                         {{else}}
-                        <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag is-danger is-light">archiviert</span>
+                        <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag-red">archiviert</span>
                         {{end}}
-                        <div class="is-hidden-tablet">
-                            <a target="_blank" class="is-hidden-tablet is-size-7 is-italic" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
-                            <br>
-                            <span class="is-hidden-tablet is-size-7 is-italic">Seit {{.First}}</span>
-                        </div>
                     </td>
-                    <td class="is-hidden-mobile">
+                    <td>
                         <a target="_blank" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
                     </td>
-                    <td class="is-hidden-mobile tnum">
+                    <td class="tnum">
                         {{.First}}
                     </td>
                 </tr>
                 {{end}}
             </tbody>
         </table>
-    </div>
-</section>
+    </main>
 {{template "footer.html" .}}

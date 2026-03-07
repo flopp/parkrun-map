@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de" class="has-two-navbars-fixed-top" data-theme="light">
+<html lang="de" data-theme="light">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,78 +11,20 @@
         {{range .CssFiles}}
         <link rel="stylesheet" href="/{{.}}"/>
         {{end}}
-        <style>
-            .tnum {
-                font-variant-numeric: tabular-nums;
-            }
-            html, body, #map {
-                height: 100%;
-                width: 100%;
-            }
-        </style>
-        <script defer src="https://cloud.umami.is/script.js" data-website-id="1a1aec1c-864a-4398-9ec9-b9a8973374c7"></script>
     </head>
-    <body>
-        <nav class="navbar is-fixed-top is-hidden-touch z-top" role="navigation" aria-label="main navigation">
-            <div class="container">
-                <div class="navbar-brand">
-                    <div class="navbar-item is-flex-direction-row pl-0 pt-0 pb-0 mr-4">
-                        <img src="favicon.svg" alt="Logo">
-                        <div class="is-flex-direction-column is-gapless">
-                            <div class="has-text-weight-bold">parkruns in Deutschland</div>
-                            <div class="is-size-7 has-text-centered">(inoffizielle Webseite)</div>
-                        </div>
-                    </div>
-                    <a class="navbar-item{{if eq .Nav "map"}} is-selected has-text-white{{end}}" href="index.html" target="_top">
-                        Karte
-                    </a>
-                    <a class="navbar-item{{if eq .Nav "list"}} is-selected has-text-white{{end}}" href="liste.html" target="_top">
-                        Liste    
-                    </a>
-                    <a class="navbar-item{{if eq .Nav "info"}} is-selected has-text-white{{end}}" href="info.html" target="_top">
-                        Info    
-                    </a>
-                </div>
-                <div class="navbar-menu">
-                    <div class="navbar-end">
-                        <a class="navbar-item{{if eq .Nav "impressum"}} is-selected has-text-white{{end}}" href="impressum.html" target="_top">
-                            Impressum    
-                        </a>
-                        <a class="navbar-item{{if eq .Nav "datenschutz"}} is-selected has-text-white{{end}}" href="datenschutz.html" target="_top">
-                            Datenschutz    
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <nav class="navbar is-fixed-top is-hidden-desktop" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <div class="navbar-item is-flex-direction-row pl-0 pt-0 pb-0 mr-4">
-                    <img src="favicon.svg" alt="Logo">
-                    <div class="is-flex-direction-column is-gapless">
-                        <div class="has-text-weight-bold">parkruns in Deutschland</div>
-                        <div class="is-size-7 has-text-centered">(inoffizielle Webseite)</div>
-                    </div>
-                </div>
-                <div class="is-flex-grow-1"></div>
-                <a class="navbar-item{{if eq .Nav "impressum"}} is-selected has-text-white{{end}}" href="impressum.html" target="_top">
-                    Impressum    
-                </a>
-            </div>
-            <div class="navbar-brand">
-                <a class="navbar-item{{if eq .Nav "map"}} is-selected has-text-white{{end}}" href="index.html" target="_top">
-                    Karte
-                </a>
-                <a class="navbar-item{{if eq .Nav "list"}} is-selected has-text-white{{end}}" href="liste.html" target="_top">
-                    Liste
-                </a>
-                <a class="navbar-item{{if eq .Nav "info"}} is-selected has-text-white{{end}}" href="info.html" target="_top">
-                    Info
-                </a>
-                <div class="is-flex-grow-1"></div>
-                <a class="navbar-item{{if eq .Nav "datenschutz"}} is-selected has-text-white{{end}}" href="datenschutz.html" target="_top">
-                    Datenschutz
-                </a>
-            </div>
-            </div>
-        </nav>
+    <body {{if eq .Nav "map"}}class="full-body"{{end}}>
+        <header class="container">
+            <nav>
+                <ul>
+                    <li style="display: flex; flex-direction: row;">
+                        <img src="favicon.svg" alt="Logo" style="width: 3rem; height: 3rem; margin-right: 0.5rem;">
+                        <div style="display: flex; flex-direction: column;"><strong>parkruns in Deutschland</strong><span>(inoffizielle Webseite)</span></div>
+                    </li>
+                </ul>
+                <ul>
+                    <li><a href="index.html" {{if eq .Nav "map"}}class="secondary"{{end}}>Karte</a></li>
+                    <li><a href="liste.html" {{if eq .Nav "list"}}class="secondary"{{end}}>Liste</a></li>
+                    <li><a href="info.html" {{if eq .Nav "info"}}class="secondary"{{end}}>Info</a></li>
+                </ul>
+            </nav>
+        </header>

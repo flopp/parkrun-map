@@ -161,13 +161,11 @@ func main() {
 
 	// fetch external assets (bulma, leaflet)
 
-	// renovate: datasource=npm depName=bulma
-	bulma_version := "1.0.4"
 	// renovate: datasource=npm depName=leaflet
 	leaflet_version := "1.9.4"
 
-	bulma_url := PathBuilder(fmt.Sprintf("https://unpkg.com/bulma@%s", bulma_version))
 	leaflet_url := PathBuilder(fmt.Sprintf("https://unpkg.com/leaflet@%s", leaflet_version))
+	picocss_url := PathBuilder("https://cdn.jsdelivr.net/npm/@picocss/pico@2/css")
 
 	// download leaflet
 	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/leaflet.js"), download.Path("leaflet", "leaflet.js"), fileAge1w)
@@ -176,8 +174,8 @@ func main() {
 	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/images/marker-icon-2x.png"), download.Path("leaflet", "marker-icon-2x.png"), fileAge1w)
 	utils.MustDownloadFileIfOlder(leaflet_url.Path("dist/images/marker-shadow.png"), download.Path("leaflet", "marker-shadow.png"), fileAge1w)
 
-	// download bulma
-	utils.MustDownloadFileIfOlder(bulma_url.Path("css/bulma.min.css"), download.Path("bulma", "bulma.css"), fileAge1w)
+	// download picocss
+	utils.MustDownloadFileIfOlder(picocss_url.Path("pico.min.css"), download.Path("picocss", "pico.css"), fileAge1w)
 
 	// render data
 	if err := parkrun.RenderJs(events, download.Path("data.js")); err != nil {
@@ -189,9 +187,10 @@ func main() {
 	js_files = append(js_files, utils.MustCopyHash(download.Path("leaflet/leaflet.js"), "leaflet-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(data.Path("static", "main.js"), "main-HASH.js", *outputDir))
 	css_files := make([]string, 0)
-	css_files = append(css_files, utils.MustCopyHash(download.Path("bulma/bulma.css"), "bulma-HASH.css", *outputDir))
+	css_files = append(css_files, utils.MustCopyHash(download.Path("picocss/pico.css"), "pico-HASH.css", *outputDir))
 	css_files = append(css_files, utils.MustCopyHash(download.Path("leaflet/leaflet.css"), "leaflet-HASH.css", *outputDir))
 	css_files = append(css_files, utils.MustCopyHash(data.Path("static", "style.css"), "style-HASH.css", *outputDir))
+
 	utils.MustCopyHash(download.Path("leaflet/marker-icon.png"), "images/marker-icon.png", *outputDir)
 	utils.MustCopyHash(download.Path("leaflet/marker-icon-2x.png"), "images/marker-icon-2x.png", *outputDir)
 	utils.MustCopyHash(download.Path("leaflet/marker-shadow.png"), "images/marker-shadow.png", *outputDir)
