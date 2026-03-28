@@ -759,6 +759,22 @@
         ]
     },
     {
+        "id": "ophovenerweiher",
+        "name": "Ophovener Weiher parkrun",
+        "city": "Leverkusen, NRW",
+        "location": "Ophovener Weiher + Mühlenbachtal Park",
+        "routeid": "163BeBs5WpUETog8Hyc_et6YJNkbuthA",
+        "googlemaps": "https://maps.app.goo.gl/Q2GP4L9hixSF64pH8",
+        "first": "18.04.2026",
+        "status": "geplant",
+        "strava": [
+            {"name": "Club", "url": "https://www.strava.com/clubs/1718435"}
+        ],
+        "social": [
+            {"name": "Instagram", "url": "https://www.instagram.com/ophovener_weiher_parkrun/"}
+        ]
+    },
+    {
         "id": "padersee",
         "name": "Padersee parkrun",
         "city": "Paderborn, NRW",
@@ -1027,9 +1043,8 @@
         "name": "Talaue parkrun",
         "city": "Waiblingen, BW",
         "routeid": "1EOIPR6dJlDVTrTbf91HVh6vHJVxSaB8",
-        "googlemaps": "hhttps://maps.app.goo.gl/8PKXHm3U5hBPVZTp9",
+        "googlemaps": "https://maps.app.goo.gl/8PKXHm3U5hBPVZTp9",
         "first": "28.03.2026",
-        "status": "geplant",
         "routetype": "2 Runden",
         "location": "Naturschutzgebiet Talaue",
         "strava": [
@@ -1037,6 +1052,24 @@
         ],
         "social": [
             {"name": "Instagram", "url": "https://www.instagram.com/talaue_parkrun_waiblingen"}
+        ]
+    },
+    {
+        "id": "tempelhoferfeld",
+        "name": "Tempelhofer Feld parkrun",
+        "city": "Berlin, BE",
+        "routeid": "1ZTSeskXiifyYTQmFTF1NJOpwhibw5R8",
+        "googlemaps": "https://maps.app.goo.gl/yd2NoQmcHdhDTYKH9",
+        "first": "18.04.2026",
+        "routetype": "1 Runde",
+        "location": "Tempelhofer Feld",
+        "status": "geplant",
+        "coordinates": "52.474462 13.391261",
+        "strava": [
+            {"name": "Club", "url": "https://www.strava.com/clubs/THFparkrun"}
+        ],
+        "social": [
+            {"name": "Instagram", "url": "https://www.instagram.com/tempelhoferfeld_parkrun"}
         ]
     },
     {
