@@ -1289,5 +1289,19 @@
             {"name": "Facebook", "url": "https://www.facebook.com/profile.php?id=100066681151802"},
             {"name": "Instagram", "url": ""}
         ]
+    },
+    {
+        "id": "zschopauaue",
+        "name": "Zschopauaue parkrun",
+        "city": "Frankenberg, SN",
+        "routeid": "1uAFKDubPF5YLoWrYV-WNXAnTxQXimj0",
+        "googlemaps": "https://maps.app.goo.gl/VPtLFxMHqyhRkJNn7",
+        "first": "25.04.2026",
+        "status": "geplnt",
+        "coordinates": "49.587304 11.027033",
+        "social": [
+            {"name": "Facebook", "url": "https://www.facebook.com/zschopauaueparkrun"},
+            {"name": "Instagram", "url": "https://www.instagram.com/zschopauaueparkrun"}
+        ]
     }
 ]
