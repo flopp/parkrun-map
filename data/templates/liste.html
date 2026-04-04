@@ -13,8 +13,11 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th class="is-hidden-mobile">Ort</th>
-                    <th class="is-hidden-mobile">Seit</th>
+                    <th>Ort</th>
+                    <th>Seit</th>
+                    <th>Letzter Lauf</th>
+                    <th>Teilnehmer</th>
+                    <th>Rang</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,6 +38,24 @@
                     <td class="tnum">
                         {{.First}}
                     </td>
+                    {{if .LatestRun}}
+                    <td {{if .Outdated}}class="grey-text"{{end}}>
+                        <span class="tnum">{{.LatestRun.DateF}}</span>  
+                        <a class="tnum" target="_blank" href="{{.LatestRun.Url}}">#{{.LatestRun.Index}}</a>
+                    </td>
+                    <td {{if .Outdated}}class="grey-text"{{end}}>
+                        <span class="tnum">{{.LatestRun.Runners}}</span> Teilnehmer
+                    </td>
+                    {{if .Outdated}}
+                    <td class="grey-text">-</td>
+                    {{else}}
+                    <td>
+                        <span class="tnum">{{.Order}}</span>
+                    </td>
+                    {{end}}
+                    {{else}}
+                    <td colspan="3">-</td>
+                    {{end}}
                 </tr>
                 {{end}}
             </tbody>

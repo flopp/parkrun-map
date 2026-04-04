@@ -11,6 +11,12 @@
         {{end}}
         <tr><td>Ort</td><td>{{if .Event.SpecificLocation}}{{.Event.SpecificLocation}}, {{end}}{{.Event.FixedLocation}}</td></tr>
         <tr><td>Seit</td><td>{{.Event.First}}</td></tr>
+        {{if .Event.LatestRun}}
+        <tr><td>Austragungen</td><td>{{.Event.LatestRun.Index}}</td></tr>
+        <tr><td>Letzte Austragung</td><td><a href="{{.Event.LatestRun.Url}}" target="_blank">#{{.Event.LatestRun.Index}} am {{.Event.LatestRun.DateF}}, {{.Event.LatestRun.RunnerCount}} Teilnehmer</a></td></tr>
+        <tr><td>Teilnehmer</td><td>Σ={{.Event.SummaryRunners}} #={{.Event.SummaryIndividualRunners}} ⌀={{.Event.SummaryRunnersAvg}}</td></tr>
+        <tr><td>Helfer</td><td>Σ={{.Event.SummaryVolunteers}} #={{.Event.SummaryIndividualVolunteers}} ⌀={{.Event.SummaryVolunteersAvg}}</td></tr>
+        {{end}}
         {{if .Event.RouteType}}
         <tr><td>Streckenart</td><td>{{.Event.RouteType}}</td></tr>
         {{end}}

@@ -63,3 +63,6 @@ html, body, #map{
     padding: 0.25em 0.5em;
     font-size: 75%;
 }
+.grey-text {
+    color: #7a7a7a;
+}
