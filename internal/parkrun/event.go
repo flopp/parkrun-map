@@ -1,7 +1,6 @@
 package parkrun
 
 import (
-	"encoding/json"
 	"fmt"
 	"html"
 	"log"
@@ -315,6 +314,18 @@ type Link struct {
 	Url  string
 }
 
+func ParseLink(s string) (Link, error) {
+	if s == "" {
+		return Link{}, nil
+	}
+
+	parts := strings.SplitN(s, "|", 2)
+	if len(parts) != 2 {
+		return Link{}, fmt.Errorf("invalid link format: %s", s)
+	}
+	return Link{parts[0], parts[1]}, nil
+}
+
 func (link Link) IsValid() bool {
 	return len(link.Name) > 0 && len(link.Url) > 0
 }
@@ -325,16 +336,12 @@ type ParkrunInfo struct {
 	City        string
 	Location    string
 	RouteType   string
+	RouteID     string
 	GoogleMaps  string
 	First       string
 	Status      string
 	Coordinates string
-	Cafe        struct {
-		Name       string
-		GoogleMaps string
-	}
-	Strava []Link
-	Social []Link
+	Links       []Link
 }
 
 func (info ParkrunInfo) ParseCoordinates() (Coordinates, error) {
@@ -342,6 +349,18 @@ func (info ParkrunInfo) ParseCoordinates() (Coordinates, error) {
 		return InvalidCoordinates, nil
 	}
 	r := regexp.MustCompile(`^\s*(-?[0-9\.]+)\s+(-?[0-9\.]+)\s*$`)
+	if m := r.FindStringSubmatch(info.Coordinates); m != nil {
+		lat, err := strconv.ParseFloat(m[1], 64)
+		if err != nil {
+			return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
+		}
+		lon, err := strconv.ParseFloat(m[2], 64)
+		if err != nil {
+			return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
+		}
+		return Coordinates{lat, lon}, nil
+	}
+	r = regexp.MustCompile(`^\s*(-?[0-9\.]+),(-?[0-9\.]+)\s*$`)
 	if m := r.FindStringSubmatch(info.Coordinates); m != nil {
 		lat, err := strconv.ParseFloat(m[1], 64)
 		if err != nil {
@@ -368,6 +387,10 @@ func (event Event) FixedLocation() string {
 	return event.Location
 }
 
+func (event Event) Coordinates() string {
+	return fmt.Sprintf("%f,%f", event.Coords.Lat, event.Coords.Lon)
+}
+
 func (event Event) GoogleMapsUrl() string {
 	if info, ok := parkrun_infos[event.Id]; ok {
 		if info.GoogleMaps != "" {
@@ -378,37 +401,27 @@ func (event Event) GoogleMapsUrl() string {
 	return fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%f%%2C%f", event.Coords.Lat, event.Coords.Lon)
 }
 
+func (event Event) GoogleMapsCourseId() string {
+	if info, ok := parkrun_infos[event.Id]; ok {
+		if info.RouteID != "" {
+			return info.RouteID
+		}
+	}
+
+	return event.GoogleMapsId
+}
+
 func (event Event) GoogleMapsCourseUrl() string {
-	if event.GoogleMapsId != "" {
-		return fmt.Sprintf("https://www.google.com/maps/d/viewer?mid=%s", event.GoogleMapsId)
+	id := event.GoogleMapsCourseId()
+	if id != "" {
+		return fmt.Sprintf("https://www.google.com/maps/d/viewer?mid=%s", id)
 	}
 	return ""
 }
 
-func (event Event) Cafe() Link {
+func (event Event) Links() []Link {
 	if info, ok := parkrun_infos[event.Id]; ok {
-		return Link{info.Cafe.Name, info.Cafe.GoogleMaps}
-	}
-	return Link{}
-}
-
-func (event Event) Strava() []Link {
-	if info, ok := parkrun_infos[event.Id]; ok {
-		return info.Strava
-	}
-
-	return nil
-}
-
-func (event Event) Social() []Link {
-	if info, ok := parkrun_infos[event.Id]; ok {
-		links := make([]Link, 0, len(info.Social))
-		for _, link := range info.Social {
-			if link.IsValid() {
-				links = append(links, link)
-			}
-		}
-		return links
+		return info.Links
 	}
 
 	return nil
@@ -438,20 +451,8 @@ func (event Event) Outdated() bool {
 	return !event.Current
 }
 
-func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly bool) ([]*Event, error) {
-	buf1, err := utils.ReadFile(parkruns_json_file)
-	if err != nil {
-		return nil, fmt.Errorf("reading %s: %w", parkruns_json_file, err)
-	}
-	var infos []ParkrunInfo
-	if err := json.Unmarshal(buf1, &infos); err != nil {
-		return nil, fmt.Errorf("parsing %s: %w", parkruns_json_file, err)
-	}
-	parkrun_infos = make(map[string]*ParkrunInfo)
-	for _, info := range infos {
-		parkrun_infos[info.Id] = &ParkrunInfo{info.Id, info.Name, info.City, info.Location, info.RouteType, info.GoogleMaps, info.First, info.Status, info.Coordinates, info.Cafe, info.Strava, info.Social}
-	}
-
+func LoadEvents(events_json_file string, parkrun_infos_param map[string]*ParkrunInfo, germanyOnly bool) ([]*Event, error) {
+	parkrun_infos = parkrun_infos_param
 	buf, err := utils.ReadFile(events_json_file)
 	if err != nil {
 		return nil, fmt.Errorf("reading %s: %w", events_json_file, err)
@@ -475,6 +476,7 @@ func LoadEvents(events_json_file string, parkruns_json_file string, germanyOnly 
 	}
 
 	for _, info := range parkrun_infos {
+		log.Printf("parkrun: processing info for event '%s'", info.Id)
 		coordinates, err := info.ParseCoordinates()
 		if err != nil {
 			return nil, fmt.Errorf("when parsing coordinates of '%s': %v", info.Name, info.Coordinates)
@@ -571,19 +573,19 @@ func (event *Event) LoadWiki(filePath string) error {
 			if m := reTd.FindStringSubmatch(line); m != nil {
 				dateS = strings.TrimSpace(m[1])
 				state = StateIndex
-				log.Printf("parkrun: found date '%s' in wiki file '%s'", dateS, filePath)
+				//log.Printf("parkrun: found date '%s' in wiki file '%s'", dateS, filePath)
 			}
 		} else if state == StateIndex {
 			if m := reTd.FindStringSubmatch(line); m != nil {
 				indexS = strings.TrimSpace(m[1])
 				state = StateRunners
-				log.Printf("parkrun: found index '%s' in wiki file '%s'", indexS, filePath)
+				//log.Printf("parkrun: found index '%s' in wiki file '%s'", indexS, filePath)
 			}
 		} else if state == StateRunners {
 			if m := reTd.FindStringSubmatch(line); m != nil {
 				runnersS = strings.TrimSpace(m[1])
 				state = StateEnd
-				log.Printf("parkrun: found runners '%s' in wiki file '%s'", runnersS, filePath)
+				//log.Printf("parkrun: found runners '%s' in wiki file '%s'", runnersS, filePath)
 				break
 			}
 		}
@@ -883,6 +885,31 @@ func RenderJs(events []*Event, filePath string) error {
 		fmt.Fprintf(out, "}\n")
 	}
 	fmt.Fprintf(out, "];")
+
+	return nil
+}
+
+func ExportCsv(events []*Event, filePath string) error {
+	if err := os.MkdirAll(filepath.Dir(filePath), 0770); err != nil {
+		return err
+	}
+
+	out, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	// export base data
+	fmt.Fprintf(out, "id;name;city;location;status;first;coordinates;route_type;google_route_id;google_maps_url;link1;link2;link3;link4;link5\n")
+
+	for _, event := range events {
+		fmt.Fprintf(out, "\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", event.Id, escapeQuotes(event.FixedName()), escapeQuotes(event.FixedLocation()), escapeQuotes(event.SpecificLocation), event.Status, event.First(), event.Coordinates(), event.RouteType, event.GoogleMapsCourseId(), event.GoogleMapsUrl())
+		for _, link := range event.Links() {
+			fmt.Fprintf(out, ";\"%s|%s\"", escapeQuotes(link.Name), escapeQuotes(link.Url))
+		}
+		fmt.Fprintf(out, "\n")
+	}
 
 	return nil
 }

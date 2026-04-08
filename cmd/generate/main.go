@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"html/template"
@@ -12,6 +13,9 @@ import (
 	"sort"
 	"time"
 
+	"encoding/json"
+
+	"github.com/flopp/go-googlesheetswrapper"
 	"github.com/flopp/parkrun-map/internal/parkrun"
 	"github.com/flopp/parkrun-map/internal/utils"
 )
@@ -105,10 +109,108 @@ func mustCreateIndexNow(indexnow string, outputDir string) {
 	}
 }
 
+type GoogleConfig struct {
+	GoogleApiKey   string `json:"GoogleApiKey"`
+	GoogleSheetsId string `json:"GoogleSheetsId"`
+}
+
+func unmarshalGoogleConfig(content []byte, config *GoogleConfig) error {
+	if err := json.Unmarshal(content, config); err != nil {
+		return fmt.Errorf("while unmarshalling Google config: %w", err)
+	}
+	if config.GoogleApiKey == "" {
+		return fmt.Errorf("GoogleApiKey is required in config")
+	}
+	if config.GoogleSheetsId == "" {
+		return fmt.Errorf("GoogleSheetsId is required in config")
+	}
+	return nil
+}
+
+func val(cols map[string]int, row []string, name string) string {
+	idx, found := cols[name]
+	if !found {
+		panic(fmt.Sprintf("column %s not found", name))
+	}
+	if idx >= len(row) {
+		return ""
+	}
+	return row[idx]
+}
+
+func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunInfo, error) {
+	ctx := context.Background()
+	client, err := googlesheetswrapper.New(apiKey, sheetsId)
+	if err != nil {
+		return nil, fmt.Errorf("creating sheets client: %w", err)
+	}
+	allSheets, err := client.ReadAll(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("reading all sheets: %w", err)
+	}
+
+	sheet, found := allSheets["data"]
+	if !found {
+		return nil, fmt.Errorf("sheet 'data' not found")
+	}
+
+	// parse & validate columns
+	columns, err := googlesheetswrapper.ExtractHeader(sheet, []string{"id", "name", "city", "location", "status", "first", "coordinates", "route_type", "google_route_id", "google_maps_url", "link1", "link2", "link3", "link4", "link5"}, false)
+	if err != nil {
+		return nil, fmt.Errorf("extracting header: %w", err)
+	}
+
+	parkrunInfos := make(map[string]*parkrun.ParkrunInfo)
+	for i, row := range sheet[1:] {
+		id := val(columns, row, "id")
+		name := val(columns, row, "name")
+		city := val(columns, row, "city")
+		location := val(columns, row, "location")
+		routeType := val(columns, row, "route_type")
+		routeId := val(columns, row, "google_route_id")
+		googleMaps := val(columns, row, "google_maps_url")
+		first := val(columns, row, "first")
+		status := val(columns, row, "status")
+		coordinates := val(columns, row, "coordinates")
+
+		links := make([]parkrun.Link, 0)
+		for j := 1; j <= 5; j++ {
+			linkStr := val(columns, row, fmt.Sprintf("link%d", j))
+			log.Printf("row %d link%d: %s", i+2, j, linkStr)
+			if linkStr != "" {
+				link, err := parkrun.ParseLink(linkStr)
+				if err != nil {
+					return nil, fmt.Errorf("parsing link in row %d: %w", i+2, err)
+				}
+				links = append(links, link)
+			}
+		}
+		log.Printf("links: %d\n", len(links))
+
+		parkrunInfos[id] = &parkrun.ParkrunInfo{
+			Id:          id,
+			Name:        name,
+			City:        city,
+			Location:    location,
+			RouteType:   routeType,
+			RouteID:     routeId,
+			GoogleMaps:  googleMaps,
+			First:       first,
+			Status:      status,
+			Coordinates: coordinates,
+			Links:       links,
+		}
+	}
+
+	return parkrunInfos, nil
+}
+
 func main() {
 	dataDir := flag.String("data", "data", "the data directory")
 	downloadDir := flag.String("download", ".download", "the download directory")
 	outputDir := flag.String("output", ".output", "the output directory")
+	configFile := flag.String("config", "config.json", "the config file with Google API key and Sheets ID")
+	exportCsvFile := flag.String("export-csv", "", "export CSV file with all parkrun events")
 	verbose := flag.Bool("verbose", false, "verbose logging")
 	flag.Parse()
 
@@ -133,6 +235,19 @@ func main() {
 	download := PathBuilder(*downloadDir)
 	output := PathBuilder(*outputDir)
 
+	// fetch data from Google Sheets
+	var parkrun_infos map[string]*parkrun.ParkrunInfo
+	var googleConfig GoogleConfig
+	if configContent, err := os.ReadFile(*configFile); err != nil {
+		panic(fmt.Errorf("while reading config file %s: %v", *configFile, err))
+	} else if err := unmarshalGoogleConfig(configContent, &googleConfig); err != nil {
+		panic(fmt.Errorf("while parsing config file %s: %v", *configFile, err))
+	} else if googleInfos, err := loadGoopgleSheetsData(googleConfig.GoogleApiKey, googleConfig.GoogleSheetsId); err != nil {
+		panic(fmt.Errorf("while loading Google Sheets data: %v", err))
+	} else {
+		parkrun_infos = googleInfos
+	}
+
 	// fetch parkrun events
 	events_json_url := "https://images.parkrun.com/events.json"
 	events_json_file := download.Path("parkrun", "events.json.gz")
@@ -140,10 +255,8 @@ func main() {
 		panic(fmt.Errorf("while downloading %s to %s: %w", events_json_url, events_json_file, err))
 	}
 
-	parkruns_json_file := data.Path("parkruns.json")
-
 	// parse parkrun events (only returns German events!)
-	events, err := parkrun.LoadEvents(events_json_file, parkruns_json_file, true /* germanOnly */)
+	events, err := parkrun.LoadEvents(events_json_file, parkrun_infos, true /* germanOnly */)
 	if err != nil {
 		panic(fmt.Errorf("loading parkrun events: %w", err))
 	}
@@ -332,5 +445,11 @@ func main() {
 
 	if err := renderData.writeSitemap(output.Path("sitemap.txt")); err != nil {
 		panic(fmt.Errorf("while writing sitemap: %w", err))
+	}
+
+	if *exportCsvFile != "" {
+		if err := parkrun.ExportCsv(events, *exportCsvFile); err != nil {
+			panic(fmt.Errorf("while exporting CSV: %w", err))
+		}
 	}
 }
