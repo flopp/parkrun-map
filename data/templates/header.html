@@ -11,6 +11,8 @@
         {{range .CssFiles}}
         <link rel="stylesheet" href="/{{.}}"/>
         {{end}}
+
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="{{.Config.UmamiWebsiteID}}"></script>
     </head>
     <body {{if eq .Nav "map"}}class="full-body"{{end}}>
         <header class="container">

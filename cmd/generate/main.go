@@ -116,9 +116,10 @@ type GoogleConfig struct {
 }
 
 type Config struct {
-	Domain   string       `json:"domain"`
-	IndexNow string       `json:"indexnow"`
-	Google   GoogleConfig `json:"google"`
+	Domain         string       `json:"domain"`
+	IndexNow       string       `json:"indexnow"`
+	Google         GoogleConfig `json:"google"`
+	UmamiWebsiteID string       `json:"UmamiWebsiteID"`
 }
 
 func unmarshalConfig(content []byte, config *Config) error {
