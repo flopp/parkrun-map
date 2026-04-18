@@ -66,3 +66,7 @@ html, body, #map{
 .grey-text {
     color: #7a7a7a;
 }
+
+#parkruns-table_wrapper {
+    overflow-x: scroll;
+}

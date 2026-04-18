@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 	"time"
 
 	"encoding/json"
@@ -193,6 +194,9 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 		routeId := val(columns, row, "google_route_id")
 		googleMaps := val(columns, row, "google_maps_url")
 		first := val(columns, row, "first")
+		if first == "?" {
+			first = "-"
+		}
 		status := val(columns, row, "status")
 		coordinates := val(columns, row, "coordinates")
 
@@ -400,6 +404,30 @@ func main() {
 		utils.MustDownloadFileIfOlder(umami_url, download.Path("umami", "umami.js"), fileAge1w)
 	}
 
+	// dowbnload jquery (needed for datatables)
+	jquery_version := "4.0.0"
+	jquery_js_url := fmt.Sprintf("https://code.jquery.com/jquery-%s.min.js", jquery_version)
+	utils.MustDownloadFileIfOlder(jquery_js_url, download.Path("jquery", "jquery.min.js"), fileAge1w)
+
+	// download datatables
+	datatables_version := "2.3.7"
+	datatables_css_url := fmt.Sprintf("https://cdn.datatables.net/%s/css/dataTables.dataTables.min.css", datatables_version)
+	datatables_js_url := fmt.Sprintf("https://cdn.datatables.net/%s/js/dataTables.min.js", datatables_version)
+	utils.MustDownloadFileIfOlder(datatables_css_url, download.Path("datatables", "dataTables.dataTables.min.css"), fileAge1w)
+	utils.MustDownloadFileIfOlder(datatables_js_url, download.Path("datatables", "dataTables.min.js"), fileAge1w)
+	// patch datatables js to fix conflict with Pico CSS (datatables buttons are
+	// styled as Pico CSS buttons which breaks the layout)
+	// -> remove '.attr("role","button")' from datatables js
+	if content, err := os.ReadFile(download.Path("datatables", "dataTables.min.js")); err != nil {
+		panic(fmt.Errorf("while reading datatables js file: %w", err))
+	} else {
+		patchedContent := string(content)
+		patchedContent = strings.ReplaceAll(patchedContent, `.attr("role","button")`, "")
+		if err := os.WriteFile(download.Path("datatables", "dataTables.min.js"), []byte(patchedContent), 0644); err != nil {
+			panic(fmt.Errorf("while writing patched datatables js file: %w", err))
+		}
+	}
+
 	// render data
 	if err := parkrun.RenderJs(events, download.Path("data.js")); err != nil {
 		panic(fmt.Errorf("failed to render data: %v", err))
@@ -409,6 +437,8 @@ func main() {
 	js_files = append(js_files, utils.MustCopyHash(download.Path("data.js"), "data-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(download.Path("leaflet/leaflet.js"), "leaflet-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(data.Path("static", "main.js"), "main-HASH.js", *outputDir))
+	js_files = append(js_files, utils.MustCopyHash(download.Path("jquery/jquery.min.js"), "jquery-HASH.js", *outputDir))
+	js_files = append(js_files, utils.MustCopyHash(download.Path("datatables/dataTables.min.js"), "datatables-HASH.js", *outputDir))
 	if config.UmamiWebsiteID != "" {
 		js_files = append(js_files, utils.MustCopyHash(download.Path("umami/umami.js"), "umami-HASH.js", *outputDir))
 	}
@@ -416,6 +446,7 @@ func main() {
 	css_files := make([]string, 0)
 	css_files = append(css_files, utils.MustCopyHash(download.Path("picocss/pico.css"), "pico-HASH.css", *outputDir))
 	css_files = append(css_files, utils.MustCopyHash(download.Path("leaflet/leaflet.css"), "leaflet-HASH.css", *outputDir))
+	css_files = append(css_files, utils.MustCopyHash(download.Path("datatables/dataTables.dataTables.min.css"), "datatables-HASH.css", *outputDir))
 	css_files = append(css_files, utils.MustCopyHash(data.Path("static", "style.css"), "style-HASH.css", *outputDir))
 
 	utils.MustCopyHash(download.Path("leaflet/marker-icon.png"), "images/marker-icon.png", *outputDir)

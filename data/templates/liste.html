@@ -9,7 +9,7 @@
             Hier ist die Liste aller parkruns.
         </article>
 
-        <table class="striped">
+        <table id="parkruns-table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -39,26 +39,65 @@
                         {{.First}}
                     </td>
                     {{if .LatestRun}}
-                    <td {{if .Outdated}}class="grey-text"{{end}}>
-                        <span class="tnum">{{.LatestRun.DateF}}</span>  
-                        <a class="tnum" target="_blank" href="{{.LatestRun.Url}}">#{{.LatestRun.Index}}</a>
+                    <td class="tnum{{if .Outdated}} grey-text{{end}}">
+                        <a target="_blank" href="{{.LatestRun.Url}}">{{.LatestRun.Index}} ({{.LatestRun.DateF}})</a>
                     </td>
-                    <td {{if .Outdated}}class="grey-text"{{end}}>
-                        <span class="tnum">{{.LatestRun.Runners}}</span> Teilnehmer
+                    <td class="tnum{{if .Outdated}} grey-text{{end}}">
+                        {{.LatestRun.Runners}}
                     </td>
                     {{if .Outdated}}
                     <td class="grey-text">-</td>
                     {{else}}
-                    <td>
-                        <span class="tnum">{{.Order}}</span>
+                    <td class="tnum">
+                        {{.Order}}
                     </td>
                     {{end}}
                     {{else}}
-                    <td colspan="3">-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
                     {{end}}
                 </tr>
                 {{end}}
             </tbody>
         </table>
+        <script>
+        // Custom sorting for German dates (DD.MM.YYYY) and "-" as unknown
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.jQuery && window.jQuery.fn.dataTable) {
+                // Add custom type detection and sorting
+                window.jQuery.fn.dataTable.ext.type.order['de_date-pre'] = function (d) {
+                    if (!d || d === '-') return 0;
+                    // Remove HTML tags if present
+                    d = d.replace(/<[^>]*>/g, '').trim();
+                    var parts = d.split('.');
+                    if (parts.length !== 3) return 0;
+                    // Return as YYYYMMDD integer for sorting
+                    return parseInt(parts[2] + parts[1].padStart(2, '0') + parts[0].padStart(2, '0'), 10);
+                };
+                // Custom sorting for 'Letzter Lauf' (number + suffix or '-')
+                window.jQuery.fn.dataTable.ext.type.order['laufnum-pre'] = function (d) {
+                    if (!d || d === '-') return 0;
+                    // Remove HTML tags if present
+                    d = d.replace(/<[^>]*>/g, '').trim();
+                    // Extract the number before the first space or parenthesis
+                    var match = d.match(/^(\d+)/);
+                    if (match) return parseInt(match[1], 10);
+                    return 0;
+                };
+                var dt = window.jQuery('#parkruns-table').DataTable({
+                    responsive: false,
+                    ordering: true,
+                    columnDefs: [
+                        { targets: 2, type: 'de_date' }, // 'Seit'
+                        { targets: 3, type: 'laufnum' }  // 'Letzter Lauf'
+                    ],
+                    paging: false,
+                    searching: false,
+                    language: {}
+                });
+            }
+        });
+        </script>
     </main>
 {{template "footer.html" .}}
