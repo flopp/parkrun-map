@@ -85,12 +85,21 @@
                     if (match) return parseInt(match[1], 10);
                     return 0;
                 };
+                // Custom sorting for 'Rang' (numbers and '-')
+                window.jQuery.fn.dataTable.ext.type.order['rangnum-pre'] = function (d) {
+                    if (!d || d === '-') return Number.POSITIVE_INFINITY;
+                    // Remove HTML tags if present
+                    d = d.replace(/<[^>]*>/g, '').trim();
+                    var n = parseInt(d, 10);
+                    return isNaN(n) ? Number.POSITIVE_INFINITY : n;
+                };
                 var dt = window.jQuery('#parkruns-table').DataTable({
                     responsive: false,
                     ordering: true,
                     columnDefs: [
                         { targets: 2, type: 'de_date' }, // 'Seit'
-                        { targets: 3, type: 'laufnum' }  // 'Letzter Lauf'
+                        { targets: 3, type: 'laufnum' }, // 'Letzter Lauf'
+                        { targets: 5, type: 'rangnum' }  // 'Rang'
                     ],
                     paging: false,
                     searching: false,
