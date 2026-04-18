@@ -13,8 +13,8 @@ build:
 
 .phony: run
 run: build
-	rsync -a .output/ echeclus.uberspace.de:/var/www/virtual/floppnet/parkrun.flopp.net/
-	ssh echeclus.uberspace.de chmod -R o=u /var/www/virtual/floppnet/parkrun.flopp.net
+	rsync -a .output/ echeclus.uberspace.de:/var/www/virtual/floppnet/parkruns.de/
+	ssh echeclus.uberspace.de chmod -R o=u /var/www/virtual/floppnet/parkruns.de
 
 .phony: export
 export:

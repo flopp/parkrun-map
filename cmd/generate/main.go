@@ -21,6 +21,7 @@ import (
 )
 
 type RenderData struct {
+	Config         *Config
 	Event          *parkrun.Event
 	Events         []*parkrun.Event
 	ActiveEvents   int
@@ -110,19 +111,19 @@ func mustCreateIndexNow(indexnow string, outputDir string) {
 }
 
 type GoogleConfig struct {
-	GoogleApiKey   string `json:"GoogleApiKey"`
-	GoogleSheetsId string `json:"GoogleSheetsId"`
+	ApiKey   string `json:"ApiKey"`
+	SheetsId string `json:"SheetsId"`
 }
 
-func unmarshalGoogleConfig(content []byte, config *GoogleConfig) error {
+type Config struct {
+	Domain   string       `json:"domain"`
+	IndexNow string       `json:"indexnow"`
+	Google   GoogleConfig `json:"google"`
+}
+
+func unmarshalConfig(content []byte, config *Config) error {
 	if err := json.Unmarshal(content, config); err != nil {
-		return fmt.Errorf("while unmarshalling Google config: %w", err)
-	}
-	if config.GoogleApiKey == "" {
-		return fmt.Errorf("GoogleApiKey is required in config")
-	}
-	if config.GoogleSheetsId == "" {
-		return fmt.Errorf("GoogleSheetsId is required in config")
+		return fmt.Errorf("while unmarshalling config: %w", err)
 	}
 	return nil
 }
@@ -237,12 +238,12 @@ func main() {
 
 	// fetch data from Google Sheets
 	var parkrun_infos map[string]*parkrun.ParkrunInfo
-	var googleConfig GoogleConfig
+	var config Config
 	if configContent, err := os.ReadFile(*configFile); err != nil {
 		panic(fmt.Errorf("while reading config file %s: %v", *configFile, err))
-	} else if err := unmarshalGoogleConfig(configContent, &googleConfig); err != nil {
+	} else if err := unmarshalConfig(configContent, &config); err != nil {
 		panic(fmt.Errorf("while parsing config file %s: %v", *configFile, err))
-	} else if googleInfos, err := loadGoopgleSheetsData(googleConfig.GoogleApiKey, googleConfig.GoogleSheetsId); err != nil {
+	} else if googleInfos, err := loadGoopgleSheetsData(config.Google.ApiKey, config.Google.SheetsId); err != nil {
 		panic(fmt.Errorf("while loading Google Sheets data: %v", err))
 	} else {
 		parkrun_infos = googleInfos
@@ -394,7 +395,7 @@ func main() {
 	}
 	utils.MustCopyHash(data.Path("static", "favicon.ico"), "favicon.ico", *outputDir)
 	utils.MustCopyHash(data.Path("static", "favicon.svg"), "favicon.svg", *outputDir)
-	mustCreateIndexNow("thawdud8qq3z98b993auzzqx8rxyramn", *outputDir)
+	mustCreateIndexNow(config.IndexNow, *outputDir)
 
 	// render templates to output folder
 	active := 0
@@ -409,25 +410,30 @@ func main() {
 			archived += 1
 		}
 	}
-	renderData := RenderData{nil, events, active, planned, archived, js_files, css_files, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
+
+	canonical := func(path string) string {
+		return fmt.Sprintf("https://%s/%s", config.Domain, path)
+	}
+
+	renderData := RenderData{&config, nil, events, active, planned, archived, js_files, css_files, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
-	renderData.set("Karte aller deutschen parkruns", "Karte aller deutschen parkruns mit Anzeige der einzelnen Laufstrecken und Informationen zum letzten Event", "https://parkrun.flopp.net/", "map")
+	renderData.set("Karte aller deutschen parkruns", "Karte aller deutschen parkruns mit Anzeige der einzelnen Laufstrecken und Informationen zum letzten Event", canonical(""), "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'index.html': %v", err))
 	}
-	renderData.set("Liste aller deutschen parkruns", "Liste aller deutschen parkruns mit Informationen zum letzten Event", "https://parkrun.flopp.net/liste.html", "list")
+	renderData.set("Liste aller deutschen parkruns", "Liste aller deutschen parkruns mit Informationen zum letzten Event", canonical("liste.html"), "list")
 	if err := renderData.render(output.Path("liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'list.html': %v", err))
 	}
-	renderData.set("parkruns Karte - Info", "Informationen", "https://parkrun.flopp.net/info.html", "info")
+	renderData.set("parkruns Karte - Info", "Informationen", canonical("info.html"), "info")
 	if err := renderData.render(output.Path("info.html"), t.Path("info.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'info.html': %v", err))
 	}
-	renderData.set("parkruns Karte - Datenschutz", "Datenschutzinformationen", "https://parkrun.flopp.net/datenschutz.html", "datenschutz")
+	renderData.set("parkruns Karte - Datenschutz", "Datenschutzinformationen", canonical("datenschutz.html"), "datenschutz")
 	if err := renderData.render(output.Path("datenschutz.html"), t.Path("datenschutz.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'datenschutz.html': %v", err))
 	}
-	renderData.set("parkruns Karte - Impressum", "Impressum", "https://parkrun.flopp.net/impressum.html", "impressum")
+	renderData.set("parkruns Karte - Impressum", "Impressum", canonical("impressum.html"), "impressum")
 	if err := renderData.render(output.Path("impressum.html"), t.Path("impressum.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'impressum.html': %v", err))
 	}
@@ -437,7 +443,7 @@ func main() {
 		title := fmt.Sprintf("%s, %s", event.FixedName(), event.FixedLocation())
 		description := fmt.Sprintf("Informationen zum %s in %s; Streckenkarte, Statistiken, Links", event.FixedName(), event.FixedLocation())
 		file := fmt.Sprintf("%s.html", event.Id)
-		renderData.set(title, description, fmt.Sprintf("https://parkrun.flopp.net/%s", file), "list")
+		renderData.set(title, description, canonical(file), "list")
 		if err := renderData.render(output.Path(file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 			panic(fmt.Errorf("while rendering '%s': %v", file, err))
 		}
