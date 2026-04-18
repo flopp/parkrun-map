@@ -88,6 +88,27 @@ func (data RenderData) writeSitemap(filePath string) error {
 	return nil
 }
 
+func (data RenderData) writeHtaccess(filePath string) error {
+	f, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	// redirect all www requests to non-www
+	if _, err = f.WriteString("RewriteEngine On\n"); err != nil {
+		return err
+	}
+	if _, err = f.WriteString("RewriteCond %{HTTP_HOST} ^www\\.(.*)$ [NC]\n"); err != nil {
+		return err
+	}
+	if _, err = f.WriteString("RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n"); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 type PathBuilder string
 
 func (p PathBuilder) Path(items ...string) string {
@@ -373,6 +394,12 @@ func main() {
 	// download picocss
 	utils.MustDownloadFileIfOlder(picocss_url.Path("pico.min.css"), download.Path("picocss", "pico.css"), fileAge1w)
 
+	// download umami
+	if config.UmamiWebsiteID != "" {
+		umami_url := "https://cloud.umami.is/script.js"
+		utils.MustDownloadFileIfOlder(umami_url, download.Path("umami", "umami.js"), fileAge1w)
+	}
+
 	// render data
 	if err := parkrun.RenderJs(events, download.Path("data.js")); err != nil {
 		panic(fmt.Errorf("failed to render data: %v", err))
@@ -382,6 +409,10 @@ func main() {
 	js_files = append(js_files, utils.MustCopyHash(download.Path("data.js"), "data-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(download.Path("leaflet/leaflet.js"), "leaflet-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(data.Path("static", "main.js"), "main-HASH.js", *outputDir))
+	if config.UmamiWebsiteID != "" {
+		js_files = append(js_files, utils.MustCopyHash(download.Path("umami/umami.js"), "umami-HASH.js", *outputDir))
+	}
+
 	css_files := make([]string, 0)
 	css_files = append(css_files, utils.MustCopyHash(download.Path("picocss/pico.css"), "pico-HASH.css", *outputDir))
 	css_files = append(css_files, utils.MustCopyHash(download.Path("leaflet/leaflet.css"), "leaflet-HASH.css", *outputDir))
@@ -418,11 +449,11 @@ func main() {
 
 	renderData := RenderData{&config, nil, events, active, planned, archived, js_files, css_files, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
-	renderData.set("Karte aller deutschen parkruns", "Karte aller deutschen parkruns mit Anzeige der einzelnen Laufstrecken und Informationen zum letzten Event", canonical(""), "map")
+	renderData.set("Alle parkruns in Deutschland (Karte)", "Alle parkruns in Deutschland.", canonical(""), "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'index.html': %v", err))
 	}
-	renderData.set("Liste aller deutschen parkruns", "Liste aller deutschen parkruns mit Informationen zum letzten Event", canonical("liste.html"), "list")
+	renderData.set("Alle parkruns in Deutschland (Liste)", "Alle parkruns in Deutschland.", canonical("liste.html"), "list")
 	if err := renderData.render(output.Path("liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'list.html': %v", err))
 	}
@@ -452,6 +483,10 @@ func main() {
 
 	if err := renderData.writeSitemap(output.Path("sitemap.txt")); err != nil {
 		panic(fmt.Errorf("while writing sitemap: %w", err))
+	}
+
+	if err := renderData.writeHtaccess(output.Path(".htaccess")); err != nil {
+		panic(fmt.Errorf("while writing .htaccess: %w", err))
 	}
 
 	if *exportCsvFile != "" {
