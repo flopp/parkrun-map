@@ -52,6 +52,12 @@ const updateTracks = function(map, parkruns) {
     });
 };
 
+const fixLeafletButtons = (div) => {
+    div.querySelectorAll('[role="button"]').forEach((btn) => {
+        btn.removeAttribute('role');
+    });
+};
+
 const loadMap = function (id, hash) {
     // parse hash for lat, lon, zoom
     var lat, lon, zoom = -1;
@@ -118,6 +124,7 @@ const loadMap = function (id, hash) {
         updateTracks(map, parkruns);
     });
     updateTracks(map, parkruns);
+    fixLeafletButtons(document.getElementById(id));
 };
 
 
@@ -158,6 +165,8 @@ const loadParkrunMap = function (divId) {
 
         });
         map.fitBounds(bounds);
+
+        fixLeafletButtons(div);
     }
 };
 
