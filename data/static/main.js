@@ -160,18 +160,15 @@ var load_marker = function (color) {
 var main = () => {
     // MAPS
     var mapId = "";
-    if (document.querySelector("#map") !== null) {
+    if (document.getElementById("map") !== null) {
         mapId = "map";
         loadMap(mapId);
-    } else if (document.querySelector("#parkrun-map") !== null) {
+    } else if (document.getElementById("parkrun-map") !== null) {
         mapId = "parkrun-map";
         loadParkrunMap(mapId);
     }
 
     // TABLE
-    console.log("table", document.getElementById("parkruns-table"))
-    console.log("jQuery", window.jQuery)
-    console.log("dataTable", window.jQuery.fn.dataTable);
     if (document.getElementById("parkruns-table") && window.jQuery && window.jQuery.fn.dataTable) {
         // Add custom type detection and sorting
         window.jQuery.fn.dataTable.ext.type.order['de_date-pre'] = function (d) {
