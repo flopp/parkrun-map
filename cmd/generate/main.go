@@ -111,6 +111,58 @@ func (data RenderData) writeHtaccess(filePath string) error {
 	return nil
 }
 
+func (data RenderData) writeRobotsTxt(filePath string) error {
+	f, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	if _, err := f.WriteString("User-agent: *\nAllow: /\n"); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (data RenderData) writeLLMSTxt(filePath string) error {
+	f, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	info := "Website: " + data.Config.Domain + "\n" +
+		"\n" +
+		"Description: Overview and map of all parkrun locations in Germany. The site provides information for each parkrun event, including course map, statistics, links, and further details.\n" +
+		"\n" +
+		"Site structure:\n" +
+		"- / (index.html): Map overview of all parkruns\n" +
+		"- /liste.html: List of all parkruns with details\n" +
+		"- /info.html: General information\n" +
+		"- /datenschutz.html: Privacy policy\n" +
+		"- /impressum.html: Legal notice\n" +
+		"- /[event-id].html: Detail page for each parkrun location\n"
+
+	// List all event subpages
+	for _, event := range data.Events {
+		info += "  - /" + event.Id + ".html: " + event.Name + " (" + event.Location + ")\n"
+	}
+
+	info += "\n" +
+		"Technologies:\n" +
+		"- Leaflet (maps)\n" +
+		"- DataTables (tables)\n" +
+		"- PicoCSS (design)\n" +
+		"\n" +
+		"Contact: see Legal notice (/impressum.html)\n" +
+		"Last updated: " + data.Timestamp + "\n"
+
+	if _, err := f.WriteString(info); err != nil {
+		return err
+	}
+	return nil
+}
+
 type PathBuilder string
 
 func (p PathBuilder) Path(items ...string) string {
@@ -521,6 +573,14 @@ func main() {
 
 	if err := renderData.writeHtaccess(output.Path(".htaccess")); err != nil {
 		panic(fmt.Errorf("while writing .htaccess: %w", err))
+	}
+
+	if err := renderData.writeRobotsTxt(output.Path("robots.txt")); err != nil {
+		panic(fmt.Errorf("while writing robots.txt: %w", err))
+	}
+
+	if err := renderData.writeLLMSTxt(output.Path("llms.txt")); err != nil {
+		panic(fmt.Errorf("while writing llms.txt: %w", err))
 	}
 
 	if *exportCsvFile != "" {
