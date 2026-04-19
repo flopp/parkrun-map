@@ -158,6 +158,7 @@ var load_marker = function (color) {
 }
 
 var main = () => {
+    // MAPS
     var mapId = "";
     if (document.querySelector("#map") !== null) {
         mapId = "map";
@@ -167,6 +168,53 @@ var main = () => {
         loadParkrunMap(mapId);
     }
 
+    // TABLE
+    console.log("table", document.getElementById("parkruns-table"))
+    console.log("jQuery", window.jQuery)
+    console.log("dataTable", window.jQuery.fn.dataTable);
+    if (document.getElementById("parkruns-table") && window.jQuery && window.jQuery.fn.dataTable) {
+        // Add custom type detection and sorting
+        window.jQuery.fn.dataTable.ext.type.order['de_date-pre'] = function (d) {
+            if (!d || d === '-') return 0;
+            // Remove HTML tags if present
+            d = d.replace(/<[^>]*>/g, '').trim();
+            var parts = d.split('.');
+            if (parts.length !== 3) return 0;
+            // Return as YYYYMMDD integer for sorting
+            return parseInt(parts[2] + parts[1].padStart(2, '0') + parts[0].padStart(2, '0'), 10);
+        };
+        // Custom sorting for 'Letzter Lauf' (number + suffix or '-')
+        window.jQuery.fn.dataTable.ext.type.order['laufnum-pre'] = function (d) {
+            if (!d || d === '-') return 0;
+            // Remove HTML tags if present
+            d = d.replace(/<[^>]*>/g, '').trim();
+            // Extract the number before the first space or parenthesis
+            var match = d.match(/^(\d+)/);
+            if (match) return parseInt(match[1], 10);
+            return 0;
+        };
+        // Custom sorting for 'Rang' (numbers and '-')
+        window.jQuery.fn.dataTable.ext.type.order['rangnum-pre'] = function (d) {
+            if (!d || d === '-') return Number.POSITIVE_INFINITY;
+            // Remove HTML tags if present
+            d = d.replace(/<[^>]*>/g, '').trim();
+            var n = parseInt(d, 10);
+            return isNaN(n) ? Number.POSITIVE_INFINITY : n;
+        };
+        var dt = window.jQuery('#parkruns-table').DataTable({
+            responsive: false,
+            ordering: true,
+            columnDefs: [
+                { targets: 2, type: 'de_date' }, // 'Seit'
+                { targets: 3, type: 'laufnum' }, // 'Letzter Lauf'
+                { targets: 5, type: 'rangnum' }  // 'Rang'
+            ],
+            paging: false,
+            searching: false,
+            language: {}
+        });
+    }
+
     // UMAMI
     document.querySelectorAll("a[target=_blank]").forEach((a) => {
         if (a.getAttribute("data-umami-event") === null) {
@@ -174,12 +222,13 @@ var main = () => {
         }
         a.setAttribute('data-umami-event-url', a.href);
     });
-
     if (location.hash === '#disable-umami') {
+        console.log("Disabling Umami in this browser.");
         localStorage.setItem('umami.disabled', 'true');
         alert('Umami is now DISABLED in this browser.');
     }
     if (location.hash === '#enable-umami') {
+        console.log("Enabling Umami in this browser.");
         localStorage.removeItem('umami.disabled');
         alert('Umami is now ENABLED in this browser.');
     }

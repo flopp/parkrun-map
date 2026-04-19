@@ -28,6 +28,7 @@ type RenderData struct {
 	ActiveEvents   int
 	PlannedEvents  int
 	ArchivedEvents int
+	UmamiJsFile    string
 	JsFiles        []string
 	CssFiles       []string
 	Title          string
@@ -246,7 +247,7 @@ func main() {
 	}
 
 	now := time.Now()
-	//fileAge30min := now.Add(30 * time.Minute)
+	fileAge1h := now.Add(-1 * time.Hour)
 	fileAge1d := now.Add(-24 * time.Hour)
 	fileAge1w := now.Add(-24 * 7 * time.Hour)
 
@@ -332,7 +333,7 @@ func main() {
 		wiki_url := event.WikiUrl()
 		wiki_file := download.Path("parkrun", event.Id, "wiki")
 		if isOutdated {
-			utils.MustDownloadFile(wiki_url, wiki_file)
+			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1h)
 		} else {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
 		}
@@ -433,15 +434,17 @@ func main() {
 		panic(fmt.Errorf("failed to render data: %v", err))
 	}
 
+	umami_js_file := ""
+	if config.UmamiWebsiteID != "" {
+		umami_js_file = utils.MustCopyHash(download.Path("umami/umami.js"), "umami-HASH.js", *outputDir)
+	}
+
 	js_files := make([]string, 0)
 	js_files = append(js_files, utils.MustCopyHash(download.Path("data.js"), "data-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(download.Path("leaflet/leaflet.js"), "leaflet-HASH.js", *outputDir))
-	js_files = append(js_files, utils.MustCopyHash(data.Path("static", "main.js"), "main-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(download.Path("jquery/jquery.min.js"), "jquery-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(download.Path("datatables/dataTables.min.js"), "datatables-HASH.js", *outputDir))
-	if config.UmamiWebsiteID != "" {
-		js_files = append(js_files, utils.MustCopyHash(download.Path("umami/umami.js"), "umami-HASH.js", *outputDir))
-	}
+	js_files = append(js_files, utils.MustCopyHash(data.Path("static", "main.js"), "main-HASH.js", *outputDir))
 
 	css_files := make([]string, 0)
 	css_files = append(css_files, utils.MustCopyHash(download.Path("picocss/pico.css"), "pico-HASH.css", *outputDir))
@@ -478,7 +481,7 @@ func main() {
 		return fmt.Sprintf("https://%s/%s", config.Domain, path)
 	}
 
-	renderData := RenderData{&config, nil, events, active, planned, archived, js_files, css_files, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
+	renderData := RenderData{&config, nil, events, active, planned, archived, umami_js_file, js_files, css_files, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("Alle parkruns in Deutschland (Karte)", "Alle parkruns in Deutschland.", canonical(""), "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {

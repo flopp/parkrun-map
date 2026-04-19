@@ -8,9 +8,8 @@
 
         <link rel="canonical" href="{{.Canonical}}" />
 
-        {{range .CssFiles}}
-        <link rel="stylesheet" href="/{{.}}"/>
-        {{end}}
+        {{range .CssFiles}}<link rel="stylesheet" href="/{{.}}"/>{{end}}
+        {{if .UmamiJsFile}}<script defer src="/{{.UmamiJsFile}}" data-website-id="{{.Config.UmamiWebsiteID}}"></script>{{end}}
     </head>
     <body {{if eq .Nav "map"}}class="full-body"{{end}}>
         <header class="container">
