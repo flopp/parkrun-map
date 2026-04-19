@@ -10,7 +10,7 @@ const updateTracks = function(map, parkruns) {
     // store lat,lon,zoom in location.hash
     const center = map.getCenter();
     const zoom = map.getZoom();
-    location.hash = `${center.lat.toFixed(5)},${center.lng.toFixed(5)},${zoom}`;
+    location.hash = `${center.lat.toFixed(5)}/${center.lng.toFixed(5)}/${zoom}`;
 
     // zoomed out => hide all tracks
     if (map.getZoom() <= 10) {
@@ -56,7 +56,7 @@ const loadMap = function (id, hash) {
     // parse hash for lat, lon, zoom
     var lat, lon, zoom = -1;
     if (hash) {
-        const parts = hash.substring(1).split(",");
+        const parts = hash.substring(1).split("/");
         if (parts.length === 3) {
             lat = parseFloat(parts[0]);
             lon = parseFloat(parts[1]);
