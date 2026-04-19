@@ -7,6 +7,11 @@ var on_load = function(f) {
 }
 
 const updateTracks = function(map, parkruns) {
+    // store lat,lon,zoom in location.hash
+    const center = map.getCenter();
+    const zoom = map.getZoom();
+    location.hash = `${center.lat.toFixed(5)},${center.lng.toFixed(5)},${zoom}`;
+
     // zoomed out => hide all tracks
     if (map.getZoom() <= 10) {
         parkruns.forEach((parkrun, index, array) => {
@@ -47,14 +52,34 @@ const updateTracks = function(map, parkruns) {
     });
 };
 
-const loadMap = function (id) {
-    const germany = [
-        [50.913868, 5.603027],
-        [55.329144, 8.041992],
-        [50.999929, 15.227051],
-        [47.034162, 10.217285]
-    ];
-    var map = L.map(id, {preferCanvas: true}).fitBounds(germany);
+const loadMap = function (id, hash) {
+    // parse hash for lat, lon, zoom
+    var lat, lon, zoom = -1;
+    if (hash) {
+        const parts = hash.substring(1).split(",");
+        if (parts.length === 3) {
+            lat = parseFloat(parts[0]);
+            lon = parseFloat(parts[1]);
+            zoom = parseInt(parts[2], 10);
+            if (isNaN(lat) || isNaN(lon) || isNaN(zoom)) {
+                lat = null;
+                lon = null;
+                zoom = -1;
+            }
+        }
+    }
+    var map = L.map(id, {preferCanvas: true});
+    if (lat !== null && lon !== null && zoom !== -1) {
+        map.setView([lat, lon], zoom);
+    } else {
+        const germany = [
+            [50.913868, 5.603027],
+            [55.329144, 8.041992],
+            [50.999929, 15.227051],
+            [47.034162, 10.217285]
+        ];
+        map.fitBounds(germany);
+    }
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -89,7 +114,6 @@ const loadMap = function (id) {
     map.on('zoomend', function() {
         updateTracks(map, parkruns);
     });
-
     map.on('moveend', function() {
         updateTracks(map, parkruns);
     });
@@ -162,7 +186,7 @@ var main = () => {
     var mapId = "";
     if (document.getElementById("map") !== null) {
         mapId = "map";
-        loadMap(mapId);
+        loadMap(mapId, location.hash);
     } else if (document.getElementById("parkrun-map") !== null) {
         mapId = "parkrun-map";
         loadParkrunMap(mapId);
