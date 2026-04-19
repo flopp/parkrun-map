@@ -232,7 +232,12 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 	}
 
 	// parse & validate columns
-	columns, err := googlesheetswrapper.ExtractHeader(sheet, []string{"id", "name", "city", "location", "status", "first", "coordinates", "route_type", "google_route_id", "google_maps_url", "link1", "link2", "link3", "link4", "link5"}, false)
+	columns, err := googlesheetswrapper.ExtractHeader(sheet, []string{
+		"id", "name", "city", "location", "status", "first", "coordinates",
+		"route_type", "google_route_id", "google_maps_url",
+		"instagram", "facebook", "strava-club", "strava-segment",
+		"link1", "link2", "link3", "link4", "link5"},
+		false)
 	if err != nil {
 		return nil, fmt.Errorf("extracting header: %w", err)
 	}
@@ -252,8 +257,36 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 		}
 		status := val(columns, row, "status")
 		coordinates := val(columns, row, "coordinates")
+		instagram := val(columns, row, "instagram")
+		facebook := val(columns, row, "facebook")
+		stravaClub := val(columns, row, "strava-club")
+		stravaSegment := val(columns, row, "strava-segment")
 
 		links := make([]parkrun.Link, 0)
+		if instagram != "" {
+			links = append(links, parkrun.Link{
+				Name: "Instagram",
+				Url:  instagram,
+			})
+		}
+		if facebook != "" {
+			links = append(links, parkrun.Link{
+				Name: "Facebook",
+				Url:  facebook,
+			})
+		}
+		if stravaClub != "" {
+			links = append(links, parkrun.Link{
+				Name: "Strava Club",
+				Url:  stravaClub,
+			})
+		}
+		if stravaSegment != "" {
+			links = append(links, parkrun.Link{
+				Name: "Strava Segment",
+				Url:  stravaSegment,
+			})
+		}
 		for j := 1; j <= 5; j++ {
 			linkStr := val(columns, row, fmt.Sprintf("link%d", j))
 			log.Printf("row %d link%d: %s", i+2, j, linkStr)
