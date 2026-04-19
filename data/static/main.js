@@ -182,11 +182,13 @@ var load_marker = function (color) {
 }
 
 var main = () => {
+    const originalHash = location.hash;
+
     // MAPS
     var mapId = "";
     if (document.getElementById("map") !== null) {
         mapId = "map";
-        loadMap(mapId, location.hash);
+        loadMap(mapId, originalHash);
     } else if (document.getElementById("parkrun-map") !== null) {
         mapId = "parkrun-map";
         loadParkrunMap(mapId);
@@ -243,12 +245,12 @@ var main = () => {
         }
         a.setAttribute('data-umami-event-url', a.href);
     });
-    if (location.hash === '#disable-umami') {
+    if (originalHash === '#disable-umami') {
         console.log("Disabling Umami in this browser.");
         localStorage.setItem('umami.disabled', 'true');
         alert('Umami is now DISABLED in this browser.');
     }
-    if (location.hash === '#enable-umami') {
+    if (originalHash === '#enable-umami') {
         console.log("Enabling Umami in this browser.");
         localStorage.removeItem('umami.disabled');
         alert('Umami is now ENABLED in this browser.');
