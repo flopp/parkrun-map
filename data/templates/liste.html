@@ -41,6 +41,7 @@
                     {{if .LatestRun}}
                     <td class="tnum{{if .Outdated}} grey-text{{end}}">
                         <a target="_blank" href="{{.LatestRun.Url}}">{{.LatestRun.Index}} ({{.LatestRun.DateF}})</a>
+                        {{if .Outdated}} <span class="tag-red">veraltet</span>{{end}}
                     </td>
                     <td class="tnum{{if .Outdated}} grey-text{{end}}">
                         {{.LatestRun.Runners}}
