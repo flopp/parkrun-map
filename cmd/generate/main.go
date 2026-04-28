@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -19,6 +20,7 @@ import (
 	"github.com/flopp/go-googlesheetswrapper"
 	"github.com/flopp/parkrun-map/internal/parkrun"
 	"github.com/flopp/parkrun-map/internal/utils"
+	"golang.org/x/net/html"
 )
 
 type RenderData struct {
@@ -318,6 +320,158 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 	return parkrunInfos, nil
 }
 
+type SummaryData struct {
+	LatestEventId int
+	Runners       int
+	Volunteers    int
+}
+
+func parse_summary_wiki(filePath string) (map[string]SummaryData, error) {
+	content, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("while reading summary wiki file: %w", err)
+	}
+
+	summaryData := make(map[string]SummaryData)
+
+	// parse the HTML file
+	// 1. find the table
+	//    <table class="wikitable sortable">
+	// 2. parse the table rows
+	// 3. extract columns 0 (event name), column 4 (runners), column 7 (volunteers), column 10 (latest event id)
+	// 4. put the data in a map[event name]SummaryData
+	//
+	// examples of the columns:
+	//
+	// the event name column looks like this:
+	//    <td><a href="/index.php/Allerpark_parkrun" title="Allerpark parkrun">Allerpark</a>
+	//    </td>
+	//   -> we want to extcat the title attribute ("Allerpark parkrun"), this is the event name
+	// the other columns look like this:
+	//    <td>48
+	//    </td>
+	//   -> just extract the content ("48") and parse it as int
+	//
+	doc, err := html.Parse(strings.NewReader(string(content)))
+	if err != nil {
+		return nil, fmt.Errorf("while parsing HTML: %w", err)
+	}
+
+	var parseTable func(*html.Node)
+	parseTable = func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "table" {
+			// Found the table, now parse rows
+			var parseRows func(*html.Node)
+			parseRows = func(node *html.Node) {
+				if node.Type == html.ElementNode && node.Data == "tr" {
+					// Parse table row
+					var cols []*html.Node
+					for child := node.FirstChild; child != nil; child = child.NextSibling {
+						if child.Type == html.ElementNode && (child.Data == "td" || child.Data == "th") {
+							cols = append(cols, child)
+						}
+					}
+
+					if len(cols) >= 11 {
+						// Extract event name from column 0
+						eventName := extractTitleAttribute(cols[0])
+						if eventName == "" {
+							return
+						}
+
+						// Extract runners from column 4
+						runners := extractIntContent(cols[4])
+
+						// Extract volunteers from column 7
+						volunteers := extractIntContent(cols[7])
+
+						// Extract latest event id from column 10
+						latestEventId := extractIntContent(cols[10])
+
+						summaryData[eventName] = SummaryData{
+							LatestEventId: latestEventId,
+							Runners:       runners,
+							Volunteers:    volunteers,
+						}
+					}
+				}
+
+				for child := node.FirstChild; child != nil; child = child.NextSibling {
+					parseRows(child)
+				}
+			}
+
+			parseRows(n)
+			return
+		}
+
+		for child := n.FirstChild; child != nil; child = child.NextSibling {
+			parseTable(child)
+		}
+	}
+
+	parseTable(doc)
+
+	return summaryData, nil
+}
+
+func extractTitleAttribute(n *html.Node) string {
+	var walk func(*html.Node) string
+	walk = func(node *html.Node) string {
+		if node.Type == html.ElementNode && node.Data == "a" {
+			for _, attr := range node.Attr {
+				if attr.Key == "title" {
+					return strings.TrimSpace(attr.Val)
+				}
+			}
+		}
+		for child := node.FirstChild; child != nil; child = child.NextSibling {
+			if title := walk(child); title != "" {
+				return title
+			}
+		}
+		return ""
+	}
+
+	return walk(n)
+}
+
+func extractIntContent(n *html.Node) int {
+	var sb strings.Builder
+	var walk func(*html.Node)
+	walk = func(node *html.Node) {
+		if node.Type == html.TextNode {
+			sb.WriteString(node.Data)
+		}
+		for child := node.FirstChild; child != nil; child = child.NextSibling {
+			walk(child)
+		}
+	}
+
+	walk(n)
+	text := strings.TrimSpace(sb.String())
+	if text == "" {
+		return 0
+	}
+
+	var digits strings.Builder
+	for _, r := range text {
+		if r >= '0' && r <= '9' {
+			digits.WriteRune(r)
+		}
+	}
+
+	if digits.Len() == 0 {
+		return 0
+	}
+
+	v, err := strconv.Atoi(digits.String())
+	if err != nil {
+		return 0
+	}
+	return v
+}
+
 func main() {
 	dataDir := flag.String("data", "data", "the data directory")
 	downloadDir := flag.String("download", ".download", "the download directory")
@@ -374,6 +528,21 @@ func main() {
 		panic(fmt.Errorf("loading parkrun events: %w", err))
 	}
 
+	// summary wiki file
+	summary_wiki_url := "https://wiki.parkrun.com/index.php/Summary_Statistics_By_Event/Germany"
+	summary_file := download.Path("parkrun", "summary_wiki")
+	if err := utils.DownloadFileIfOlder(summary_wiki_url, summary_file, fileAge1d); err != nil {
+		panic(fmt.Errorf("while downloading %s to %s: %w", summary_wiki_url, summary_file, err))
+	}
+	summary_data, err := parse_summary_wiki(summary_file)
+	if err != nil {
+		panic(fmt.Errorf("while parsing summary wiki file %s: %w", summary_file, err))
+	}
+	for eventName, data := range summary_data {
+		log.Printf("summary data: %s: latest event id=%d runners=%d volunteers=%d", eventName, data.LatestEventId, data.Runners, data.Volunteers)
+	}
+
+	is_latest := make(map[string]struct{})
 	latestDate := time.Time{}
 	dates := make(map[*parkrun.Event]time.Time)
 	for _, event := range events {
@@ -384,6 +553,14 @@ func main() {
 					if event.LatestRun.Date.After(latestDate) {
 						latestDate = event.LatestRun.Date
 					}
+					if summary, found := summary_data[event.Name]; found {
+						if event.LatestRun.Index == summary.LatestEventId && event.LatestRun.RunnerCount == summary.Runners {
+							is_latest[event.Name] = struct{}{}
+						}
+					} else {
+						log.Printf("no summary data found for event %s", event.Name)
+					}
+
 					dates[event] = event.LatestRun.Date
 					// force download if there's something wrong with the numbers
 					if event.LatestRun.RunnerCount == 0 {
@@ -417,7 +594,9 @@ func main() {
 		}
 		wiki_url := event.WikiUrl()
 		wiki_file := download.Path("parkrun", event.Id, "wiki")
-		if isOutdated {
+		if _, found := is_latest[event.Name]; found {
+			log.Printf("%s: is latest according to summary wiki, no update", event.Id)
+		} else if isOutdated {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1h)
 		} else {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
