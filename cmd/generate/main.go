@@ -291,7 +291,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 		}
 		for j := 1; j <= 5; j++ {
 			linkStr := val(columns, row, fmt.Sprintf("link%d", j))
-			log.Printf("row %d link%d: %s", i+2, j, linkStr)
+			//log.Printf("row %d link%d: %s", i+2, j, linkStr)
 			if linkStr != "" {
 				link, err := parkrun.ParseLink(linkStr)
 				if err != nil {
@@ -300,7 +300,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 				links = append(links, link)
 			}
 		}
-		log.Printf("links: %d\n", len(links))
+		//log.Printf("links: %d\n", len(links))
 
 		parkrunInfos[id] = &parkrun.ParkrunInfo{
 			Id:          id,
@@ -597,7 +597,14 @@ func main() {
 		if _, found := is_latest[event.Name]; found {
 			log.Printf("%s: is latest according to summary wiki, no update", event.Id)
 		} else if isOutdated {
-			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1h)
+			if event.Planned() {
+				// downloading planned events can fail without problems, so we don't force it and just log errors
+				if err := utils.DownloadFileIfOlder(wiki_url, wiki_file, fileAge1h); err != nil {
+					log.Printf("while downloading planned event %s to %s: %v", wiki_url, wiki_file, err)
+				}
+			} else {
+				utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1h)
+			}
 		} else {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)
 		}
@@ -636,7 +643,7 @@ func main() {
 	}
 
 	for _, event := range events {
-		kml_url := fmt.Sprintf("https://www.google.com/maps/d/kml?mid=%s&forcekml=1", event.GoogleMapsId)
+		kml_url := event.GoogleMapsCourseKmlUrl()
 		kml_file := download.Path("parkrun", event.Id, "kml")
 		utils.MustDownloadFileIfOlder(kml_url, kml_file, now.Add(randomDuration(-24*200*time.Hour, -24*100*time.Hour)))
 

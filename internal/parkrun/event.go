@@ -419,6 +419,10 @@ func (event Event) GoogleMapsCourseUrl() string {
 	return ""
 }
 
+func (event Event) GoogleMapsCourseKmlUrl() string {
+	return fmt.Sprintf("https://www.google.com/maps/d/kml?mid=%s&forcekml=1", event.GoogleMapsCourseId())
+}
+
 func (event Event) Links() []Link {
 	if info, ok := parkrun_infos[event.Id]; ok {
 		return info.Links
@@ -481,6 +485,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 		if err != nil {
 			return nil, fmt.Errorf("when parsing coordinates of '%s': %v", info.Name, info.Coordinates)
 		}
+		log.Printf("   route id='%s', coordinates='%s' -> %v", info.RouteID, info.Coordinates, coordinates)
 		if event, found := eventMap[info.Id]; found {
 			if coordinates.IsValid() {
 				event.Coords = coordinates
