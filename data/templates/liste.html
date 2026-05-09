@@ -4,9 +4,9 @@
             parkruns in Deutschland
         </h1>
         <article>
-            Es gibt momentan {{.ActiveEvents}} aktive{{if or .PlannedEvents .ArchivedEvents}} (und {{if .PlannedEvents}}{{.PlannedEvents}} geplante & {{end}}{{.ArchivedEvents}} archivierte){{end}} parkrun-Standorte in Deutschland.
-        
-            Hier ist die Liste aller parkruns.
+            Es gibt momentan {{.ActiveEvents}} aktive{{if or .PlannedEvents .ArchivedEvents}} (und {{if .PlannedEvents}}{{.PlannedEvents}} geplante & {{end}}{{.ArchivedEvents}} archivierte){{end}} parkrun-Standorte in Deutschland.<br>
+            Hier ist die Liste aller parkruns.<br>
+            Der Rang gibt gibt die Platzierung des parkruns bezüglich Teilnehmerzahl an (parkrun mit den meisten Teilnehmern: Rang 1).
         </article>
 
         <table id="parkruns-table">
