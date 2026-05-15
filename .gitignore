@@ -4,6 +4,7 @@
 .output
 .output-world
 .repo
+.local
 scripts.DS_Store
 .DS_Store
 config.json

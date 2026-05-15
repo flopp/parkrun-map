@@ -2,6 +2,17 @@
 <main class="container">
     <h1>{{.Event.FixedName}}</h1>
 
+    <p>
+        {{if .Event.Active}}
+        {{.Event.FixedName}} ist ein kostenloser, wöchentlicher 5km-Lauf in {{.Event.FixedLocation}} ({{.Event.State}}).
+        {{else if .Event.Planned}}
+        {{.Event.FixedName}} ist ein geplanter parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}). Der erste Lauf ist für den {{.Event.First}} geplant.
+        {{else}}
+        {{.Event.FixedName}} war ein parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}).
+        {{end}}
+        Auf dieser Seite findest du die Streckenkarte, aktuelle Informationen und weiterführende Links.
+    </p>
+
     <table class="table">
         {{if .Event.Active}}
         {{else if .Event.Planned}}
@@ -9,7 +20,7 @@
         {{else}}
             <tr><td>Status</td><td><span class="tag-red">archiviert</span></td></tr>
         {{end}}
-        <tr><td>Ort</td><td>{{if .Event.SpecificLocation}}{{.Event.SpecificLocation}}, {{end}}{{.Event.FixedLocation}}</td></tr>
+        <tr><td>Ort</td><td>{{if .Event.SpecificLocation}}{{.Event.SpecificLocation}}, {{end}}{{.Event.FixedLocation}} ({{.Event.State}})</td></tr>
         <tr><td>Seit</td><td>{{.Event.First}}</td></tr>
         {{if .Event.LatestRun}}
         <tr><td>Austragungen</td><td>{{.Event.LatestRun.Index}}</td></tr>

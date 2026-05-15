@@ -235,7 +235,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 
 	// parse & validate columns
 	columns, err := googlesheetswrapper.ExtractHeader(sheet, []string{
-		"id", "name", "city", "location", "status", "first", "coordinates",
+		"id", "name", "city", "state", "location", "status", "first", "coordinates",
 		"route_type", "google_route_id", "google_maps_url",
 		"instagram", "facebook", "strava-club", "strava-segment",
 		"link1", "link2", "link3", "link4", "link5"},
@@ -249,6 +249,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 		id := val(columns, row, "id")
 		name := val(columns, row, "name")
 		city := val(columns, row, "city")
+		state := val(columns, row, "state")
 		location := val(columns, row, "location")
 		routeType := val(columns, row, "route_type")
 		routeId := val(columns, row, "google_route_id")
@@ -306,6 +307,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 			Id:          id,
 			Name:        name,
 			City:        city,
+			State:       state,
 			Location:    location,
 			RouteType:   routeType,
 			RouteID:     routeId,
@@ -604,6 +606,11 @@ func main() {
 				}
 			} else {
 				utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1h)
+			}
+		} else if event.Planned() {
+			// downloading planned events can fail without problems, so we don't force it and just log errors
+			if err := utils.DownloadFileIfOlder(wiki_url, wiki_file, fileAge1h); err != nil {
+				log.Printf("while downloading planned event %s to %s: %v", wiki_url, wiki_file, err)
 			}
 		} else {
 			utils.MustDownloadFileIfOlder(wiki_url, wiki_file, fileAge1d)

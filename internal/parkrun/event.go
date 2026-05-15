@@ -334,6 +334,7 @@ type ParkrunInfo struct {
 	Id          string
 	Name        string
 	City        string
+	State       string
 	Location    string
 	RouteType   string
 	RouteID     string
@@ -385,6 +386,16 @@ func (event Event) FixedLocation() string {
 	}
 
 	return event.Location
+}
+
+func (event Event) State() string {
+	if info, ok := parkrun_infos[event.Id]; ok {
+		if info.State != "" {
+			return info.State
+		}
+	}
+
+	return ""
 }
 
 func (event Event) Coordinates() string {
@@ -906,10 +917,10 @@ func ExportCsv(events []*Event, filePath string) error {
 	defer out.Close()
 
 	// export base data
-	fmt.Fprintf(out, "id;name;city;location;status;first;coordinates;route_type;google_route_id;google_maps_url;link1;link2;link3;link4;link5\n")
+	fmt.Fprintf(out, "id;name;city;state;location;status;first;coordinates;route_type;google_route_id;google_maps_url;link1;link2;link3;link4;link5\n")
 
 	for _, event := range events {
-		fmt.Fprintf(out, "\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", event.Id, escapeQuotes(event.FixedName()), escapeQuotes(event.FixedLocation()), escapeQuotes(event.SpecificLocation), event.Status, event.First(), event.Coordinates(), event.RouteType, event.GoogleMapsCourseId(), event.GoogleMapsUrl())
+		fmt.Fprintf(out, "\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", event.Id, escapeQuotes(event.FixedName()), escapeQuotes(event.FixedLocation()), escapeQuotes(event.State()), escapeQuotes(event.SpecificLocation), event.Status, event.First(), event.Coordinates(), event.RouteType, event.GoogleMapsCourseId(), event.GoogleMapsUrl())
 		for _, link := range event.Links() {
 			fmt.Fprintf(out, ";\"%s|%s\"", escapeQuotes(link.Name), escapeQuotes(link.Url))
 		}
