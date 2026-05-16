@@ -5,11 +5,11 @@
     <p>
         {{if .Event.Active}}
         Der {{.Event.FixedName}} ist ein kostenloser, wöchentlicher 5km-Lauf in {{.Event.FixedLocation}} ({{.Event.State}}).
-        {{if .Event.SpecificLocation}}Die Laufstrecke befindet {{.Event.SpecificLocation}}.{{end}}
+        {{if .Event.SpecificLocation}}Die Strecke verläuft {{.Event.SpecificLocation}}.{{end}}
         Der erste Lauf fand am {{.Event.First}} statt, insgesamt gab es {{.Event.LatestRun.Index}} Austragungen.
         {{else if .Event.Planned}}
         Der {{.Event.FixedName}} ist ein geplanter parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}).
-        {{if .Event.SpecificLocation}}Die Laufstrecke befindet sich {{.Event.SpecificLocation}}.{{end}}
+        {{if .Event.SpecificLocation}}Die Strecke verläuft {{.Event.SpecificLocation}}.{{end}}
         Der erste Lauf ist für den {{.Event.First}} geplant.
         {{else}}
         Der {{.Event.FixedName}} war ein parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}).
