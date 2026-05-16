@@ -4,12 +4,17 @@
 
     <p>
         {{if .Event.Active}}
-        {{.Event.FixedName}} ist ein kostenloser, wöchentlicher 5km-Lauf in {{.Event.FixedLocation}} ({{.Event.State}}). Der erste Lauf fand am {{.Event.First}} statt, insgesamt gab es {{.Event.LatestRun.Index}} Austragungen.
+        Der {{.Event.FixedName}} ist ein kostenloser, wöchentlicher 5km-Lauf in {{.Event.FixedLocation}} ({{.Event.State}}).
+        {{if .Event.SpecificLocation}}Die Laufstrecke befindet {{.Event.SpecificLocation}}.{{end}}
+        Der erste Lauf fand am {{.Event.First}} statt, insgesamt gab es {{.Event.LatestRun.Index}} Austragungen.
         {{else if .Event.Planned}}
-        {{.Event.FixedName}} ist ein geplanter parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}). Der erste Lauf ist für den {{.Event.First}} geplant.
+        Der {{.Event.FixedName}} ist ein geplanter parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}).
+        {{if .Event.SpecificLocation}}Die Laufstrecke befindet sich {{.Event.SpecificLocation}}.{{end}}
+        Der erste Lauf ist für den {{.Event.First}} geplant.
         {{else}}
-        {{.Event.FixedName}} war ein parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}).
+        Der {{.Event.FixedName}} war ein parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}).
         {{end}}
+        <br>
         Auf dieser Seite findest du die Streckenkarte, aktuelle Informationen und weiterführende Links.
     </p>
 
@@ -20,7 +25,7 @@
         {{else}}
             <tr><td>Status</td><td><span class="tag-red">archiviert</span></td></tr>
         {{end}}
-        <tr><td>Ort</td><td>{{if .Event.SpecificLocation}}{{.Event.SpecificLocation}}, {{end}}{{.Event.FixedLocation}} ({{.Event.State}})</td></tr>
+        <tr><td>Ort</td><td>{{.Event.FixedLocation}} ({{.Event.State}})</td></tr>
         <tr><td>Seit</td><td>{{.Event.First}}</td></tr>
         {{if .Event.LatestRun}}
         <tr><td>Austragungen</td><td>{{.Event.LatestRun.Index}}</td></tr>
