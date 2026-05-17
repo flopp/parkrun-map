@@ -534,8 +534,10 @@ func main() {
 
 	// check mode
 	if *check {
+		log.Printf("CHECKING COURSES")
+
 		for _, event := range events {
-			log.Printf("CHECKING %s", event.Id)
+			log.Printf("    CHECKING %s", event.Id)
 
 			// check whether the route ID from Google Sheets matches the route ID from the parkrun route page
 			course_url := event.CoursePageUrl()
@@ -575,6 +577,32 @@ func main() {
 				log.Fatalf("  ERROR route ID from course page does not match route ID from Google Sheets!\n    course page route ID: %s\n    Google Sheets route ID: %s\n", routeId, event.GoogleMapsCourseId())
 			}
 
+			// check distance between coordinates from Google Sheets and coordinates from the course
+			kml_url := event.GoogleMapsCourseKmlUrl()
+			kml_file := download.Path("parkrun", event.Id, event.GoogleMapsCourseId())
+			utils.MustDownloadFileIfOlder(kml_url, kml_file, now.Add(randomDuration(-24*200*time.Hour, -24*100*time.Hour)))
+
+			if err := event.LoadKML(kml_file); err != nil {
+				panic(fmt.Errorf("file parsing %s: %w", kml_file, err))
+			}
+
+			if !event.CoordsFromKml.IsValid() {
+				log.Fatalf("  ERROR coordinates from KML are not valid, cannot check distance to Google Sheets coordinates")
+			} else if !event.Coords.IsValid() {
+				log.Fatalf("  ERROR coordinates from Google Sheets are not valid, cannot check distance to KML coordinates")
+			} else {
+				distance := utils.DistanceMeters(event.Coords, event.CoordsFromKml)
+				if distance > 10 {
+					log.Fatalf("  ERROR distance between Google Sheets coordinates and KML coordinates is greater than 20m: %f meters\n%f,%f", distance, event.CoordsFromKml.Lat, event.CoordsFromKml.Lon)
+				}
+			}
+		}
+
+		log.Printf("CHECKING LINKS")
+
+		for _, event := range events {
+			log.Printf("    CHECKING %s", event.Id)
+
 			// check if all links are valid
 			for _, link := range event.Links() {
 				if strings.Contains(link.Url, "facebook") {
@@ -585,6 +613,7 @@ func main() {
 					log.Printf("  ERROR checking link %s %s: %v", link.Name, link.Url, err)
 				}
 			}
+
 		}
 		return
 	}

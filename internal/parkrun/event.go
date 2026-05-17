@@ -219,28 +219,17 @@ func (run *Run) LoadResults(filePath string) error {
 	return nil
 }
 
-type Coordinates struct {
-	Lat, Lon float64
-}
-
-var (
-	InvalidCoordinates = Coordinates{100, 0}
-)
-
-func (c Coordinates) IsValid() bool {
-	return c.Lat <= 90
-}
-
 type Event struct {
 	Id                          string
 	Name                        string
 	Location                    string
 	SpecificLocation            string
-	Coords                      Coordinates
+	Coords                      utils.Coordinates
+	CoordsFromKml               utils.Coordinates
 	CountryUrl                  string
 	GoogleMapsId                string
 	RouteType                   string
-	Tracks                      [][]Coordinates
+	Tracks                      [][]utils.Coordinates
 	LatestRun                   *Run
 	Current                     bool
 	Order                       int
@@ -345,35 +334,8 @@ type ParkrunInfo struct {
 	Links       []Link
 }
 
-func (info ParkrunInfo) ParseCoordinates() (Coordinates, error) {
-	if info.Coordinates == "" {
-		return InvalidCoordinates, nil
-	}
-	r := regexp.MustCompile(`^\s*(-?[0-9\.]+)\s+(-?[0-9\.]+)\s*$`)
-	if m := r.FindStringSubmatch(info.Coordinates); m != nil {
-		lat, err := strconv.ParseFloat(m[1], 64)
-		if err != nil {
-			return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
-		}
-		lon, err := strconv.ParseFloat(m[2], 64)
-		if err != nil {
-			return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
-		}
-		return Coordinates{lat, lon}, nil
-	}
-	r = regexp.MustCompile(`^\s*(-?[0-9\.]+),(-?[0-9\.]+)\s*$`)
-	if m := r.FindStringSubmatch(info.Coordinates); m != nil {
-		lat, err := strconv.ParseFloat(m[1], 64)
-		if err != nil {
-			return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
-		}
-		lon, err := strconv.ParseFloat(m[2], 64)
-		if err != nil {
-			return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
-		}
-		return Coordinates{lat, lon}, nil
-	}
-	return InvalidCoordinates, fmt.Errorf("cannot parse coordinates: %s", info.Coordinates)
+func (info ParkrunInfo) ParseCoordinates() (utils.Coordinates, error) {
+	return utils.ParseCoordinates(info.Coordinates)
 }
 
 var parkrun_infos map[string]*ParkrunInfo
@@ -485,7 +447,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			continue
 		}
 
-		event := &Event{e.Name, e.LongName, e.Location, "", Coordinates{e.Coordinates.Lat, e.Coordinates.Lng}, e.Country.Url, "", "", nil, nil, false, 0, "", 0, 0, 0, 0, 0}
+		event := &Event{e.Name, e.LongName, e.Location, "", utils.Coordinates{Lat: e.Coordinates.Lat, Lon: e.Coordinates.Lng}, utils.InvalidCoordinates, e.Country.Url, "", "", nil, nil, false, 0, "", 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 		eventMap[e.Name] = event
 	}
@@ -506,7 +468,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			event.RouteType = info.RouteType
 			continue
 		}
-		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, "", "", info.RouteType, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
+		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 	}
 
@@ -718,33 +680,6 @@ func (event *Event) LoadCoursePage(filePath string) error {
 	return nil
 }
 
-type KML struct {
-	Placemarks []Placemark `xml:"Document>Folder>Placemark"`
-}
-
-type Placemark struct {
-	Name       string     `xml:"name"`
-	Point      Point      `xml:"Point"`
-	LineString LineString `xml:"LineString"`
-}
-
-type ExtendedData struct {
-	Data []Data `xml:"Data"`
-}
-
-type Data struct {
-	Name  string `xml:"name,attr"`
-	Value string `xml:"value"`
-}
-
-type Point struct {
-	Coordinates string `xml:"coordinates"`
-}
-
-type LineString struct {
-	Coordinates string `xml:"coordinates"`
-}
-
 func escape(s string) string {
 	return strings.ReplaceAll(s, "\\", "\\\\")
 }
@@ -758,53 +693,37 @@ func (event *Event) LoadKML(filePath string) error {
 		return err
 	}
 
-	event.Tracks = make([][]Coordinates, 0)
-	track := make([]Coordinates, 0)
-
-	in := false
-	for _, line := range strings.Split(string(buf), "\n") {
-		if !in {
-			if reCoordinatesStart.MatchString(line) {
-				in = true
-				track = make([]Coordinates, 0)
-			}
-		} else {
-			if reCoordinatesEnd.MatchString(line) {
-				in = false
-				if len(track) > 1 {
-					event.Tracks = append(event.Tracks, track)
-				}
-				track = make([]Coordinates, 0)
-			} else {
-				line = strings.TrimSpace(line)
-				if len(line) == 0 {
-					continue
-				}
-				c := strings.Split(line, ",")
-				if len(c) != 3 {
-					return fmt.Errorf("error parsing coordinates '%s': not 3 elements", line)
-				}
-				lon, err := strconv.ParseFloat(c[0], 64)
-				if err != nil {
-					return fmt.Errorf("error parsing coordinates '%s': %v", line, err)
-				}
-				lat, err := strconv.ParseFloat(c[1], 64)
-				if err != nil {
-					return fmt.Errorf("error parsing coordinates '%s': %v", line, err)
-				}
-				track = append(track, Coordinates{lat, lon})
-			}
-		}
+	tracks, points, err := utils.ParseKML(buf)
+	if err != nil {
+		return fmt.Errorf("parsing KML: %v", err)
 	}
 
-	if len(track) > 0 {
-		return fmt.Errorf("unterminated coordinates list")
+	if len(tracks) == 0 && len(points) == 0 {
+		return fmt.Errorf("no tracks or points found in KML")
+	}
+
+	event.Tracks = tracks
+
+	for name, coords := range points {
+		lowerName := strings.ToLower(name)
+		if strings.Contains(lowerName, "start") {
+			event.CoordsFromKml = coords
+			log.Printf("parkrun: found coordinates from KML for event '%s' at point '%s'", event.Id, name)
+		}
+	}
+	if !event.CoordsFromKml.IsValid() {
+		pointNames := make([]string, 0, len(points))
+		for name := range points {
+			pointNames = append(pointNames, name)
+		}
+		log.Printf("parkrun: found coordinates from KML for event '%s'; found points %v", event.Id, pointNames)
+		event.CoordsFromKml = tracks[0][0]
 	}
 
 	allowedPoints := 100
 	initialPrecision := 0.00001
 	deltaPrecision := 0.000001
-	simplified := make([][]Coordinates, 0, len(event.Tracks))
+	simplified := make([][]utils.Coordinates, 0, len(event.Tracks))
 	for _, track := range event.Tracks {
 		if len(track) > allowedPoints {
 			precision := initialPrecision
@@ -818,7 +737,7 @@ func (event *Event) LoadKML(filePath string) error {
 			}
 			track = track[:0]
 			for _, c := range s {
-				track = append(track, Coordinates{c[0], c[1]})
+				track = append(track, utils.Coordinates{Lat: c[0], Lon: c[1]})
 			}
 			simplified = append(simplified, track)
 		} else {
