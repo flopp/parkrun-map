@@ -219,6 +219,15 @@ func (run *Run) LoadResults(filePath string) error {
 	return nil
 }
 
+type EventDistance struct {
+	Event      *Event
+	DistanceKM float64
+}
+
+func (ed EventDistance) String() string {
+	return fmt.Sprintf("%s (%s, %.0f km)", ed.Event.FixedName(), ed.Event.FixedLocation(), ed.DistanceKM)
+}
+
 type Event struct {
 	Id                          string
 	Name                        string
@@ -231,6 +240,7 @@ type Event struct {
 	RouteType                   string
 	Tracks                      [][]utils.Coordinates
 	LatestRun                   *Run
+	NearbyEvents                []*EventDistance
 	Current                     bool
 	Order                       int
 	Status                      string
@@ -317,6 +327,39 @@ func ParseLink(s string) (Link, error) {
 
 func (link Link) IsValid() bool {
 	return len(link.Name) > 0 && len(link.Url) > 0
+}
+
+func (event *Event) PopulateNearby(events []*Event) {
+	distances := make([]struct {
+		Event    *Event
+		Distance float64
+	}, 0, len(events)-1)
+
+	for _, other := range events {
+		if event == other || !other.Active() {
+			continue
+		}
+		distances = append(distances, struct {
+			Event    *Event
+			Distance float64
+		}{
+			Event:    other,
+			Distance: utils.DistanceMeters(event.Coords, other.Coords),
+		})
+	}
+	sort.Slice(distances, func(i, j int) bool {
+		return distances[i].Distance < distances[j].Distance
+	})
+	if len(distances) > 3 {
+		distances = distances[:3]
+	}
+	event.NearbyEvents = make([]*EventDistance, len(distances))
+	for i, d := range distances {
+		event.NearbyEvents[i] = &EventDistance{
+			Event:      d.Event,
+			DistanceKM: d.Distance / 1000.0,
+		}
+	}
 }
 
 type ParkrunInfo struct {
@@ -447,7 +490,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			continue
 		}
 
-		event := &Event{e.Name, e.LongName, e.Location, "", utils.Coordinates{Lat: e.Coordinates.Lat, Lon: e.Coordinates.Lng}, utils.InvalidCoordinates, e.Country.Url, "", "", nil, nil, false, 0, "", 0, 0, 0, 0, 0}
+		event := &Event{e.Name, e.LongName, e.Location, "", utils.Coordinates{Lat: e.Coordinates.Lat, Lon: e.Coordinates.Lng}, utils.InvalidCoordinates, e.Country.Url, "", "", nil, nil, nil, false, 0, "", 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 		eventMap[e.Name] = event
 	}
@@ -468,7 +511,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			event.RouteType = info.RouteType
 			continue
 		}
-		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
+		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
 		eventList = append(eventList, event)
 	}
 

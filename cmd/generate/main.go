@@ -747,6 +747,11 @@ func main() {
 		}
 	}
 
+	// determine 3 nearby parkruns for each event
+	for _, event := range events {
+		event.PopulateNearby(events)
+	}
+
 	// fetch external assets (bulma, leaflet)
 
 	// renovate: datasource=npm depName=leaflet

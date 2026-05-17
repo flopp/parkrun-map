@@ -47,6 +47,9 @@
                 {{range $i,$e := .Event.Links}}{{if $i}}, {{end}}<a href="{{$e.Url}}" target="_blank">{{$e.Name}}</a>{{end}}
         </td></tr>
         {{end}}
+        <tr><td>Nächste parkruns</td><td>
+                {{range $i,$e := .Event.NearbyEvents}}{{if $i}}, {{end}}<a href="{{$e.Event.Id}}.html">{{$e.String}}</a>{{end}}
+        </td></tr>
     </table>
 
     <div id="parkrun-map" data-id="{{.Event.Id}}"></div>

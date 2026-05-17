@@ -207,7 +207,7 @@ var main = () => {
     if (document.getElementById("parkruns-table") && window.jQuery && window.jQuery.fn.dataTable) {
         // Add custom type detection and sorting
         window.jQuery.fn.dataTable.ext.type.order['de_date-pre'] = function (d) {
-            if (!d || d === '-') return 0;
+            if (!d || d.includes("-")) return 0;
             // Remove HTML tags if present
             d = d.replace(/<[^>]*>/g, '').trim();
             var parts = d.split('.');
@@ -217,7 +217,7 @@ var main = () => {
         };
         // Custom sorting for 'Letzter Lauf' (number + suffix or '-')
         window.jQuery.fn.dataTable.ext.type.order['laufnum-pre'] = function (d) {
-            if (!d || d === '-') return 0;
+            if (!d || d.includes("-")) return 0;
             // Remove HTML tags if present
             d = d.replace(/<[^>]*>/g, '').trim();
             // Extract the number before the first space or parenthesis
@@ -227,7 +227,7 @@ var main = () => {
         };
         // Custom sorting for 'Rang' (numbers and '-')
         window.jQuery.fn.dataTable.ext.type.order['rangnum-pre'] = function (d) {
-            if (!d || d === '-') return Number.POSITIVE_INFINITY;
+            if (!d || d.includes("-")) return Number.POSITIVE_INFINITY;
             // Remove HTML tags if present
             d = d.replace(/<[^>]*>/g, '').trim();
             var n = parseInt(d, 10);
