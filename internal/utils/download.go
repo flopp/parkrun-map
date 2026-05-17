@@ -117,3 +117,26 @@ func MustDownloadHash(url string, dst, dstDir string) string {
 	}
 	return res
 }
+
+func CheckLink(url string) error {
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+
+	req, err := http.NewRequest("HEAD", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Add("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36")
+	client := &http.Client{}
+	response, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	statusOK := response.StatusCode >= 200 && response.StatusCode < 300
+	if !statusOK {
+		return fmt.Errorf("Non-OK HTTP status: %d", response.StatusCode)
+	}
+
+	return nil
+}

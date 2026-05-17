@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -481,6 +482,7 @@ func main() {
 	configFile := flag.String("config", "config.json", "the config file with Google API key and Sheets ID")
 	exportCsvFile := flag.String("export-csv", "", "export CSV file with all parkrun events")
 	verbose := flag.Bool("verbose", false, "verbose logging")
+	check := flag.Bool("check", false, "check mode")
 	flag.Parse()
 
 	if !*verbose {
@@ -528,6 +530,63 @@ func main() {
 	events, err := parkrun.LoadEvents(events_json_file, parkrun_infos, true /* germanOnly */)
 	if err != nil {
 		panic(fmt.Errorf("loading parkrun events: %w", err))
+	}
+
+	// check mode
+	if *check {
+		for _, event := range events {
+			log.Printf("CHECKING %s", event.Id)
+
+			// check whether the route ID from Google Sheets matches the route ID from the parkrun route page
+			course_url := event.CoursePageUrl()
+			course_file := download.Path("parkrun", event.Id, "course_page")
+			utils.MustDownloadFileIfOlder(course_url, course_file, fileAge1w)
+			content, err := os.ReadFile(course_file)
+			if err != nil {
+				log.Printf("  ERROR reading course page file: %v", err)
+				continue
+			}
+			strContent := string(content)
+			routeLink := ""
+			// use regex to extract get the full google maps link
+			// e.g. 'https://www.google.com/maps/d/embed?mid=1P8MeMOlLX_4sh9iiES6auGwuNE1tgYo&ehbc=2E312F&noprof=1'
+			routeLinkRe := `iframe src="(https://www\.google\.com/maps/[^"]+)"`
+			re := regexp.MustCompile(routeLinkRe)
+			matches := re.FindStringSubmatch(strContent)
+			if len(matches) == 2 {
+				routeLink = matches[1]
+			} else {
+				log.Fatalf("  ERROR extracting route link from course page, iframe regex did not match")
+			}
+
+			// extract "mid" parameter from the route link
+			routeId := ""
+			routeIdRe := `mid=([^&]+)`
+			re = regexp.MustCompile(routeIdRe)
+			matches = re.FindStringSubmatch(routeLink)
+			if len(matches) == 2 {
+				routeId = matches[1]
+			} else {
+				log.Fatalf("  ERROR extracting route ID from route link, regex did not match")
+			}
+
+			// check if the route ID from the course page matches the route ID from Google Sheets
+			if event.GoogleMapsCourseId() != routeId {
+				log.Fatalf("  ERROR route ID from course page does not match route ID from Google Sheets!\n    course page route ID: %s\n    Google Sheets route ID: %s\n", routeId, event.GoogleMapsCourseId())
+			}
+
+			// check if all links are valid
+			for _, link := range event.Links() {
+				if strings.Contains(link.Url, "facebook") {
+					// skip facebook links, they often have issues with bots and it's not critical if they are correct
+					continue
+				}
+				if err := utils.CheckLink(link.Url); err != nil {
+					log.Printf("  ERROR checking link %s %s: %v", link.Name, link.Url, err)
+				}
+			}
+		}
+		return
 	}
 
 	// summary wiki file
@@ -651,7 +710,7 @@ func main() {
 
 	for _, event := range events {
 		kml_url := event.GoogleMapsCourseKmlUrl()
-		kml_file := download.Path("parkrun", event.Id, "kml")
+		kml_file := download.Path("parkrun", event.Id, event.GoogleMapsCourseId())
 		utils.MustDownloadFileIfOlder(kml_url, kml_file, now.Add(randomDuration(-24*200*time.Hour, -24*100*time.Hour)))
 
 		if err := event.LoadKML(kml_file); err != nil {

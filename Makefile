@@ -11,7 +11,14 @@ build:
     	-download ".download" \
 		-output   ".output" \
 		-config   "config.json"
-	
+
+.phony: check
+check:
+	@go run cmd/generate/main.go -check -verbose \
+		-data     "data" \
+		-download ".download" \
+		-config   "config.json"
+
 .phony: run-local
 run-local: build
 	@echo "SERVING TO http://localhost:8080/"

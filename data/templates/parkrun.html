@@ -5,11 +5,11 @@
     <p>
         {{if .Event.Active}}
         Der {{.Event.FixedName}} ist ein kostenloser, wöchentlicher 5km-Lauf in {{.Event.FixedLocation}} ({{.Event.State}}).
-        {{if .Event.SpecificLocation}}Die Strecke verläuft {{.Event.SpecificLocation}}.{{end}}
-        Der erste Lauf fand am {{.Event.First}} statt, insgesamt gab es {{.Event.LatestRun.Index}} Austragungen.
+        {{if .Event.SpecificLocation}}Die Strecke {{if .Event.RouteType}}({{.Event.RouteType}}){{end}} verläuft {{.Event.SpecificLocation}}.{{end}}
+        Der erste Lauf fand am {{.Event.First}} statt, insgesamt gab es bisher {{.Event.LatestRun.Index}} Austragungen.
         {{else if .Event.Planned}}
         Der {{.Event.FixedName}} ist ein geplanter parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}).
-        {{if .Event.SpecificLocation}}Die Strecke verläuft {{.Event.SpecificLocation}}.{{end}}
+        {{if .Event.SpecificLocation}}Die Strecke {{if .Event.RouteType}}({{.Event.RouteType}}){{end}} verläuft {{.Event.SpecificLocation}}.{{end}}
         Der erste Lauf ist für den {{.Event.First}} geplant.
         {{else}}
         Der {{.Event.FixedName}} war ein parkrun-Standort in {{.Event.FixedLocation}} ({{.Event.State}}).
@@ -32,7 +32,13 @@
         <tr><td>Letzte Austragung</td><td><a href="{{.Event.LatestRun.Url}}" target="_blank">#{{.Event.LatestRun.Index}} am {{.Event.LatestRun.DateF}}, {{.Event.LatestRun.RunnerCount}} Teilnehmer</a></td></tr>
         {{end}}
         {{if .Event.RouteType}}
-        <tr><td>Streckenart</td><td>{{.Event.RouteType}}</td></tr>
+            {{if .Event.SpecificLocation}}
+        <tr><td>Strecke</td><td>{{.Event.RouteType}}; {{.Event.SpecificLocation}}</td></tr>
+            {{else}}
+        <tr><td>Strecke</td><td>{{.Event.RouteType}}</td></tr>
+            {{end}} 
+        {{else if .Event.SpecificLocation}}
+        <tr><td>Strecke</td><td>{{.Event.SpecificLocation}}</td></tr>
         {{end}}
         <tr><td>Offizielle Webseiten</td><td><a href="{{.Event.Url}}" target="_blank">Hauptseite</a>, <a href="{{.Event.CoursePageUrl}}" target="_blank">Streckenbeschreibung</a>, <a href="{{.Event.ResultsUrl}}" target="_blank">Ergebnisliste</a>, <a href="{{.Event.WikiUrl}}" target="_blank">Wiki</a></td></tr> 
         <tr><td>Google Maps</td><td><a href="{{.Event.GoogleMapsUrl}}" target="_blank">Ort</a>, <a href="{{.Event.GoogleMapsCourseUrl}}" target="_blank">Strecke</a></td></tr>
