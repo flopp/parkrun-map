@@ -849,11 +849,11 @@ func main() {
 
 	renderData := RenderData{&config, nil, events, active, planned, archived, umami_js_file, js_files, css_files, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
-	renderData.set("Alle parkruns in Deutschland (Karte)", "Alle parkruns in Deutschland.", canonical(""), "map")
+	renderData.set("Karte mit allen parkruns in Deutschland", "Alle parkruns in Deutschland auf einer Karte", canonical(""), "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'index.html': %v", err))
 	}
-	renderData.set("Alle parkruns in Deutschland (Liste)", "Alle parkruns in Deutschland.", canonical("liste.html"), "list")
+	renderData.set("Infos zu allen parkruns in Deutschland", "Infos zu allen parkruns in Deutschland.", canonical("liste.html"), "list")
 	if err := renderData.render(output.Path("liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'list.html': %v", err))
 	}
@@ -873,7 +873,7 @@ func main() {
 	for _, event := range events {
 		renderData.Event = event
 		title := fmt.Sprintf("%s, %s", event.FixedName(), event.FixedLocation())
-		description := fmt.Sprintf("Informationen zum %s in %s; Streckenkarte, Statistiken, Links", event.FixedName(), event.FixedLocation())
+		description := fmt.Sprintf("Alle Infos zum %s in %s; Strecke, Karte, Statistiken und wichtige Links", event.FixedName(), event.FixedLocation())
 		file := fmt.Sprintf("%s.html", event.Id)
 		renderData.set(title, description, canonical(file), "list")
 		if err := renderData.render(output.Path(file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
