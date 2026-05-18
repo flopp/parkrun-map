@@ -6,7 +6,39 @@ var on_load = function(f) {
     }
 }
 
+const trackPanes = {
+    archived: 'parkrun-tracks-archived-pane',
+    planned: 'parkrun-tracks-planned-pane',
+    active: 'parkrun-tracks-active-pane'
+};
+
+const ensureTrackPanes = function(map) {
+    if (!map.getPane(trackPanes.archived)) {
+        map.createPane(trackPanes.archived);
+    }
+    if (!map.getPane(trackPanes.planned)) {
+        map.createPane(trackPanes.planned);
+    }
+    if (!map.getPane(trackPanes.active)) {
+        map.createPane(trackPanes.active);
+    }
+    map.getPane(trackPanes.archived).style.zIndex = 350;
+    map.getPane(trackPanes.planned).style.zIndex = 360;
+    map.getPane(trackPanes.active).style.zIndex = 370;
+};
+
+const getTrackStyle = function(parkrun) {
+    if (parkrun.active) {
+        return {color: 'red', pane: trackPanes.active};
+    }
+    if (parkrun.planned) {
+        return {color: 'red', pane: trackPanes.planned};
+    }
+    return {color: 'grey', pane: trackPanes.archived};
+};
+
 const updateTracks = function(map, parkruns) {
+    ensureTrackPanes(map);
     // store lat,lon,zoom in location.hash
     const center = map.getCenter();
     const zoom = map.getZoom();
@@ -31,12 +63,13 @@ const updateTracks = function(map, parkruns) {
     parkruns.forEach((parkrun, index, array) => {
         if (bounds.contains([parkrun.lat, parkrun.lon])) {
             if (!parkrun.polylines_visible) {
+                const style = getTrackStyle(parkrun);
                 array[index].polylines_visible = true;
                 // newly create leaflet polyline
                 if (parkrun.polylines === null) {
                     array[index].polylines = [];
                     parkrun.tracks.forEach(latlngs => {
-                        array[index].polylines.push(L.polyline(latlngs, {color: 'red'}));
+                        array[index].polylines.push(L.polyline(latlngs, style));
                     });
                 }
                 parkrun.polylines.forEach(p => {
@@ -97,18 +130,18 @@ const loadMap = function (id, hash) {
 
     parkruns.forEach((parkrun, index, array) => {
         if (parkrun.active) {
-            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon});
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon, zIndexOffset: 2000});
             //const marker = L.circleMarker([parkrun.lat, parkrun.lon], {color: "darkblue", fillColor: "blue", fillOpacity: 1, radius: 8});
             marker
                 .addTo(map)
                 .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a><br>${parkrun.location}`);
         } else if (parkrun.planned) {
-            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: greenIcon});
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: greenIcon, zIndexOffset: 1000});
             marker
                 .addTo(map)
                 .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a> <span class="tag is-success is-light">geplant</span><br>${parkrun.location}`);
         } else {
-            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: greyIcon});
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: greyIcon, zIndexOffset: 0});
             marker
                 .addTo(map)
                 .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a> <span class="tag is-danger is-light">archiviert</span><br>${parkrun.location}`);    
