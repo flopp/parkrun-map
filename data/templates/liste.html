@@ -9,7 +9,7 @@
             Der Rang gibt gibt die Platzierung des parkruns bezüglich Teilnehmerzahl an (parkrun mit den meisten Teilnehmern: Rang 1).
         </article>
 
-        <table id="parkruns-table">
+        <table id="parkruns-table" class="sortable">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -24,7 +24,7 @@
             <tbody>
             {{range .Events}}
                 <tr>
-                    <td>
+                    <td data-sort="{{.FixedName}}">
                         {{if .Active}}
                         <a href="{{.Id}}.html">{{.FixedName}}</a>
                         {{else if .Planned}}
@@ -33,34 +33,34 @@
                         <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag-red">archiviert</span>
                         {{end}}
                     </td>
-                    <td>
+                    <td data-sort="{{.FixedLocation}}">
                         <a target="_blank" href="{{.GoogleMapsUrl}}">{{.FixedLocation}}</a>
                     </td>
-                    <td>
+                    <td data-sort="{{.State}}">
                         {{.State}}
                     </td>
-                    <td class="tnum">
+                    <td class="tnum" data-sort="{{.FirstSortable}}">
                         {{.First}}
                     </td>
                     {{if .LatestRun}}
-                    <td class="tnum{{if .Outdated}} grey-text{{end}}">
+                    <td class="tnum{{if .Outdated}} grey-text{{end}}" data-sort="{{.LatestRunIndexSortable}}">
                         <a target="_blank" href="{{.LatestRun.Url}}">{{.LatestRun.Index}} ({{.LatestRun.DateF}})</a>
                         {{if .Outdated}} <span class="tag-red">veraltet</span>{{end}}
                     </td>
-                    <td class="tnum{{if .Outdated}} grey-text{{end}}">
+                    <td class="tnum{{if .Outdated}} grey-text{{end}}" data-sort="{{.LatestRunRunnersSortable}}">
                         {{.LatestRun.Runners}}
                     </td>
                     {{if .Outdated}}
-                    <td class="grey-text">-</td>
+                    <td class="grey-text" data-sort="9999">-</td>
                     {{else}}
-                    <td class="tnum">
+                    <td class="tnum" data-sort="{{.OrderSortable}}">
                         {{.Order}}
                     </td>
                     {{end}}
                     {{else}}
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
+                    <td data-sort="-1">-</td>
+                    <td data-sort="-1">-</td>
+                    <td data-sort="9999">-</td>
                     {{end}}
                 </tr>
                 {{end}}

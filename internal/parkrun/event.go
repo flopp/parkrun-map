@@ -308,6 +308,39 @@ func (event Event) SummaryVolunteersAvg() string {
 	return "n/a"
 }
 
+var reDateDDMMYYYY = regexp.MustCompile(`^\s*(\d\d)\.(\d\d)\.(\d\d\d\d)\s*$`)
+
+func (event Event) FirstSortable() string {
+	if info, ok := parkrun_infos[event.Id]; ok {
+		if m := reDateDDMMYYYY.FindStringSubmatch(info.First); m != nil {
+			return fmt.Sprintf("%s%s%s", m[3], m[2], m[1])
+		}
+	}
+
+	return "99999999"
+}
+
+func (event Event) LatestRunIndexSortable() string {
+	if event.LatestRun != nil {
+		return fmt.Sprintf("%d", event.LatestRun.Index)
+	}
+	return "-1"
+}
+
+func (event Event) LatestRunRunnersSortable() string {
+	if event.LatestRun != nil {
+		return fmt.Sprintf("%d", event.LatestRun.RunnerCount)
+	}
+	return "-1"
+}
+
+func (event Event) OrderSortable() string {
+	if event.Order != 0 {
+		return fmt.Sprintf("%d", event.Order)
+	}
+	return "9999"
+}
+
 type Link struct {
 	Name string
 	Url  string

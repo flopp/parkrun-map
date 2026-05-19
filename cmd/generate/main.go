@@ -776,6 +776,11 @@ func main() {
 		utils.MustDownloadFileIfOlder(umami_url, download.Path("umami", "umami.js"), fileAge1w)
 	}
 
+	// sortable
+	sortable_url := "https://cdn.jsdelivr.net/gh/tofsjonas/sortable@latest/dist"
+	utils.MustDownloadFileIfOlder(sortable_url+"/sortable.min.css", download.Path("sortable", "sortable.min.css"), fileAge1w)
+	utils.MustDownloadFileIfOlder(sortable_url+"/sortable.min.js", download.Path("sortable", "sortable.min.js"), fileAge1w)
+
 	// dowbnload jquery (needed for datatables)
 	jquery_version := "4.0.0"
 	jquery_js_url := fmt.Sprintf("https://code.jquery.com/jquery-%s.min.js", jquery_version)
@@ -813,14 +818,13 @@ func main() {
 	js_files := make([]string, 0)
 	js_files = append(js_files, utils.MustCopyHash(download.Path("data.js"), "data-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(download.Path("leaflet/leaflet.js"), "leaflet-HASH.js", *outputDir))
-	js_files = append(js_files, utils.MustCopyHash(download.Path("jquery/jquery.min.js"), "jquery-HASH.js", *outputDir))
-	js_files = append(js_files, utils.MustCopyHash(download.Path("datatables/dataTables.min.js"), "datatables-HASH.js", *outputDir))
+	js_files = append(js_files, utils.MustCopyHash(download.Path("sortable/sortable.min.js"), "sortable-HASH.js", *outputDir))
 	js_files = append(js_files, utils.MustCopyHash(data.Path("static", "main.js"), "main-HASH.js", *outputDir))
 
 	css_files := make([]string, 0)
 	css_files = append(css_files, utils.MustCopyHash(download.Path("picocss/pico.css"), "pico-HASH.css", *outputDir))
 	css_files = append(css_files, utils.MustCopyHash(download.Path("leaflet/leaflet.css"), "leaflet-HASH.css", *outputDir))
-	css_files = append(css_files, utils.MustCopyHash(download.Path("datatables/dataTables.dataTables.min.css"), "datatables-HASH.css", *outputDir))
+	css_files = append(css_files, utils.MustCopyHash(download.Path("sortable/sortable.min.css"), "sortable-HASH.css", *outputDir))
 	css_files = append(css_files, utils.MustCopyHash(data.Path("static", "style.css"), "style-HASH.css", *outputDir))
 
 	utils.MustCopyHash(download.Path("leaflet/marker-icon.png"), "images/marker-icon.png", *outputDir)
