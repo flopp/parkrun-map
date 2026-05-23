@@ -5,8 +5,14 @@
         </h1>
         <article>
             Es gibt momentan {{.ActiveEvents}} aktive{{if or .PlannedEvents .ArchivedEvents}} (und {{if .PlannedEvents}}{{.PlannedEvents}} geplante & {{end}}{{.ArchivedEvents}} archivierte){{end}} parkrun-Standorte in Deutschland.<br>
-            Hier ist die Liste aller parkruns.<br>
-            Der Rang gibt gibt die Platzierung des parkruns bezüglich Teilnehmerzahl an (parkrun mit den meisten Teilnehmern: Rang 1).
+            Hier ist die Liste aller deutschen parkruns.<br>
+        </article>
+
+        <article>
+            <b>Hinweise zur Tabelle:</b><br>
+            Der Rang gibt die Platzierung des parkruns bezüglich Teilnehmerzahl in der aktuellen Woche an (parkrun mit den meisten Teilnehmern: Rang 1).<br>
+            Die Tabellenspalten können angeklickt werden, um die Tabelle zu sortieren.<br>
+            <span class="tag-green">geplant</span> = parkrun ist noch nicht gestartet, <span class="tag-orange">veraltet</span> = keine aktuellen Daten, <span class="tag-red">archiviert</span> = parkrun ist nicht mehr aktiv.
         </article>
 
         <table id="parkruns-table" class="sortable">
@@ -28,9 +34,9 @@
                         {{if .Active}}
                         <a href="{{.Id}}.html">{{.FixedName}}</a>
                         {{else if .Planned}}
-                        <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag-green">geplant</span>
+                        <a href="{{.Id}}.html">{{.FixedName}}</a><br><span class="tag-green">geplant</span>
                         {{else}}
-                        <a href="{{.Id}}.html">{{.FixedName}}</a> <span class="tag-red">archiviert</span>
+                        <a href="{{.Id}}.html">{{.FixedName}}</a><br><span class="tag-red">archiviert</span>
                         {{end}}
                     </td>
                     <td data-sort="{{.FixedLocation}}">
@@ -45,7 +51,7 @@
                     {{if .LatestRun}}
                     <td class="tnum{{if .Outdated}} grey-text{{end}}" data-sort="{{.LatestRunIndexSortable}}">
                         <a target="_blank" href="{{.LatestRun.Url}}">{{.LatestRun.Index}} ({{.LatestRun.DateF}})</a>
-                        {{if .Outdated}} <span class="tag-red">veraltet</span>{{end}}
+                        {{if .Outdated}}<br><span class="tag-orange">veraltet</span>{{end}}
                     </td>
                     <td class="tnum{{if .Outdated}} grey-text{{end}}" data-sort="{{.LatestRunRunnersSortable}}">
                         {{.LatestRun.Runners}}

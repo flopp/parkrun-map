@@ -56,6 +56,13 @@ html, body, #map{
     padding: 0.25em 0.5em;
     font-size: 75%;
 }
+.tag-orange {
+    border-radius: 4px;
+    background-color: #ffdd57;
+    color: black;
+    padding: 0.25em 0.5em;
+    font-size: 75%;
+}
 .tag-red {
     border-radius: 4px;
     background-color: #f14668;
