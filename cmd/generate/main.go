@@ -710,9 +710,40 @@ func main() {
 		}
 	}
 
+	// cancellations
+	// read & parse
+	cancellations_wiki_url := "https://wiki.parkrun.com/index.php/Cancellations/Germany"
+	cancellations_file := download.Path("parkrun", "cancellations_wiki")
+	if err := utils.DownloadFileIfOlder(cancellations_wiki_url, cancellations_file, fileAge1d); err != nil {
+		panic(fmt.Errorf("while downloading %s to %s: %w", cancellations_wiki_url, cancellations_file, err))
+	}
+	cancellations_data, err := parkrun.ParseCancellationsWiki(cancellations_file)
+	if err != nil {
+		panic(fmt.Errorf("while parsing cancellations wiki file %s: %w", cancellations_file, err))
+	}
+	processedCancellations := make(map[string]bool)
+	for eventName := range cancellations_data {
+		processedCancellations[eventName] = false
+	}
+	// apply
+	for _, event := range events {
+		if cancellations, found := cancellations_data[event.Name]; found {
+			log.Printf("applying cancellation data from wiki for event %s: %d cancellations", event.Name, len(cancellations))
+			event.Cancellations = cancellations
+			processedCancellations[event.Name] = true
+		}
+	}
+	// check for cancellations that were not applied (e.g. because the event name from the wiki does not match the event name from the parkrun data)
+	for eventName, processed := range processedCancellations {
+		if !processed {
+			log.Printf("cancellation data from wiki not used for event %s", eventName)
+		}
+	}
+
 	for _, event := range events {
 		event.Current = !event.Archived() && event.LatestRun != nil && event.LatestRun.Date.Equal(latestDate)
 	}
+
 	// Determine order
 	orderedEvents := make([]*parkrun.Event, 0, len(events))
 	for _, event := range events {

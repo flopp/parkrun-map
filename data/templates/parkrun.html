@@ -31,6 +31,14 @@
         <tr><td>Austragungen</td><td>{{.Event.LatestRun.Index}}</td></tr>
         <tr><td>Letzte Austragung</td><td><a href="{{.Event.LatestRun.Url}}" target="_blank">#{{.Event.LatestRun.Index}} am {{.Event.LatestRun.DateF}}, {{.Event.LatestRun.RunnerCount}} Teilnehmer</a></td></tr>
         {{end}}
+        {{if .Event.Cancellations}}
+        <tr>
+            <td style="vertical-align: top;">⚠️ Absagen</td>
+            <td>
+                {{range $i, $e := .Event.Cancellations}}{{if $i}}<br>{{end}}{{$e.DateF}}: {{$e.ReasonGerman}}{{end}}
+            </td>
+        </tr>
+        {{end}}
         {{if .Event.RouteType}}
             {{if .Event.SpecificLocation}}
         <tr><td>Strecke</td><td>{{.Event.RouteType}}; {{.Event.SpecificLocation}}</td></tr>

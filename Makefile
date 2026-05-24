@@ -19,6 +19,10 @@ check:
 		-download ".download" \
 		-config   "config.json"
 
+.phony: test
+test:
+	@go test -v ./...
+
 .phony: run-local
 run-local: build
 	@echo "SERVING TO http://localhost:8080/"
@@ -41,3 +45,4 @@ export:
     	-output   ".output" \
 		-config   "config.json" \
 		-export-csv "parkrun-events.csv"
+

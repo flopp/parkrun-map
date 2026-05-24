@@ -249,6 +249,7 @@ type Event struct {
 	SummaryIndividualRunners    int
 	SummaryVolunteers           int
 	SummaryIndividualVolunteers int
+	Cancellations               []Cancellation
 }
 
 func (event Event) Active() bool {
@@ -523,7 +524,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			continue
 		}
 
-		event := &Event{e.Name, e.LongName, e.Location, "", utils.Coordinates{Lat: e.Coordinates.Lat, Lon: e.Coordinates.Lng}, utils.InvalidCoordinates, e.Country.Url, "", "", nil, nil, nil, false, 0, "", 0, 0, 0, 0, 0}
+		event := &Event{e.Name, e.LongName, e.Location, "", utils.Coordinates{Lat: e.Coordinates.Lat, Lon: e.Coordinates.Lng}, utils.InvalidCoordinates, e.Country.Url, "", "", nil, nil, nil, false, 0, "", 0, 0, 0, 0, 0, nil}
 		eventList = append(eventList, event)
 		eventMap[e.Name] = event
 	}
@@ -544,7 +545,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			event.RouteType = info.RouteType
 			continue
 		}
-		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0}
+		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0, nil}
 		eventList = append(eventList, event)
 	}
 
@@ -915,7 +916,7 @@ func ExportCsv(events []*Event, filePath string) error {
 	fmt.Fprintf(out, "id;name;city;state;location;status;first;coordinates;route_type;google_route_id;google_maps_url;link1;link2;link3;link4;link5\n")
 
 	for _, event := range events {
-		fmt.Fprintf(out, "\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", event.Id, escapeQuotes(event.FixedName()), escapeQuotes(event.FixedLocation()), escapeQuotes(event.State()), escapeQuotes(event.SpecificLocation), event.Status, event.First(), event.Coordinates(), event.RouteType, event.GoogleMapsCourseId(), event.GoogleMapsUrl())
+		fmt.Fprintf(out, "\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", event.Id, escapeQuotes(event.FixedName()), escapeQuotes(event.FixedLocation()), escapeQuotes(event.State()), escapeQuotes(event.SpecificLocation), event.Status, event.First(), event.Coordinates(), event.RouteType, event.GoogleMapsCourseId(), event.GoogleMapsUrl())
 		for _, link := range event.Links() {
 			fmt.Fprintf(out, ";\"%s|%s\"", escapeQuotes(link.Name), escapeQuotes(link.Url))
 		}
