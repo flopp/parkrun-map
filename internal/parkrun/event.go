@@ -3,6 +3,7 @@ package parkrun
 import (
 	"fmt"
 	"html"
+	"html/template"
 	"log"
 	"os"
 	"path/filepath"
@@ -233,6 +234,7 @@ type Event struct {
 	Name                        string
 	Location                    string
 	SpecificLocation            string
+	Description                 template.HTML
 	Coords                      utils.Coordinates
 	CoordsFromKml               utils.Coordinates
 	CountryUrl                  string
@@ -402,6 +404,7 @@ type ParkrunInfo struct {
 	City        string
 	State       string
 	Location    string
+	Description string
 	RouteType   string
 	RouteID     string
 	GoogleMaps  string
@@ -524,7 +527,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			continue
 		}
 
-		event := &Event{e.Name, e.LongName, e.Location, "", utils.Coordinates{Lat: e.Coordinates.Lat, Lon: e.Coordinates.Lng}, utils.InvalidCoordinates, e.Country.Url, "", "", nil, nil, nil, false, 0, "", 0, 0, 0, 0, 0, nil}
+		event := &Event{e.Name, e.LongName, e.Location, "", "", utils.Coordinates{Lat: e.Coordinates.Lat, Lon: e.Coordinates.Lng}, utils.InvalidCoordinates, e.Country.Url, "", "", nil, nil, nil, false, 0, "", 0, 0, 0, 0, 0, nil}
 		eventList = append(eventList, event)
 		eventMap[e.Name] = event
 	}
@@ -545,7 +548,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			event.RouteType = info.RouteType
 			continue
 		}
-		event := &Event{info.Id, info.Name, info.City, info.Location, coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0, nil}
+		event := &Event{info.Id, info.Name, info.City, info.Location, template.HTML(info.Description), coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0, nil}
 		eventList = append(eventList, event)
 	}
 

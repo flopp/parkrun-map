@@ -236,7 +236,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 
 	// parse & validate columns
 	columns, err := googlesheetswrapper.ExtractHeader(sheet, []string{
-		"id", "name", "city", "state", "location", "status", "first", "coordinates",
+		"id", "name", "city", "state", "location", "description", "status", "first", "coordinates",
 		"route_type", "google_route_id", "google_maps_url",
 		"instagram", "facebook", "strava-club", "strava-segment",
 		"link1", "link2", "link3", "link4", "link5"},
@@ -252,6 +252,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 		city := val(columns, row, "city")
 		state := val(columns, row, "state")
 		location := val(columns, row, "location")
+		description := val(columns, row, "description")
 		routeType := val(columns, row, "route_type")
 		routeId := val(columns, row, "google_route_id")
 		googleMaps := val(columns, row, "google_maps_url")
@@ -310,6 +311,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 			City:        city,
 			State:       state,
 			Location:    location,
+			Description: description,
 			RouteType:   routeType,
 			RouteID:     routeId,
 			GoogleMaps:  googleMaps,
