@@ -16,12 +16,9 @@
         {{end}}
         <br>
         Auf dieser Seite findest du die Streckenkarte, aktuelle Informationen und weiterführende Links.
-        </p>
-    <p>
-        {{if .Event.Description}}
-        {{.Event.Description}}
-        {{end}}
     </p>
+    
+    {{.Event.Description}}
 
     <table class="table">
         {{if .Event.Active}}

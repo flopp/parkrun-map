@@ -70,6 +70,17 @@ html, body, #map{
     padding: 0.25em 0.5em;
     font-size: 75%;
 }
+.box-red {
+    border-radius: 4px;
+    background-color: #f14668;
+    color: white;
+    padding: 1em;
+}
+.box-red a {
+    color: white;
+    text-decoration: underline;
+}
+
 .grey-text {
     color: #7a7a7a;
 }
