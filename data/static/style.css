@@ -104,3 +104,50 @@ a[href^="https://"]::after
 #parkruns-table_wrapper {
     overflow-x: scroll;
 }
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+.article-card {
+    padding: 1rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: 0.75rem;
+}
+
+.article-card h2 {
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+}
+
+.article-card-image {
+    width: 100%;
+    border-radius: 0.5rem;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.article-hero {
+    width: 100%;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.article-meta {
+    color: var(--pico-muted-color);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.article-tags {
+    color: var(--pico-muted-color);
+    font-size: 0.9rem;
+}
+
+.article-content h2,
+.article-content h3 {
+    margin-top: 1.5rem;
+}

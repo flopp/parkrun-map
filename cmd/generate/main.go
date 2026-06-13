@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"html/template"
 	"io"
+	"io/fs"
 	"log"
 	"math/rand"
 	"os"
@@ -28,6 +30,8 @@ type RenderData struct {
 	Config         *Config
 	Event          *parkrun.Event
 	Events         []*parkrun.Event
+	Article        *Article
+	Articles       []*Article
 	ActiveEvents   int
 	PlannedEvents  int
 	ArchivedEvents int
@@ -142,9 +146,14 @@ func (data RenderData) writeLLMSTxt(filePath string) error {
 		"- / (index.html): Map overview of all parkruns\n" +
 		"- /liste.html: List of all parkruns with details\n" +
 		"- /info.html: General information\n" +
+		"- /articles/: Informative articles about parkrun-related topics\n" +
 		"- /datenschutz.html: Privacy policy\n" +
 		"- /impressum.html: Legal notice\n" +
 		"- /[event-id].html: Detail page for each parkrun location\n"
+
+	for _, article := range data.Articles {
+		info += "- /articles/" + article.Slug + ".html: " + article.Title + "\n"
+	}
 
 	// List all event subpages
 	for _, event := range data.Events {
@@ -191,6 +200,143 @@ func mustCreateIndexNow(indexnow string, outputDir string) {
 type GoogleConfig struct {
 	ApiKey   string `json:"ApiKey"`
 	SheetsId string `json:"SheetsId"`
+}
+
+type Article struct {
+	Slug      string        `json:"slug"`
+	Title     string        `json:"title"`
+	Summary   string        `json:"summary"`
+	Image     string        `json:"image"`
+	Published string        `json:"published"`
+	Updated   string        `json:"updated"`
+	Tags      []string      `json:"tags"`
+	Content   template.HTML `json:"content"`
+}
+
+type rawArticle struct {
+	Slug      string   `json:"slug"`
+	Title     string   `json:"title"`
+	Summary   string   `json:"summary"`
+	Image     string   `json:"image"`
+	Published string   `json:"published"`
+	Updated   string   `json:"updated"`
+	Tags      []string `json:"tags"`
+	Content   string   `json:"content"`
+}
+
+func loadArticles(articlesDir string) ([]*Article, error) {
+	entries, err := os.ReadDir(articlesDir)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return []*Article{}, nil
+		}
+		return nil, err
+	}
+
+	articles := make([]*Article, 0)
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+
+		articleFile := filepath.Join(articlesDir, entry.Name(), "article.json")
+		content, err := os.ReadFile(articleFile)
+		if err != nil {
+			if errors.Is(err, os.ErrNotExist) {
+				continue
+			}
+			return nil, fmt.Errorf("while reading article file %s: %w", articleFile, err)
+		}
+
+		raw := rawArticle{}
+		if err := json.Unmarshal(content, &raw); err != nil {
+			return nil, fmt.Errorf("while parsing article file %s: %w", articleFile, err)
+		}
+
+		slug := strings.TrimSpace(raw.Slug)
+		if slug == "" {
+			slug = entry.Name()
+		}
+		if strings.Contains(slug, "/") || strings.Contains(slug, "\\") {
+			return nil, fmt.Errorf("invalid article slug in %s: %s", articleFile, slug)
+		}
+
+		article := &Article{
+			Slug:      slug,
+			Title:     strings.TrimSpace(raw.Title),
+			Summary:   strings.TrimSpace(raw.Summary),
+			Image:     strings.TrimSpace(raw.Image),
+			Published: strings.TrimSpace(raw.Published),
+			Updated:   strings.TrimSpace(raw.Updated),
+			Tags:      raw.Tags,
+			Content:   template.HTML(raw.Content),
+		}
+		if article.Title == "" {
+			return nil, fmt.Errorf("missing title in %s", articleFile)
+		}
+		if article.Summary == "" {
+			article.Summary = article.Title
+		}
+		articles = append(articles, article)
+	}
+
+	sort.Slice(articles, func(i, j int) bool {
+		if articles[i].Published == articles[j].Published {
+			return articles[i].Title < articles[j].Title
+		}
+		return articles[i].Published > articles[j].Published
+	})
+
+	return articles, nil
+}
+
+func copyFile(src, dst string) error {
+	if err := os.MkdirAll(filepath.Dir(dst), 0770); err != nil {
+		return err
+	}
+
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	if _, err := io.Copy(out, in); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func copyArticleAssets(srcDir, dstDir string) error {
+	if !utils.FileExists(srcDir) {
+		return nil
+	}
+
+	return filepath.WalkDir(srcDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+		if filepath.Base(path) == "article.json" {
+			return nil
+		}
+
+		rel, err := filepath.Rel(srcDir, path)
+		if err != nil {
+			return err
+		}
+		dstFile := filepath.Join(dstDir, rel)
+		return copyFile(path, dstFile)
+	})
 }
 
 type Config struct {
@@ -507,6 +653,10 @@ func main() {
 	data := PathBuilder(*dataDir)
 	download := PathBuilder(*downloadDir)
 	output := PathBuilder(*outputDir)
+	articles, err := loadArticles(data.Path("articles"))
+	if err != nil {
+		panic(fmt.Errorf("while loading articles: %w", err))
+	}
 
 	// fetch data from Google Sheets
 	var parkrun_infos map[string]*parkrun.ParkrunInfo
@@ -889,7 +1039,25 @@ func main() {
 		return fmt.Sprintf("https://%s/%s", config.Domain, path)
 	}
 
-	renderData := RenderData{&config, nil, events, active, planned, archived, umami_js_file, js_files, css_files, "", "", "", "", now.Format("2006-01-02 15:04:05"), nil}
+	renderData := RenderData{
+		Config:         &config,
+		Event:          nil,
+		Events:         events,
+		Article:        nil,
+		Articles:       articles,
+		ActiveEvents:   active,
+		PlannedEvents:  planned,
+		ArchivedEvents: archived,
+		UmamiJsFile:    umami_js_file,
+		JsFiles:        js_files,
+		CssFiles:       css_files,
+		Title:          "",
+		Description:    "",
+		Canonical:      "",
+		Nav:            "",
+		Timestamp:      now.Format("2006-01-02 15:04:05"),
+		CanonicalUrls:  nil,
+	}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("Karte mit allen parkruns in Deutschland", "Alle parkruns in Deutschland auf einer Karte", canonical(""), "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
@@ -902,6 +1070,10 @@ func main() {
 	renderData.set("parkruns Karte - Info", "Informationen", canonical("info.html"), "info")
 	if err := renderData.render(output.Path("info.html"), t.Path("info.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'info.html': %v", err))
+	}
+	renderData.set("parkrun Artikel", "Informative Artikel rund um parkrun", canonical("articles/"), "articles")
+	if err := renderData.render(output.Path("articles", "index.html"), t.Path("articles.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+		panic(fmt.Errorf("while rendering 'articles/index.html': %v", err))
 	}
 	renderData.set("parkruns Karte - Datenschutz", "Datenschutzinformationen", canonical("datenschutz.html"), "datenschutz")
 	if err := renderData.render(output.Path("datenschutz.html"), t.Path("datenschutz.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
@@ -920,6 +1092,18 @@ func main() {
 		renderData.set(title, description, canonical(file), "list")
 		if err := renderData.render(output.Path(file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 			panic(fmt.Errorf("while rendering '%s': %v", file, err))
+		}
+	}
+
+	for _, article := range articles {
+		renderData.Article = article
+		renderData.set(article.Title+" - parkrun Artikel", article.Summary, canonical(fmt.Sprintf("articles/%s.html", article.Slug)), "articles")
+		if err := renderData.render(output.Path("articles", fmt.Sprintf("%s.html", article.Slug)), t.Path("article.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+			panic(fmt.Errorf("while rendering article '%s': %v", article.Slug, err))
+		}
+
+		if err := copyArticleAssets(data.Path("articles", article.Slug), output.Path("articles", article.Slug)); err != nil {
+			panic(fmt.Errorf("while copying assets for article '%s': %w", article.Slug, err))
 		}
 	}
 

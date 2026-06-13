@@ -1,0 +1,11 @@
+{{template "header.html" .}}
+<main class="container article-page">
+    <p><a href="/articles/">Back to article overview</a></p>
+    <h1>{{.Article.Title}}</h1>
+    <p class="article-meta">Veröffentlicht: {{.Article.Published}}{{if and .Article.Updated (ne .Article.Updated .Article.Published)}} | Aktualisiert: {{.Article.Updated}}{{end}}</p>
+
+    <article class="article-content">
+        {{.Article.Content}}
+    </article>
+</main>
+{{template "footer.html" .}}

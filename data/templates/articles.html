@@ -1,0 +1,19 @@
+{{template "header.html" .}}
+<main class="container">
+    <h1>Artikel rund um parkrun</h1>
+
+    <p>
+        In diesem Bereich findest du Hintergrundwissen, praktische Anleitungen und Tipps zu parkrun in Deutschland.
+    </p>
+
+    <section class="articles-grid">
+        {{range .Articles}}
+        <article class="article-card">
+            <h2><a href="/articles/{{.Slug}}.html">{{.Title}}</a></h2>
+            <p>{{.Summary}}</p>
+            <p class="article-meta">Veröffentlicht: {{.Published}}{{if and .Updated (ne .Updated .Published)}} | Aktualisiert: {{.Updated}}{{end}}</p>
+        </article>
+        {{end}}
+    </section>
+</main>
+{{template "footer.html" .}}
