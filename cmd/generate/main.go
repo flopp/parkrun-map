@@ -629,6 +629,7 @@ func main() {
 	outputDir := flag.String("output", ".output", "the output directory")
 	configFile := flag.String("config", "config.json", "the config file with Google API key and Sheets ID")
 	exportCsvFile := flag.String("export-csv", "", "export CSV file with all parkrun events")
+	disableUmami := flag.Bool("disable-umami", false, "disable Umami analytics in generated output")
 	verbose := flag.Bool("verbose", false, "verbose logging")
 	check := flag.Bool("check", false, "check mode")
 	flag.Parse()
@@ -669,6 +670,9 @@ func main() {
 		panic(fmt.Errorf("while loading Google Sheets data: %v", err))
 	} else {
 		parkrun_infos = googleInfos
+	}
+	if *disableUmami {
+		config.UmamiWebsiteID = ""
 	}
 
 	// fetch parkrun events

@@ -1,6 +1,8 @@
 .phony: all
 all: run-remote
 
+GENERATOR_FLAGS ?=
+
 .phony: build
 build:
 	@echo "GENERATING HTML FILES..."
@@ -10,13 +12,14 @@ build:
     	-data     "data" \
     	-download ".download" \
 		-output   ".output" \
-		-config   "config.json"
+		-config   "config.json" \
+		$(GENERATOR_FLAGS)
 
 .phony: check
 check:
 	@go run cmd/generate/main.go -check -verbose \
-		-data     "data" \
-		-download ".download" \
+    		-data     "data" \
+    		-download ".download" \
 		-config   "config.json"
 
 .phony: test
@@ -24,6 +27,7 @@ test:
 	@go test -v ./...
 
 .phony: run-local
+run-local: GENERATOR_FLAGS += -disable-umami
 run-local: build
 	@echo "SERVING TO http://localhost:8080/"
 	@python3 -m http.server --directory .output/ 8080
