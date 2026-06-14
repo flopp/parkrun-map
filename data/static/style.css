@@ -123,28 +123,10 @@ a[href^="https://"]::after
     font-size: 1.15rem;
 }
 
-.article-card-image {
-    width: 100%;
-    border-radius: 0.5rem;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-}
-
-.article-hero {
-    width: 100%;
-    border-radius: 0.75rem;
-    margin-bottom: 1rem;
-}
-
 .article-meta {
     color: var(--pico-muted-color);
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
-}
-
-.article-tags {
-    color: var(--pico-muted-color);
-    font-size: 0.9rem;
 }
 
 .article-content h2,

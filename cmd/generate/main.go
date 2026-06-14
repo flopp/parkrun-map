@@ -206,21 +206,17 @@ type Article struct {
 	Slug      string        `json:"slug"`
 	Title     string        `json:"title"`
 	Summary   string        `json:"summary"`
-	Image     string        `json:"image"`
 	Published string        `json:"published"`
 	Updated   string        `json:"updated"`
-	Tags      []string      `json:"tags"`
 	Content   template.HTML `json:"content"`
 }
 
 type rawArticle struct {
-	Slug      string   `json:"slug"`
-	Title     string   `json:"title"`
-	Summary   string   `json:"summary"`
-	Image     string   `json:"image"`
-	Published string   `json:"published"`
-	Updated   string   `json:"updated"`
-	Tags      []string `json:"tags"`
+	Slug      string `json:"slug"`
+	Title     string `json:"title"`
+	Summary   string `json:"summary"`
+	Published string `json:"published"`
+	Updated   string `json:"updated"`
 }
 
 func loadArticles(articlesDir string) ([]*Article, error) {
@@ -238,7 +234,7 @@ func loadArticles(articlesDir string) ([]*Article, error) {
 			continue
 		}
 
-		articleFile := filepath.Join(articlesDir, entry.Name(), "article.json")
+		articleFile := filepath.Join(articlesDir, entry.Name(), "meta.json")
 		articleJSON, err := os.ReadFile(articleFile)
 		if err != nil {
 			if errors.Is(err, os.ErrNotExist) {
@@ -270,10 +266,8 @@ func loadArticles(articlesDir string) ([]*Article, error) {
 			Slug:      slug,
 			Title:     strings.TrimSpace(raw.Title),
 			Summary:   strings.TrimSpace(raw.Summary),
-			Image:     strings.TrimSpace(raw.Image),
 			Published: strings.TrimSpace(raw.Published),
 			Updated:   strings.TrimSpace(raw.Updated),
-			Tags:      raw.Tags,
 			Content:   template.HTML(contentBytes),
 		}
 		if article.Title == "" {
@@ -331,7 +325,7 @@ func copyArticleAssets(srcDir, dstDir string) error {
 		if d.IsDir() {
 			return nil
 		}
-		if filepath.Base(path) == "article.json" {
+		if filepath.Base(path) == "meta.json" {
 			return nil
 		}
 
