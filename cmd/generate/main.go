@@ -214,15 +214,13 @@ type Article struct {
 }
 
 type rawArticle struct {
-	Slug        string   `json:"slug"`
-	Title       string   `json:"title"`
-	Summary     string   `json:"summary"`
-	Image       string   `json:"image"`
-	Published   string   `json:"published"`
-	Updated     string   `json:"updated"`
-	Tags        []string `json:"tags"`
-	ContentFile string   `json:"content_file"`
-	Content     string   `json:"content"`
+	Slug      string   `json:"slug"`
+	Title     string   `json:"title"`
+	Summary   string   `json:"summary"`
+	Image     string   `json:"image"`
+	Published string   `json:"published"`
+	Updated   string   `json:"updated"`
+	Tags      []string `json:"tags"`
 }
 
 func loadArticles(articlesDir string) ([]*Article, error) {
@@ -262,18 +260,10 @@ func loadArticles(articlesDir string) ([]*Article, error) {
 			return nil, fmt.Errorf("invalid article slug in %s: %s", articleFile, slug)
 		}
 
-		content := raw.Content
-		contentFile := strings.TrimSpace(raw.ContentFile)
-		if contentFile != "" {
-			if strings.Contains(contentFile, "/") || strings.Contains(contentFile, "\\") {
-				return nil, fmt.Errorf("invalid article content_file in %s: %s", articleFile, contentFile)
-			}
-			contentPath := filepath.Join(articlesDir, entry.Name(), contentFile)
-			contentBytes, err := os.ReadFile(contentPath)
-			if err != nil {
-				return nil, fmt.Errorf("while reading article content file %s: %w", contentPath, err)
-			}
-			content = string(contentBytes)
+		contentPath := filepath.Join(articlesDir, entry.Name(), "content.html")
+		contentBytes, err := os.ReadFile(contentPath)
+		if err != nil {
+			return nil, fmt.Errorf("while reading article content file %s: %w", contentPath, err)
 		}
 
 		article := &Article{
@@ -284,7 +274,7 @@ func loadArticles(articlesDir string) ([]*Article, error) {
 			Published: strings.TrimSpace(raw.Published),
 			Updated:   strings.TrimSpace(raw.Updated),
 			Tags:      raw.Tags,
-			Content:   template.HTML(content),
+			Content:   template.HTML(contentBytes),
 		}
 		if article.Title == "" {
 			return nil, fmt.Errorf("missing title in %s", articleFile)
