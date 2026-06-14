@@ -1,7 +1,8 @@
 {{template "header.html" .}}
 <main class="container article-page">
-    <p><a href="/articles/">Back to article overview</a></p>
+    <p><a href="/articles/">Zurück zur Artikelübersicht</a></p>
     <h1>{{.Article.Title}}</h1>
+    {{if .Article.Summary}}<p class="article-summary">{{.Article.Summary}}</p>{{end}}
     <p class="article-meta">Veröffentlicht: {{.Article.Published}}{{if and .Article.Updated (ne .Article.Updated .Article.Published)}} | Aktualisiert: {{.Article.Updated}}{{end}}</p>
 
     <article class="article-content">

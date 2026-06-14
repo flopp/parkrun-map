@@ -13,7 +13,6 @@ data/articles/
   neuen-parkrun-starten/
     meta.json
     content.html
-    cover.svg
 ```
 
 ## `meta.json` fields

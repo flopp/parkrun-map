@@ -138,8 +138,7 @@ a[href^="https://"]::after
 @media screen and (max-width: 768px) {
     header nav ul:last-child {
         flex-wrap: wrap;
-    }
-    header nav ul:last-child li {
-        flex: 0 1 calc(50% - 0.5rem);
+        align-content: flex-start;
+        justify-content: start;
     }
 }
