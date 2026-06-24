@@ -125,9 +125,18 @@ func (data RenderData) writeRobotsTxt(filePath string) error {
 	}
 	defer f.Close()
 
-	if _, err := f.WriteString("User-agent: *\nAllow: /\n"); err != nil {
+	if _, err := f.WriteString("User-agent: *\n"); err != nil {
 		return err
 	}
+
+	if _, err := f.WriteString("Allow: /\n"); err != nil {
+		return err
+	}
+
+	if _, err := f.WriteString("Sitemap: https://" + data.Config.Domain + "/sitemap.txt\n"); err != nil {
+		return err
+	}
+
 	return nil
 }
 
