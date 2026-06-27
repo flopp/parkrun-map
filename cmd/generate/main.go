@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"encoding/xml"
 	"errors"
 	"flag"
 	"fmt"
@@ -17,8 +19,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"encoding/json"
 
 	"github.com/flopp/go-googlesheetswrapper"
 	"github.com/flopp/parkrun-map/internal/parkrun"
@@ -86,14 +86,38 @@ func (data RenderData) writeSitemap(filePath string) error {
 	}
 	defer f.Close()
 
-	for _, url := range data.CanonicalUrls {
-		if _, err = f.WriteString(url); err != nil {
-			return err
-		}
-		if _, err = f.WriteString("\n"); err != nil {
-			return err
-		}
+	type sitemapURL struct {
+		Loc string `xml:"loc"`
 	}
+
+	type sitemapURLSet struct {
+		XMLName xml.Name     `xml:"urlset"`
+		Xmlns   string       `xml:"xmlns,attr"`
+		URLs    []sitemapURL `xml:"url"`
+	}
+
+	urls := make([]sitemapURL, 0, len(data.CanonicalUrls))
+	for _, url := range data.CanonicalUrls {
+		urls = append(urls, sitemapURL{Loc: url})
+	}
+
+	if _, err = f.WriteString(xml.Header); err != nil {
+		return err
+	}
+
+	encoder := xml.NewEncoder(f)
+	encoder.Indent("", "  ")
+	if err := encoder.Encode(sitemapURLSet{
+		Xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
+		URLs:  urls,
+	}); err != nil {
+		return err
+	}
+
+	if err := encoder.Flush(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -133,7 +157,7 @@ func (data RenderData) writeRobotsTxt(filePath string) error {
 		return err
 	}
 
-	if _, err := f.WriteString("Sitemap: https://" + data.Config.Domain + "/sitemap.txt\n"); err != nil {
+	if _, err := f.WriteString("Sitemap: https://" + data.Config.Domain + "/sitemap.xml\n"); err != nil {
 		return err
 	}
 
@@ -1119,7 +1143,7 @@ func main() {
 		}
 	}
 
-	if err := renderData.writeSitemap(output.Path("sitemap.txt")); err != nil {
+	if err := renderData.writeSitemap(output.Path("sitemap.xml")); err != nil {
 		panic(fmt.Errorf("while writing sitemap: %w", err))
 	}
 
