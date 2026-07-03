@@ -68,6 +68,9 @@ func ParseKML(data []byte) ([][]Coordinates, map[string]Coordinates, error) {
 				if inPlacemark && (inPoint || inLineString || inLinearRing) {
 					readCoordinates = true
 					textBuf.Reset()
+				} else {
+					// make sure there are no unexpected coordinates outside of known elements
+					return nil, nil, fmt.Errorf("unexpected <coordinates> outside of Point/LineString/LinearRing")
 				}
 			}
 
