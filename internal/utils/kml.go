@@ -18,15 +18,16 @@ func ParseKML(data []byte) ([][]Coordinates, map[string]Coordinates, error) {
 	dec := xml.NewDecoder(bytes.NewReader(data))
 
 	type placemark struct {
-		name       string
-		point      string
-		lineString string
+		name        string
+		point       string
+		trackCoords []string
 	}
 
 	var pm placemark
 	inPlacemark := false
 	inPoint := false
 	inLineString := false
+	inLinearRing := false
 	readName := false
 	readCoordinates := false
 	textBuf := strings.Builder{}
@@ -54,13 +55,17 @@ func ParseKML(data []byte) ([][]Coordinates, map[string]Coordinates, error) {
 				if inPlacemark {
 					inLineString = true
 				}
+			case "LinearRing":
+				if inPlacemark {
+					inLinearRing = true
+				}
 			case "name":
 				if inPlacemark {
 					readName = true
 					textBuf.Reset()
 				}
 			case "coordinates":
-				if inPlacemark && (inPoint || inLineString) {
+				if inPlacemark && (inPoint || inLineString || inLinearRing) {
 					readCoordinates = true
 					textBuf.Reset()
 				}
@@ -84,8 +89,8 @@ func ParseKML(data []byte) ([][]Coordinates, map[string]Coordinates, error) {
 					if inPoint {
 						pm.point = coordText
 					}
-					if inLineString {
-						pm.lineString = coordText
+					if inLineString || inLinearRing {
+						pm.trackCoords = append(pm.trackCoords, coordText)
 					}
 					readCoordinates = false
 				}
@@ -93,11 +98,13 @@ func ParseKML(data []byte) ([][]Coordinates, map[string]Coordinates, error) {
 				inPoint = false
 			case "LineString":
 				inLineString = false
+			case "LinearRing":
+				inLinearRing = false
 			case "Placemark":
-				if pm.lineString != "" {
-					track, err := parseCoordinateList(pm.lineString)
+				for _, coordText := range pm.trackCoords {
+					track, err := parseCoordinateList(coordText)
 					if err != nil {
-						return nil, nil, fmt.Errorf("parse placemark line string '%s': %w", pm.name, err)
+						return nil, nil, fmt.Errorf("parse placemark track '%s': %w", pm.name, err)
 					}
 					if len(track) > 1 {
 						tracks = append(tracks, track)
@@ -115,6 +122,7 @@ func ParseKML(data []byte) ([][]Coordinates, map[string]Coordinates, error) {
 				inPlacemark = false
 				inPoint = false
 				inLineString = false
+				inLinearRing = false
 				readName = false
 				readCoordinates = false
 				textBuf.Reset()

@@ -114,6 +114,46 @@ func TestParseKML_HasenheideFixture(t *testing.T) {
 	assertPoint(t, points, "car park", 52.487118, 13.42289)
 }
 
+func TestParseKML_LahnwiesenFixture(t *testing.T) {
+	fixturePath := kmlFixturePath(t, "lahnwiesen.kml")
+
+	data, err := os.ReadFile(fixturePath)
+	if err != nil {
+		t.Fatalf("read fixture %s: %v", fixturePath, err)
+	}
+
+	tracks, points, err := ParseKML(data)
+	if err != nil {
+		t.Fatalf("ParseKML failed: %v", err)
+	}
+
+	if len(tracks) != 3 {
+		t.Fatalf("expected 3 tracks (Polygon + 2 LineStrings), got %d", len(tracks))
+	}
+
+	if got := len(tracks[0]); got != 32 {
+		t.Fatalf("expected 32 coordinates in polygon track, got %d", got)
+	}
+
+	if got := len(tracks[1]); got != 4 {
+		t.Fatalf("expected 4 coordinates in line track 1, got %d", got)
+	}
+
+	if got := len(tracks[2]); got != 7 {
+		t.Fatalf("expected 7 coordinates in line track 2, got %d", got)
+	}
+
+	assertLatLonClose(t, "polygon first", tracks[0][0], 50.800145, 8.766734)
+	assertLatLonClose(t, "polygon last", tracks[0][31], 50.800145, 8.766734)
+
+	if len(points) != 2 {
+		t.Fatalf("expected 2 named points, got %d", len(points))
+	}
+
+	assertPoint(t, points, "Start", 50.800145, 8.766734)
+	assertPoint(t, points, "Finish", 50.800079, 8.766892)
+}
+
 func kmlFixturePath(t *testing.T, name string) string {
 	t.Helper()
 
