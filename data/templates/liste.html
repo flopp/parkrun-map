@@ -57,16 +57,16 @@
                         {{.LatestRun.Runners}}
                     </td>
                     {{if .Outdated}}
-                    <td class="grey-text" data-sort="9999">-</td>
+                    <td class="grey-text" data-sort="-9998">-</td>
                     {{else}}
-                    <td class="tnum" data-sort="{{.OrderSortable}}">
+                    <td class="tnum" data-sort="-{{.OrderSortable}}">
                         {{.Order}}
                     </td>
                     {{end}}
                     {{else}}
                     <td data-sort="-1">-</td>
                     <td data-sort="-1">-</td>
-                    <td data-sort="9999">-</td>
+                    <td data-sort="-9999">-</td>
                     {{end}}
                 </tr>
                 {{end}}
