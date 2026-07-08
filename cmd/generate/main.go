@@ -1095,11 +1095,11 @@ func main() {
 		CanonicalUrls:  nil,
 	}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
-	renderData.set("Karte mit allen parkruns in Deutschland", "Alle parkruns in Deutschland auf einer Karte", canonical(""), "map")
+	renderData.set("Karte mit allen parkrun Standorten in Deutschland", "Alle parkrun Standorte in Deutschland auf einer Karte", canonical(""), "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'index.html': %v", err))
 	}
-	renderData.set("Infos zu allen parkruns in Deutschland", "Infos zu allen parkruns in Deutschland.", canonical("liste.html"), "list")
+	renderData.set("Alle parkrun Standorte in Deutschland", "Alle parkrun Standorte in Deutschland.", canonical("liste.html"), "list")
 	if err := renderData.render(output.Path("liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'list.html': %v", err))
 	}
