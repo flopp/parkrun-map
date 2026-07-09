@@ -1,20 +1,34 @@
 <p>In den kommenden Monaten sind weitere parkrun-Standorte in Deutschland geplant. Hier ist der aktuelle Stand.</p>
 
+{{if .PlannedDataTermin}}
 <h2>Standorte mit bekanntem Starttermin</h2>
+<p>Bei diesen Standorten ist die Planung schon sehr weit vorangeschritten und ein Starttermin wurde bereits bekannt gegeben:</p>
 <ul>
-  <li><a target="_blank" href="https://www.instagram.com/parkrunmagdeburg">Rothehornpark parkrun</a> (Magdeburg): geplanter Start am <strong>2026-08-22</strong></li>
-  <li><a target="_blank" href="https://www.instagram.com/schloss_rheydt_parkrun">Schloss Rheydt parkrun</a> (Mönchengladbach): geplanter Start am <strong>2026-09-05</strong></li>
+  {{ range .PlannedDataTermin }}
+    <li>{{.Name}} / {{.City}}<br>geplanter Start am {{.Start}}<br><a target="_blank" href="{{ .Instagram }}">Instagram</a></li>
+  {{ end }}
 </ul>
+{{end}}
 
-<h2>Standorte ohne konkreten Starttermin</h2>
-<p>Bei den folgenden Projekten laufen bereits Testveranstaltungen, ein offizieller Starttermin wurde aber noch nicht veröffentlicht:</p>
+{{if .PlannedDataTest}}
+<h2>Standorte ohne konkreten Starttermin, aber mit aktiven Test-Veranstaltungen</h2>
+<p>Bei diesen Standorten gibt es bereits Test-Veranstaltungen, jedoch wurde noch kein offizieller Starttermin bekannt gegeben:</p>
 <ul>
-  <li><strong>Spektesee parkrun</strong> (Berlin/Spandau): <a target="_blank" href="https://www.instagram.com/spandauparkrun">Instagram</a></li>
-  <li><strong>?Lippepark? parkrun</strong> (Hamm): <a target="_blank" href="https://www.instagram.com/parkrun_hamm/">Instagram</a></li>
-  <li><strong>?Mondscheinwiese? parkrun</strong> (Essen): <a target="_blank" href="https://www.instagram.com/parkrun_essen">Instagram</a></li>
+  {{ range .PlannedDataTest }}
+    <li>{{.Name}} / {{.City}}<br><a target="_blank" href="{{ .Instagram }}">Instagram</a></li>
+  {{ end }}
 </ul>
+{{end}}
 
-<p><strong>Wichtiger Hinweis:</strong> Bei diesen Standorten läuft noch die organisatorische Prüfung. Wie im Artikel <a href="/articles/neuen-parkrun-starten.html">Wie startet man einen neuen parkrun in Deutschland?</a> beschrieben, können sich Name, Zeitplan und Machbarkeit bis zur offiziellen Freigabe noch ändern. Es ist deshalb aktuell weder ein finaler Name garantiert noch sicher, dass ein Start zeitnah erfolgt.</p>
-<p>
-  Hinter vielen Verzögerungen stecken auch praktische Fragen zur Strecke. Mehr dazu im Artikel <a href="/articles/course-design.html">parkrun-Streckendesign: Kursplanung, Kursformen und typische Fehler</a>.
+{{if .PlannedDataOther}}
+<h2>Weitere geplante Standorte (unbekannter Status)</h2>
+<p>Bei diesen Standorten ist der Status der Planung noch unklar oder es liegen keine weiteren Informationen vor:</p>
+<ul>
+  {{ range .PlannedDataOther }}
+    <li>{{.Name}} / {{.City}}<br><a target="_blank" href="{{ .Instagram }}">Instagram</a></li>
+  {{ end }}
+</ul>
+{{end}}
+
+<p><strong>Wichtiger Hinweis:</strong> Die obigen Listen wurden manuell aus öffentlichen Quellen zusammengetragen und können daher beliebig inakkurat sein.<br>Wie im Artikel <a href="/articles/neuen-parkrun-starten.html">Wie startet man einen neuen parkrun in Deutschland?</a> beschrieben, ist der Prozess von den ersten Ideen zum offiziellen parkrun-Standort ein langer Weg.
 </p>

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"encoding/xml"
@@ -27,23 +28,26 @@ import (
 )
 
 type RenderData struct {
-	Config         *Config
-	Event          *parkrun.Event
-	Events         []*parkrun.Event
-	Article        *Article
-	Articles       []*Article
-	ActiveEvents   int
-	PlannedEvents  int
-	ArchivedEvents int
-	UmamiJsFile    string
-	JsFiles        []string
-	CssFiles       []string
-	Title          string
-	Description    string
-	Canonical      string
-	Nav            string
-	Timestamp      string
-	CanonicalUrls  []string
+	Config            *Config
+	Event             *parkrun.Event
+	Events            []*parkrun.Event
+	PlannedDataTermin []PlannedData
+	PlannedDataTest   []PlannedData
+	PlannedDataOther  []PlannedData
+	Article           *Article
+	Articles          []*Article
+	ActiveEvents      int
+	PlannedEvents     int
+	ArchivedEvents    int
+	UmamiJsFile       string
+	JsFiles           []string
+	CssFiles          []string
+	Title             string
+	Description       string
+	Canonical         string
+	Nav               string
+	Timestamp         string
+	CanonicalUrls     []string
 }
 
 func (data *RenderData) set(title, description, canonical, nav string) {
@@ -396,20 +400,29 @@ func val(cols map[string]int, row []string, name string) string {
 	return row[idx]
 }
 
-func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunInfo, error) {
+type PlannedData struct {
+	Name      string
+	City      string
+	State     string
+	Status    string
+	Start     string
+	Instagram string
+}
+
+func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunInfo, []PlannedData, error) {
 	ctx := context.Background()
 	client, err := googlesheetswrapper.New(apiKey, sheetsId)
 	if err != nil {
-		return nil, fmt.Errorf("creating sheets client: %w", err)
+		return nil, nil, fmt.Errorf("creating sheets client: %w", err)
 	}
 	allSheets, err := client.ReadAll(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("reading all sheets: %w", err)
+		return nil, nil, fmt.Errorf("reading all sheets: %w", err)
 	}
 
 	sheet, found := allSheets["data"]
 	if !found {
-		return nil, fmt.Errorf("sheet 'data' not found")
+		return nil, nil, fmt.Errorf("sheet 'data' not found")
 	}
 
 	// parse & validate columns
@@ -420,7 +433,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 		"link1", "link2", "link3", "link4", "link5"},
 		false)
 	if err != nil {
-		return nil, fmt.Errorf("extracting header: %w", err)
+		return nil, nil, fmt.Errorf("extracting header: %w", err)
 	}
 
 	parkrunInfos := make(map[string]*parkrun.ParkrunInfo)
@@ -476,7 +489,7 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 			if linkStr != "" {
 				link, err := parkrun.ParseLink(linkStr)
 				if err != nil {
-					return nil, fmt.Errorf("parsing link in row %d: %w", i+2, err)
+					return nil, nil, fmt.Errorf("parsing link in row %d: %w", i+2, err)
 				}
 				links = append(links, link)
 			}
@@ -500,7 +513,35 @@ func loadGoopgleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.Parkrun
 		}
 	}
 
-	return parkrunInfos, nil
+	plannedData := make([]PlannedData, 0)
+
+	plannedSheet, found := allSheets["planned"]
+	if !found {
+		return nil, nil, fmt.Errorf("sheet 'planned' not found")
+	}
+	plannedColumns, err := googlesheetswrapper.ExtractHeader(plannedSheet, []string{"name", "city", "state", "status", "start", "instagram"}, false)
+	if err != nil {
+		return nil, nil, fmt.Errorf("extracting header from planned sheet: %w", err)
+	}
+
+	for _, row := range plannedSheet[1:] {
+		name := val(plannedColumns, row, "name")
+		city := val(plannedColumns, row, "city")
+		state := val(plannedColumns, row, "state")
+		status := val(plannedColumns, row, "status")
+		start := val(plannedColumns, row, "start")
+		instagram := val(plannedColumns, row, "instagram")
+		plannedData = append(plannedData, PlannedData{
+			Name:      name,
+			City:      city,
+			State:     state,
+			Status:    status,
+			Start:     start,
+			Instagram: instagram,
+		})
+	}
+
+	return parkrunInfos, plannedData, nil
 }
 
 type SummaryData struct {
@@ -693,15 +734,27 @@ func main() {
 
 	// fetch data from Google Sheets
 	var parkrun_infos map[string]*parkrun.ParkrunInfo
+	var plannedDataTermin []PlannedData
+	var plannedDataTest []PlannedData
+	var plannedDataOther []PlannedData
 	var config Config
 	if configContent, err := os.ReadFile(*configFile); err != nil {
 		panic(fmt.Errorf("while reading config file %s: %v", *configFile, err))
 	} else if err := unmarshalConfig(configContent, &config); err != nil {
 		panic(fmt.Errorf("while parsing config file %s: %v", *configFile, err))
-	} else if googleInfos, err := loadGoopgleSheetsData(config.Google.ApiKey, config.Google.SheetsId); err != nil {
+	} else if googleInfos, planned, err := loadGoogleSheetsData(config.Google.ApiKey, config.Google.SheetsId); err != nil {
 		panic(fmt.Errorf("while loading Google Sheets data: %v", err))
 	} else {
 		parkrun_infos = googleInfos
+		for _, p := range planned {
+			if p.Status == "termin" {
+				plannedDataTermin = append(plannedDataTermin, p)
+			} else if p.Status == "test" {
+				plannedDataTest = append(plannedDataTest, p)
+			} else {
+				plannedDataOther = append(plannedDataOther, p)
+			}
+		}
 	}
 	if *disableUmami {
 		config.UmamiWebsiteID = ""
@@ -1076,23 +1129,26 @@ func main() {
 	}
 
 	renderData := RenderData{
-		Config:         &config,
-		Event:          nil,
-		Events:         events,
-		Article:        nil,
-		Articles:       articles,
-		ActiveEvents:   active,
-		PlannedEvents:  planned,
-		ArchivedEvents: archived,
-		UmamiJsFile:    umami_js_file,
-		JsFiles:        js_files,
-		CssFiles:       css_files,
-		Title:          "",
-		Description:    "",
-		Canonical:      "",
-		Nav:            "",
-		Timestamp:      now.Format("2006-01-02 15:04:05"),
-		CanonicalUrls:  nil,
+		Config:            &config,
+		Event:             nil,
+		Events:            events,
+		PlannedDataTermin: plannedDataTermin,
+		PlannedDataTest:   plannedDataTest,
+		PlannedDataOther:  plannedDataOther,
+		Article:           nil,
+		Articles:          articles,
+		ActiveEvents:      active,
+		PlannedEvents:     planned,
+		ArchivedEvents:    archived,
+		UmamiJsFile:       umami_js_file,
+		JsFiles:           js_files,
+		CssFiles:          css_files,
+		Title:             "",
+		Description:       "",
+		Canonical:         "",
+		Nav:               "",
+		Timestamp:         now.Format("2006-01-02 15:04:05"),
+		CanonicalUrls:     nil,
 	}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("Karte mit allen parkrun Standorten in Deutschland", "Alle parkrun Standorte in Deutschland auf einer Karte", canonical(""), "map")
@@ -1132,6 +1188,16 @@ func main() {
 	}
 
 	for _, article := range articles {
+		contentTemplate, err := template.New("article").Parse(string(article.Content))
+		if err != nil {
+			panic(fmt.Errorf("while parsing article content template for '%s': %v", article.Slug, err))
+		}
+		var contentBuffer bytes.Buffer
+		if err := contentTemplate.Execute(&contentBuffer, renderData); err != nil {
+			panic(fmt.Errorf("while executing article content template for '%s': %v", article.Slug, err))
+		}
+		article.Content = template.HTML(contentBuffer.String())
+
 		renderData.Article = article
 		renderData.set(article.Title+" - parkrun Artikel", article.Summary, canonical(fmt.Sprintf("articles/%s.html", article.Slug)), "articles")
 		if err := renderData.render(output.Path("articles", fmt.Sprintf("%s.html", article.Slug)), t.Path("article.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
