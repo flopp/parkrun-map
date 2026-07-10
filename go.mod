@@ -8,7 +8,7 @@ require (
 	github.com/flopp/go-googlesheetswrapper v0.0.0-20260406112809-7c5a6afecd10
 	github.com/flopp/go-parkrunparser v0.0.1
 	github.com/yrsh/simplify-go v0.0.0-20141205144220-b78647bd27f7
-	golang.org/x/net v0.56.0
+	golang.org/x/net v0.57.0
 )
 
 require (
@@ -27,10 +27,10 @@ require (
 	go.opentelemetry.io/otel v1.34.0 // indirect
 	go.opentelemetry.io/otel/metric v1.34.0 // indirect
 	go.opentelemetry.io/otel/trace v1.34.0 // indirect
-	golang.org/x/crypto v0.53.0 // indirect
+	golang.org/x/crypto v0.54.0 // indirect
 	golang.org/x/oauth2 v0.28.0 // indirect
-	golang.org/x/sys v0.46.0 // indirect
-	golang.org/x/text v0.38.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
+	golang.org/x/text v0.40.0 // indirect
 	google.golang.org/api v0.225.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb // indirect
 	google.golang.org/grpc v1.71.0 // indirect
