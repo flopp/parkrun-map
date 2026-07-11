@@ -31,7 +31,7 @@
         <tr><td>Seit</td><td>{{.Event.First}}</td></tr>
         {{if .Event.LatestRun}}
         <tr><td>Austragungen</td><td>{{.Event.LatestRun.Index}}</td></tr>
-        <tr><td>Letzte Austragung</td><td><a href="{{.Event.LatestRun.Url}}" target="_blank">#{{.Event.LatestRun.Index}} am {{.Event.LatestRun.DateF}}, {{.Event.LatestRun.RunnerCount}} Teilnehmer</a></td></tr>
+        <tr><td>Letzte Austragung</td><td>#{{.Event.LatestRun.Index}} am {{.Event.LatestRun.DateF}}, {{.Event.LatestRun.RunnerCount}} Teilnehmer &rarr; <a href="{{.Event.LatestRun.Url}}" target="_blank">Ergebnisliste</a></td></tr>
         {{end}}
         {{if .Event.Cancellations}}
         <tr>
