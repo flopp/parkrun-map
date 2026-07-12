@@ -157,6 +157,10 @@ func (data RenderData) writeHtaccess(filePath string) error {
 		return err
 	}
 
+	if _, err = f.WriteString("ErrorDocument 404 /404.html\n"); err != nil {
+		return err
+	}
+
 	// redirect all www requests to non-www
 	if _, err = f.WriteString("\n"); err != nil {
 		return err
@@ -1222,6 +1226,10 @@ func main() {
 	renderData.set("parkruns Karte - Impressum", "Impressum", canonical("impressum.html"), "impressum")
 	if err := renderData.render(output.Path("impressum.html"), t.Path("impressum.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'impressum.html': %v", err))
+	}
+	renderData.set("404 - Seite nicht gefunden", "Die angeforderte Seite wurde nicht gefunden.", canonical("404.html"), "")
+	if err := renderData.render(output.Path("404.html"), t.Path("404.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+		panic(fmt.Errorf("while rendering '404.html': %v", err))
 	}
 
 	for _, event := range events {
