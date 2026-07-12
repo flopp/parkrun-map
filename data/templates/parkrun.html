@@ -58,7 +58,7 @@
         </td></tr>
         {{end}}
         <tr><td>Nächste parkruns</td><td>
-                {{range $i,$e := .Event.NearbyEvents}}{{if $i}}<br>{{end}}<a href="{{$e.Event.Id}}.html">{{$e.String}}</a>{{end}}
+                {{range $i,$e := .Event.NearbyEvents}}{{if $i}}<br>{{end}}<a href="{{EventPath $e.Event.Id}}">{{$e.String}}</a>{{end}}
         </td></tr>
     </table>
 

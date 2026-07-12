@@ -48,6 +48,7 @@ type RenderData struct {
 	Nav               string
 	Timestamp         string
 	CanonicalUrls     []string
+	NoRewrite         bool
 }
 
 func (data *RenderData) set(title, description, canonical, nav string) {
@@ -57,10 +58,30 @@ func (data *RenderData) set(title, description, canonical, nav string) {
 	data.Nav = nav
 }
 
-func (data *RenderData) render(outputFile string, templateFiles ...string) error {
-	// fmt.Printf("-- rendering to %s\n", outputFile)
+func (data *RenderData) eventPath(eventID string) string {
+	if data.NoRewrite {
+		return fmt.Sprintf("/%s.html", eventID)
+	}
 
-	tmpl, err := template.ParseFiles(templateFiles...)
+	return "/" + eventID
+}
+
+func (data *RenderData) TemplateStr(templateContent string) (t *template.Template, err error) {
+	return template.New("t").Funcs(template.FuncMap{
+		"EventPath": data.eventPath,
+	}).Parse(templateContent)
+}
+
+func (data *RenderData) Template(templateFiles ...string) (t *template.Template, err error) {
+	return template.New("t").Funcs(template.FuncMap{
+		"EventPath": data.eventPath,
+	}).ParseFiles(templateFiles...)
+}
+
+func (data *RenderData) render(outputFile string, templateFiles ...string) error {
+	fmt.Printf("Rendering %s with templates: %v\n", outputFile, templateFiles)
+
+	tmpl, err := data.Template(templateFiles...)
 	if err != nil {
 		return err
 	}
@@ -75,7 +96,7 @@ func (data *RenderData) render(outputFile string, templateFiles ...string) error
 	}
 	defer f.Close()
 
-	if err = tmpl.Execute(f, data); err != nil {
+	if err = tmpl.ExecuteTemplate(f, filepath.Base(templateFiles[0]), data); err != nil {
 		return err
 	}
 
@@ -132,8 +153,12 @@ func (data RenderData) writeHtaccess(filePath string) error {
 	}
 	defer f.Close()
 
-	// redirect all www requests to non-www
 	if _, err = f.WriteString("RewriteEngine On\n"); err != nil {
+		return err
+	}
+
+	// redirect all www requests to non-www
+	if _, err = f.WriteString("\n"); err != nil {
 		return err
 	}
 	if _, err = f.WriteString("RewriteCond %{HTTP_HOST} ^www\\.(.*)$ [NC]\n"); err != nil {
@@ -141,6 +166,27 @@ func (data RenderData) writeHtaccess(filePath string) error {
 	}
 	if _, err = f.WriteString("RewriteRule ^(.*)$ https://%1/$1 [R=301,L]\n"); err != nil {
 		return err
+	}
+
+	// for all parkrun ids:
+	// map extensionless URLs to .html file (e.g. for "/${ID}", serve the "/${ID}.html" file
+	// redirect .html URLs to extensionless URLs (e.g. redirect "/${ID}.html" to "/${ID}")
+	if _, err = f.WriteString("\n"); err != nil {
+		return err
+	}
+	if _, err = f.WriteString("RewriteBase /\n"); err != nil {
+		return err
+	}
+	for _, event := range data.Events {
+		if _, err = f.WriteString(fmt.Sprintf("RewriteRule ^%s/?$ %s.html [L]\n", event.Id, event.Id)); err != nil {
+			return err
+		}
+		if _, err = f.WriteString(fmt.Sprintf("RewriteCond %%{THE_REQUEST} \\s/+%s\\.html(?:[\\s?]|$) [NC]\n", event.Id)); err != nil {
+			return err
+		}
+		if _, err = f.WriteString(fmt.Sprintf("RewriteRule ^%s.html$ %s [R=301,L]\n", event.Id, event.Id)); err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -703,6 +749,7 @@ func main() {
 	configFile := flag.String("config", "config.json", "the config file with Google API key and Sheets ID")
 	exportCsvFile := flag.String("export-csv", "", "export CSV file with all parkrun events")
 	disableUmami := flag.Bool("disable-umami", false, "disable Umami analytics in generated output")
+	noRewrite := flag.Bool("no-rewrite", false, "disable URL rewrite rules in generated output")
 	verbose := flag.Bool("verbose", false, "verbose logging")
 	check := flag.Bool("check", false, "check mode")
 	flag.Parse()
@@ -1148,6 +1195,7 @@ func main() {
 		Canonical:         "",
 		Nav:               "",
 		Timestamp:         now.Format("2006-01-02 15:04:05"),
+		NoRewrite:         *noRewrite,
 		CanonicalUrls:     nil,
 	}
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
@@ -1181,14 +1229,19 @@ func main() {
 		title := fmt.Sprintf("%s, %s", event.FixedName(), event.FixedLocation())
 		description := fmt.Sprintf("Alle Infos zum %s in %s; Strecke, Karte, Statistiken und wichtige Links", event.FixedName(), event.FixedLocation())
 		file := fmt.Sprintf("%s.html", event.Id)
-		renderData.set(title, description, canonical(file), "list")
+		canonicalUrl := canonical(file)
+		if !*noRewrite {
+			// remove .html from canonical URL for better SEO
+			canonicalUrl = strings.TrimSuffix(canonicalUrl, ".html")
+		}
+		renderData.set(title, description, canonicalUrl, "list")
 		if err := renderData.render(output.Path(file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 			panic(fmt.Errorf("while rendering '%s': %v", file, err))
 		}
 	}
 
 	for _, article := range articles {
-		contentTemplate, err := template.New("article").Parse(string(article.Content))
+		contentTemplate, err := renderData.TemplateStr(string(article.Content))
 		if err != nil {
 			panic(fmt.Errorf("while parsing article content template for '%s': %v", article.Slug, err))
 		}

@@ -32,11 +32,11 @@
                 <tr>
                     <td data-sort="{{.FixedName}}">
                         {{if .Active}}
-                        <a href="{{.Id}}.html">{{.FixedName}}</a>
+                        <a href="{{EventPath .Id}}">{{.FixedName}}</a>
                         {{else if .Planned}}
-                        <a href="{{.Id}}.html">{{.FixedName}}</a><br><span class="tag-green">geplant</span>
+                        <a href="{{EventPath .Id}}">{{.FixedName}}</a><br><span class="tag-green">geplant</span>
                         {{else}}
-                        <a href="{{.Id}}.html">{{.FixedName}}</a><br><span class="tag-red">archiviert</span>
+                        <a href="{{EventPath .Id}}">{{.FixedName}}</a><br><span class="tag-red">archiviert</span>
                         {{end}}
                     </td>
                     <td data-sort="{{.FixedLocation}}">

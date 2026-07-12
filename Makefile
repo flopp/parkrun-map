@@ -27,7 +27,7 @@ test:
 	@go test -v ./...
 
 .phony: run-local
-run-local: GENERATOR_FLAGS += -disable-umami
+run-local: GENERATOR_FLAGS += -disable-umami -no-rewrite
 run-local: build
 	@echo "SERVING TO http://localhost:8080/"
 	@python3 -m http.server --directory .output/ 8080
