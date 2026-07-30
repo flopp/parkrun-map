@@ -206,7 +206,13 @@ func (data RenderData) writeMarkdownList(filePath string) error {
 	// create a markdown list with all parkruns (+ links to the detail pages)
 	for _, event := range data.Events {
 		// create a markdown list item for the event
-		if _, err = f.WriteString(fmt.Sprintf("- [%s / %s](https://parkruns.de/%s)\n", event.Name, event.FixedLocation(), event.Id)); err != nil {
+		status := ""
+		if event.Archived() {
+			status = " - archived"
+		} else if event.Planned() {
+			status = " - planned"
+		}
+		if _, err = f.WriteString(fmt.Sprintf("- [%s / %s](https://parkruns.de/%s)%s\n", event.Name, event.FixedLocation(), event.Id, status)); err != nil {
 			return err
 		}
 	}

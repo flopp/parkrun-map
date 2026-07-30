@@ -6,7 +6,7 @@ https://parkruns.de
 ![Map with details](https://raw.githubusercontent.com/flopp/parkrun-map/main/data/screenshots/map-details.png)
 
 
-## List of all covered parkrunms:
+## List of all covered parkruns:
 
 - [Aachener Weiher parkrun / Köln](https://parkruns.de/aachenerweiher)
 - [Allerpark parkrun / Wolfsburg](https://parkruns.de/allerpark)
@@ -37,7 +37,7 @@ https://parkruns.de
 - [Krupunder See parkrun / Halstenbek](https://parkruns.de/krupundersee)
 - [Küchenholz parkrun / Leipzig](https://parkruns.de/kuechenholz)
 - [Kulturpark Neubrandenburg parkrun / Neubrandenburg](https://parkruns.de/kulturparkneubrandenburg)
-- [Kurpark parkrun / Bad Liebenzell](https://parkruns.de/kurpark)
+- [Kurpark parkrun / Bad Liebenzell](https://parkruns.de/kurpark) - archived
 - [Kurt-Schumacher-Promenade parkrun / Würzburg](https://parkruns.de/kurtschumacherpromenade)
 - [Lahnwiesen parkrun / Marburg](https://parkruns.de/lahnwiesen)
 - [Landesgartenschau Park parkrun / Neumarkt in der Oberpfalz](https://parkruns.de/landesgartenschaupark)
@@ -59,7 +59,7 @@ https://parkruns.de
 - [Ophovener Weiher parkrun / Leverkusen](https://parkruns.de/ophovenerweiher)
 - [Padersee parkrun / Paderborn](https://parkruns.de/padersee)
 - [Pferdebachtal parkrun / Dortmund](https://parkruns.de/pferdebachtal)
-- [Pieschener Allee parkrun / Dresden](https://parkruns.de/pieschenerallee)
+- [Pieschener Allee parkrun / Dresden](https://parkruns.de/pieschenerallee) - archived
 - [Prestelsee parkrun / Graben-Neudorf](https://parkruns.de/prestelsee)
 - [Prießnitzgrund parkrun / Dresden](https://parkruns.de/priessnitzgrund)
 - [Prinzenpark parkrun / Braunschweig](https://parkruns.de/prinzenpark)
@@ -67,7 +67,7 @@ https://parkruns.de
 - [Rheinaue parkrun / Bonn](https://parkruns.de/rheinaue)
 - [Rheinpark parkrun / Köln](https://parkruns.de/rheinpark)
 - [Riemer parkrun / München](https://parkruns.de/riemer)
-- [Röthelheimpark parkrun / Erlangen](https://parkruns.de/roethelheimpark)
+- [Röthelheimpark parkrun / Erlangen](https://parkruns.de/roethelheimpark) - archived
 - [Rosensteinpark parkrun / Stuttgart](https://parkruns.de/rosensteinpark)
 - [Rubbenbruchsee parkrun / Osnabrück](https://parkruns.de/rubbenbruchsee)
 - [Schönbusch parkrun / Aschaffenburg](https://parkruns.de/schoenbusch)
@@ -77,10 +77,10 @@ https://parkruns.de
 - [Sportpark Rems parkrun / Schorndorf](https://parkruns.de/sportparkrems)
 - [Stadtpark parkrun / Fürth](https://parkruns.de/stadtpark)
 - [Stadtpark parkrun, Chemnitz / Chemnitz](https://parkruns.de/stadtparkchemnitz)
-- [Stadtpark Rotehorn parkrun / Magdeburg](https://parkruns.de/stadtparkrotehorn)
+- [Stadtpark Rotehorn parkrun / Magdeburg](https://parkruns.de/stadtparkrotehorn) - planned
 - [Talaue parkrun / Waiblingen](https://parkruns.de/talaue)
 - [Tempelhofer Feld parkrun / Berlin](https://parkruns.de/tempelhoferfeld)
-- [Traumschleife Bärenbachpfad parkrun / Baumholder](https://parkruns.de/traumschleifebaerenbachpfad)
+- [Traumschleife Bärenbachpfad parkrun / Baumholder](https://parkruns.de/traumschleifebaerenbachpfad) - archived
 - [Uerdinger Stadtpark parkrun / Krefeld](https://parkruns.de/uerdingerstadtpark)
 - [Unisee parkrun / Bremen](https://parkruns.de/unisee)
 - [Volksgarten parkrun / Düsseldorf](https://parkruns.de/volksgarten)
@@ -89,7 +89,7 @@ https://parkruns.de
 - [Westpark parkrun / München](https://parkruns.de/westpark)
 - [Wienburgpark parkrun / Münster](https://parkruns.de/wienburgpark)
 - [Wittelsbacher parkrun / Augsburg](https://parkruns.de/wittelsbacher)
-- [Wittelsbacher Park parkrun / Augsburg](https://parkruns.de/wittelsbacherpark)
+- [Wittelsbacher Park parkrun / Augsburg](https://parkruns.de/wittelsbacherpark) - archived
 - [Wöhrder See parkrun / Nürnberg](https://parkruns.de/woehrdersee)
 - [Ziegelwiese parkrun / Halle (Saale)](https://parkruns.de/ziegelwiese)
 - [Zschopauaue parkrun / Frankenberg](https://parkruns.de/zschopauaue)
