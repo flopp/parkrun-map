@@ -196,6 +196,24 @@ func (data RenderData) writeHtaccess(filePath string) error {
 	return nil
 }
 
+func (data RenderData) writeMarkdownList(filePath string) error {
+	f, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	// create a markdown list with all parkruns (+ links to the detail pages)
+	for _, event := range data.Events {
+		// create a markdown list item for the event
+		if _, err = f.WriteString(fmt.Sprintf("- [%s / %s](https://parkruns.de/%s)\n", event.Name, event.FixedLocation(), event.Id)); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (data RenderData) writeRobotsTxt(filePath string) error {
 	f, err := os.Create(filePath)
 	if err != nil {
@@ -1284,6 +1302,10 @@ func main() {
 
 	if err := renderData.writeLLMSTxt(output.Path("llms.txt")); err != nil {
 		panic(fmt.Errorf("while writing llms.txt: %w", err))
+	}
+
+	if err := renderData.writeMarkdownList(output.Path("parkruns.md")); err != nil {
+		panic(fmt.Errorf("while writing parkruns.md: %w", err))
 	}
 
 	if *exportCsvFile != "" {
