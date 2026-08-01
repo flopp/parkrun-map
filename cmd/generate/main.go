@@ -209,6 +209,8 @@ func (data RenderData) writeMarkdownList(filePath string) error {
 		status := ""
 		if event.Archived() {
 			status = " - archived"
+		} else if event.TemporarilyClosed() {
+			status = " - temporarily closed"
 		} else if event.Planned() {
 			status = " - planned"
 		}
@@ -479,8 +481,10 @@ type PlannedData struct {
 	City      string
 	State     string
 	Status    string
+	Added     string
 	Start     string
 	Instagram string
+	Link1     parkrun.Link
 }
 
 func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunInfo, []PlannedData, error) {
@@ -593,7 +597,7 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 	if !found {
 		return nil, nil, fmt.Errorf("sheet 'planned' not found")
 	}
-	plannedColumns, err := googlesheetswrapper.ExtractHeader(plannedSheet, []string{"name", "city", "state", "status", "start", "instagram"}, false)
+	plannedColumns, err := googlesheetswrapper.ExtractHeader(plannedSheet, []string{"name", "city", "state", "status", "added", "start", "instagram", "link1"}, false)
 	if err != nil {
 		return nil, nil, fmt.Errorf("extracting header from planned sheet: %w", err)
 	}
@@ -603,15 +607,22 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 		city := val(plannedColumns, row, "city")
 		state := val(plannedColumns, row, "state")
 		status := val(plannedColumns, row, "status")
+		added := val(plannedColumns, row, "added")
 		start := val(plannedColumns, row, "start")
 		instagram := val(plannedColumns, row, "instagram")
+		link1, err := parkrun.ParseLink(val(plannedColumns, row, "link1"))
+		if err != nil {
+			return nil, nil, fmt.Errorf("parsing link1 in planned sheet: %w", err)
+		}
 		plannedData = append(plannedData, PlannedData{
 			Name:      name,
 			City:      city,
 			State:     state,
 			Status:    status,
+			Added:     added,
 			Start:     start,
 			Instagram: instagram,
+			Link1:     link1,
 		})
 	}
 
@@ -952,7 +963,7 @@ func main() {
 	latestDate := time.Time{}
 	dates := make(map[*parkrun.Event]time.Time)
 	for _, event := range events {
-		if !event.Archived() {
+		if !event.Archived() && !event.TemporarilyClosed() {
 			wiki_file := download.Path("parkrun", event.Id, "wiki")
 			if utils.FileExists(wiki_file) {
 				if err := event.LoadWiki(wiki_file); err == nil && event.LatestRun != nil {
@@ -985,7 +996,7 @@ func main() {
 	// Pull latest results, force update for all events that are definitely outdated
 	for _, event := range events {
 		isOutdated := false
-		if !event.Archived() {
+		if !event.Archived() && !event.TemporarilyClosed() {
 			if date, found := dates[event]; found && (latestDate.After(date) || (isParkrunDay && date.Format("2006-01-02") != now.Format("2006-01-02"))) {
 				log.Printf("%s: outdated! date=%v latestafter=%v parkrunday=%v notatparkrunday=%v", event.Id, date, latestDate.After(date), isParkrunDay, date.Format("2006-01-02") != now.Format("2006-01-02"))
 				isOutdated = true
@@ -1057,7 +1068,7 @@ func main() {
 	}
 
 	for _, event := range events {
-		event.Current = !event.Archived() && event.LatestRun != nil && event.LatestRun.Date.Equal(latestDate)
+		event.Current = !event.Archived() && !event.TemporarilyClosed() && event.LatestRun != nil && event.LatestRun.Date.Equal(latestDate)
 	}
 
 	// Determine order

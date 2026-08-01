@@ -140,6 +140,12 @@ const loadMap = function (id, hash) {
             marker
                 .addTo(map)
                 .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a> <span class="tag is-success is-light">geplant</span><br>${parkrun.location}`);
+        } else if (parkrun.temporarily_closed) {
+            const marker = L.marker([parkrun.lat, parkrun.lon], {icon: greyIcon, zIndexOffset: 0});
+            marker
+                .addTo(map)
+                .bindPopup(`<a href="${parkrun.id}.html"><b>${parkrun.name}</b></a> <span class="tag is-danger is-light">temporär geschlossen</span><br>${parkrun.location}`);    
+        
         } else {
             const marker = L.marker([parkrun.lat, parkrun.lon], {icon: greyIcon, zIndexOffset: 0});
             marker

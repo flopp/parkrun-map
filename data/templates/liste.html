@@ -12,7 +12,7 @@
             <b>Hinweise zur Tabelle:</b><br>
             Der Rang gibt die Platzierung des parkruns bezüglich Teilnehmerzahl in der aktuellen Woche an (parkrun mit den meisten Teilnehmern: Rang 1).<br>
             Die Tabellenspalten können angeklickt werden, um die Tabelle zu sortieren.<br>
-            <span class="tag-green">geplant</span> = parkrun ist noch nicht gestartet, <span class="tag-orange">veraltet</span> = keine aktuellen Daten, <span class="tag-red">archiviert</span> = parkrun ist nicht mehr aktiv.
+            <span class="tag-green">geplant</span> = parkrun ist noch nicht gestartet, <span class="tag-orange">veraltet</span> = keine aktuellen Daten, <span class="tag-red">archiviert</span> = parkrun ist nicht mehr aktiv oder temporär nicht aktiv.
         </blockquote>
 
         <table id="parkruns-table" class="sortable">
@@ -35,6 +35,8 @@
                         <a href="{{EventPath .Id}}">{{.FixedName}}</a>
                         {{else if .Planned}}
                         <a href="{{EventPath .Id}}">{{.FixedName}}</a><br><span class="tag-green">geplant</span>
+                        {{else if .TemporarilyClosed}}
+                        <a href="{{EventPath .Id}}">{{.FixedName}}</a><br><span class="tag-red">temporär geschlossen</span>
                         {{else}}
                         <a href="{{EventPath .Id}}">{{.FixedName}}</a><br><span class="tag-red">archiviert</span>
                         {{end}}

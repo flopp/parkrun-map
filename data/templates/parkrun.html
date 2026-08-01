@@ -24,6 +24,8 @@
         {{if .Event.Active}}
         {{else if .Event.Planned}}
             <tr><td>Status</td><td><span class="tag-green">geplant</span></td></tr>
+        {{else if .Event.TemporarilyClosed}}
+            <tr><td>Status</td><td><span class="tag-red">temporär geschlossen</span></td></tr>
         {{else}}
             <tr><td>Status</td><td><span class="tag-red">archiviert</span></td></tr>
         {{end}}

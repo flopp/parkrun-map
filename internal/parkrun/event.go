@@ -260,6 +260,9 @@ func (event Event) Active() bool {
 func (event Event) Planned() bool {
 	return event.Status == "geplant"
 }
+func (event Event) TemporarilyClosed() bool {
+	return event.Status == "temporär geschlossen"
+}
 func (event Event) Archived() bool {
 	return !event.Active() && !event.Planned()
 }
@@ -882,6 +885,11 @@ func RenderJs(events []*Event, filePath string) error {
 			fmt.Fprintf(out, "\"planned\": true,\n")
 		} else {
 			fmt.Fprintf(out, "\"planned\": false,\n")
+		}
+		if event.TemporarilyClosed() {
+			fmt.Fprintf(out, "\"temporarily_closed\": true,\n")
+		} else {
+			fmt.Fprintf(out, "\"temporarily_closed\": false,\n")
 		}
 		if event.LatestRun != nil {
 			fmt.Fprintf(out, "\"latest\": {\n")
