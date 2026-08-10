@@ -27,6 +27,11 @@ import (
 	"golang.org/x/net/html"
 )
 
+type CanonicalUrl struct {
+	Url     string
+	Updated string
+}
+
 type RenderData struct {
 	Config            *Config
 	Event             *parkrun.Event
@@ -47,14 +52,16 @@ type RenderData struct {
 	Canonical         string
 	Nav               string
 	Timestamp         string
-	CanonicalUrls     []string
+	Updated           string
+	CanonicalUrls     []CanonicalUrl
 	NoRewrite         bool
 }
 
-func (data *RenderData) set(title, description, canonical, nav string) {
+func (data *RenderData) set(title, description, canonical, updated string, nav string) {
 	data.Title = title
 	data.Description = description
 	data.Canonical = canonical
+	data.Updated = updated
 	data.Nav = nav
 }
 
@@ -100,7 +107,7 @@ func (data *RenderData) render(outputFile string, templateFiles ...string) error
 		return err
 	}
 
-	data.CanonicalUrls = append(data.CanonicalUrls, data.Canonical)
+	data.CanonicalUrls = append(data.CanonicalUrls, CanonicalUrl{Url: data.Canonical, Updated: data.Updated})
 	return nil
 }
 
@@ -112,7 +119,8 @@ func (data RenderData) writeSitemap(filePath string) error {
 	defer f.Close()
 
 	type sitemapURL struct {
-		Loc string `xml:"loc"`
+		Loc     string `xml:"loc"`
+		LastMod string `xml:"lastmod,omitempty"`
 	}
 
 	type sitemapURLSet struct {
@@ -122,8 +130,8 @@ func (data RenderData) writeSitemap(filePath string) error {
 	}
 
 	urls := make([]sitemapURL, 0, len(data.CanonicalUrls))
-	for _, url := range data.CanonicalUrls {
-		urls = append(urls, sitemapURL{Loc: url})
+	for _, canurl := range data.CanonicalUrls {
+		urls = append(urls, sitemapURL{Loc: canurl.Url, LastMod: canurl.Updated})
 	}
 
 	if _, err = f.WriteString(xml.Header); err != nil {
@@ -322,6 +330,7 @@ type Article struct {
 	Published string        `json:"published"`
 	Updated   string        `json:"updated"`
 	Content   template.HTML `json:"content"`
+	UpdatedAt time.Time
 }
 
 type rawArticle struct {
@@ -375,6 +384,22 @@ func loadArticles(articlesDir string) ([]*Article, error) {
 			return nil, fmt.Errorf("while reading article content file %s: %w", contentPath, err)
 		}
 
+		updatedAt := time.Time{}
+		if raw.Published != "" {
+			t, err := time.Parse("2006-01-02", raw.Published)
+			if err != nil {
+				return nil, fmt.Errorf("while parsing published date in %s: %w", articleFile, err)
+			}
+			updatedAt = t
+		}
+		if raw.Updated != "" {
+			t, err := time.Parse("2006-01-02", raw.Updated)
+			if err != nil {
+				return nil, fmt.Errorf("while parsing updated date in %s: %w", articleFile, err)
+			}
+			updatedAt = t
+		}
+
 		article := &Article{
 			Slug:      slug,
 			Title:     strings.TrimSpace(raw.Title),
@@ -382,6 +407,7 @@ func loadArticles(articlesDir string) ([]*Article, error) {
 			Published: strings.TrimSpace(raw.Published),
 			Updated:   strings.TrimSpace(raw.Updated),
 			Content:   template.HTML(contentBytes),
+			UpdatedAt: updatedAt,
 		}
 		if article.Title == "" {
 			return nil, fmt.Errorf("missing title in %s", articleFile)
@@ -505,7 +531,7 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 
 	// parse & validate columns
 	columns, err := googlesheetswrapper.ExtractHeader(sheet, []string{
-		"id", "name", "city", "state", "location", "description", "status", "first", "coordinates",
+		"id", "updated", "name", "city", "state", "location", "description", "status", "first", "coordinates",
 		"route_type", "google_route_id", "google_maps_url",
 		"instagram", "facebook", "strava-club", "strava-segment",
 		"link1", "link2", "link3", "link4", "link5"},
@@ -517,6 +543,11 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 	parkrunInfos := make(map[string]*parkrun.ParkrunInfo)
 	for i, row := range sheet[1:] {
 		id := val(columns, row, "id")
+		updatedStr := val(columns, row, "updated")
+		updated, err := time.Parse("2006-01-02", updatedStr)
+		if err != nil {
+			return nil, nil, fmt.Errorf("parsing updated date in row %d: %w", i+2, err)
+		}
 		name := val(columns, row, "name")
 		city := val(columns, row, "city")
 		state := val(columns, row, "state")
@@ -584,6 +615,7 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 			RouteType:   routeType,
 			RouteID:     routeId,
 			GoogleMaps:  googleMaps,
+			Updated:     updated,
 			First:       first,
 			Status:      status,
 			Coordinates: coordinates,
@@ -1237,32 +1269,54 @@ func main() {
 		NoRewrite:         *noRewrite,
 		CanonicalUrls:     nil,
 	}
+
+	var latestEventUpdate time.Time
+	var latestArticleUpdate time.Time
+	for _, event := range events {
+		u := event.UpdatedAt()
+		if u.After(latestEventUpdate) {
+			latestEventUpdate = u
+		}
+	}
+	for _, article := range articles {
+		u := article.UpdatedAt
+		if u.After(latestArticleUpdate) {
+			latestArticleUpdate = u
+		}
+	}
+	formatDate := func(t time.Time) string {
+		if t.IsZero() {
+			return ""
+		}
+		return t.Format("2006-01-02")
+	}
+
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
-	renderData.set("Karte mit allen parkrun Standorten in Deutschland", "Alle parkrun Standorte in Deutschland auf einer Karte", canonical(""), "map")
+	renderData.set("Karte mit allen parkrun Standorten in Deutschland", "Alle parkrun Standorte in Deutschland auf einer Karte", canonical(""), formatDate(latestEventUpdate), "map")
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'index.html': %v", err))
 	}
-	renderData.set("Alle parkrun Standorte in Deutschland", "Alle parkrun Standorte in Deutschland.", canonical("liste.html"), "list")
+	renderData.set("Alle parkrun Standorte in Deutschland", "Alle parkrun Standorte in Deutschland.", canonical("liste.html"), formatDate(latestEventUpdate), "list")
 	if err := renderData.render(output.Path("liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'list.html': %v", err))
 	}
-	renderData.set("parkruns Karte - Info", "Informationen", canonical("info.html"), "info")
+	renderData.set("parkruns Karte - Info", "Informationen", canonical("info.html"), "", "info")
 	if err := renderData.render(output.Path("info.html"), t.Path("info.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'info.html': %v", err))
 	}
-	renderData.set("parkrun Artikel", "Informative Artikel rund um parkrun", canonical("articles/"), "articles")
+	renderData.set("parkrun Artikel", "Informative Artikel rund um parkrun", canonical("articles/"), formatDate(latestArticleUpdate), "articles")
 	if err := renderData.render(output.Path("articles", "index.html"), t.Path("articles.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'articles/index.html': %v", err))
 	}
-	renderData.set("parkruns Karte - Datenschutz", "Datenschutzinformationen", canonical("datenschutz.html"), "datenschutz")
+	renderData.set("parkruns Karte - Datenschutz", "Datenschutzinformationen", canonical("datenschutz.html"), "", "datenschutz")
 	if err := renderData.render(output.Path("datenschutz.html"), t.Path("datenschutz.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'datenschutz.html': %v", err))
 	}
-	renderData.set("parkruns Karte - Impressum", "Impressum", canonical("impressum.html"), "impressum")
+	renderData.set("parkruns Karte - Impressum", "Impressum", canonical("impressum.html"), "", "impressum")
 	if err := renderData.render(output.Path("impressum.html"), t.Path("impressum.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'impressum.html': %v", err))
 	}
-	renderData.set("404 - Seite nicht gefunden", "Die angeforderte Seite wurde nicht gefunden.", canonical("404.html"), "")
+	renderData.set("404 - Seite nicht gefunden", "Die angeforderte Seite wurde nicht gefunden.", canonical("404.html"), "", "")
 	if err := renderData.render(output.Path("404.html"), t.Path("404.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering '404.html': %v", err))
 	}
@@ -1277,7 +1331,7 @@ func main() {
 			// remove .html from canonical URL for better SEO
 			canonicalUrl = strings.TrimSuffix(canonicalUrl, ".html")
 		}
-		renderData.set(title, description, canonicalUrl, "list")
+		renderData.set(title, description, canonicalUrl, formatDate(event.UpdatedAt()), "list")
 		if err := renderData.render(output.Path(file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 			panic(fmt.Errorf("while rendering '%s': %v", file, err))
 		}
@@ -1295,7 +1349,7 @@ func main() {
 		article.Content = template.HTML(contentBuffer.String())
 
 		renderData.Article = article
-		renderData.set(article.Title+" - parkrun Artikel", article.Summary, canonical(fmt.Sprintf("articles/%s.html", article.Slug)), "articles")
+		renderData.set(article.Title+" - parkrun Artikel", article.Summary, canonical(fmt.Sprintf("articles/%s.html", article.Slug)), formatDate(article.UpdatedAt), "articles")
 		if err := renderData.render(output.Path("articles", fmt.Sprintf("%s.html", article.Slug)), t.Path("article.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 			panic(fmt.Errorf("while rendering article '%s': %v", article.Slug, err))
 		}

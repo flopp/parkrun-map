@@ -411,6 +411,7 @@ type ParkrunInfo struct {
 	RouteType   string
 	RouteID     string
 	GoogleMaps  string
+	Updated     time.Time
 	First       string
 	Status      string
 	Coordinates string
@@ -422,6 +423,17 @@ func (info ParkrunInfo) ParseCoordinates() (utils.Coordinates, error) {
 }
 
 var parkrun_infos map[string]*ParkrunInfo
+
+func (event Event) UpdatedAt() time.Time {
+	var updated time.Time
+	if info, ok := parkrun_infos[event.Id]; ok {
+		updated = info.Updated
+	}
+	if event.LatestRun != nil && event.LatestRun.Date.After(updated) {
+		updated = event.LatestRun.Date
+	}
+	return updated
+}
 
 func (event Event) FixedLocation() string {
 	if info, ok := parkrun_infos[event.Id]; ok {
