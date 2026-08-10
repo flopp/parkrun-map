@@ -24,6 +24,7 @@
     <li>
         <b>{{.Name}} / {{.City}}</b><br>
         Quelle(n):<br>
+        {{if .Link1.IsValid}}<a target="_blank" href="{{ .Link1.Url }}">{{ .Link1.Name }}</a><br>{{end}}
         <a target="_blank" href="{{ .Instagram }}">Instagram</a>
     </li>
   {{ end }}
@@ -38,6 +39,7 @@
     <li>
         <b>{{.Name}} / {{.City}}</b><br>
         Quelle(n):<br>
+        {{if .Link1.IsValid}}<a target="_blank" href="{{ .Link1.Url }}">{{ .Link1.Name }}</a><br>{{end}}
         <a target="_blank" href="{{ .Instagram }}">Instagram</a>
     </li>
   {{ end }}
