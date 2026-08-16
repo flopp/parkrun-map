@@ -107,7 +107,11 @@ func (data *RenderData) render(outputFile string, templateFiles ...string) error
 		return err
 	}
 
-	data.CanonicalUrls = append(data.CanonicalUrls, CanonicalUrl{Url: data.Canonical, Updated: data.Updated})
+	// only collect "real" pages for sitemap
+	if !strings.HasSuffix(data.Canonical, "404.html") {
+		data.CanonicalUrls = append(data.CanonicalUrls, CanonicalUrl{Url: data.Canonical, Updated: data.Updated})
+	}
+
 	return nil
 }
 
