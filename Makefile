@@ -3,6 +3,11 @@ all: run-remote
 
 GENERATOR_FLAGS ?=
 
+.phony: clean
+clean:
+	@echo "CLEANING UP..."
+	@rm -f .download/parkrun/events.json.gz .download/parkrun/summary_wiki
+
 .phony: build
 build:
 	@echo "GENERATING HTML FILES..."
@@ -17,9 +22,11 @@ build:
 
 .phony: check
 check:
-	@go run cmd/generate/main.go -check -verbose \
-    		-data     "data" \
-    		-download ".download" \
+	@go run cmd/generate/main.go \
+		-check \
+		-verbose \
+    	-data     "data" \
+    	-download ".download" \
 		-config   "config.json"
 
 .phony: test

@@ -128,8 +128,37 @@ const loadMap = function (id, hash) {
     const greenIcon = load_marker("green");
     const greyIcon = load_marker("grey");
 
+    let minAttendace = 0;
+    let maxAttendance = 0;
     parkruns.forEach((parkrun, index, array) => {
         if (parkrun.active) {
+            if (parkrun.latest) {
+                if (parkrun.latest.runners > maxAttendance) {
+                    maxAttendance = parkrun.latest.runners;
+                }
+                if (parkrun.latest.runners < minAttendace || minAttendace === 0) {
+                    minAttendace = parkrun.latest.runners;
+                }
+            }
+        }
+    });
+
+    parkruns.forEach((parkrun, index, array) => {
+        if (parkrun.active) {
+            if (parkrun.latest) {
+                // add scaled circle based on attendance
+                const attendance = parkrun.latest.runners;
+                const radius = 100 + (attendance - minAttendace) / (maxAttendance - minAttendace) * 5000;
+                const circle = L.circle([parkrun.lat, parkrun.lon], {
+                    color: 'blue',
+                    fillColor: 'blue',
+                    opacity: 0.2,
+                    fillOpacity: 0.1,
+                    radius: radius
+                });
+                circle.addTo(map);
+            }
+
             const marker = L.marker([parkrun.lat, parkrun.lon], {icon: blueIcon, zIndexOffset: 2000});
             //const marker = L.circleMarker([parkrun.lat, parkrun.lon], {color: "darkblue", fillColor: "blue", fillOpacity: 1, radius: 8});
             marker
@@ -170,7 +199,7 @@ const loadMap = function (id, hash) {
 const loadParkrunMap = function (divId) {
     const div = document.getElementById(divId);
     const parkrunId = div.dataset.id;
-    
+
     let parkrun = null;
     parkruns.forEach((p) => {
         if (p.id === parkrunId) {
