@@ -6,7 +6,7 @@ toolchain go1.26.5
 
 require (
 	github.com/flopp/go-googlesheetswrapper v0.0.0-20260406112809-7c5a6afecd10
-	github.com/flopp/go-parkrunparser v0.0.1
+	github.com/flopp/go-parkrunparser v0.0.3
 	github.com/yrsh/simplify-go v0.0.0-20141205144220-b78647bd27f7
 	golang.org/x/net v0.57.0
 )
