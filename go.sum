@@ -20,6 +20,8 @@ github.com/flopp/go-parkrunparser v0.0.0-20250816114451-0358a14452d8 h1:pl6hFceg
 github.com/flopp/go-parkrunparser v0.0.0-20250816114451-0358a14452d8/go.mod h1:9iKtIGPlok7c4yyiiLg2CSxwMXqeij4iZCMStvUzpRA=
 github.com/flopp/go-parkrunparser v0.0.1 h1:wDql3eofitH9Ze3pnHn50jE+XTr3cV/5/npIZX63yBw=
 github.com/flopp/go-parkrunparser v0.0.1/go.mod h1:9iKtIGPlok7c4yyiiLg2CSxwMXqeij4iZCMStvUzpRA=
+github.com/flopp/go-parkrunparser v0.0.3 h1:bsurf3nU9oepbY8dTTATIfXS7sP3Ln1c11U65XLBxF0=
+github.com/flopp/go-parkrunparser v0.0.3/go.mod h1:9iKtIGPlok7c4yyiiLg2CSxwMXqeij4iZCMStvUzpRA=
 github.com/go-logr/logr v1.2.2/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
 github.com/go-logr/logr v1.4.2 h1:6pFjapn8bFcIbiKo3XT4j/BhANplGihG6tvd+8rYgrY=
 github.com/go-logr/logr v1.4.2/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
