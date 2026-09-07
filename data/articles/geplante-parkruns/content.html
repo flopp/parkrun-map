@@ -4,15 +4,16 @@
 <h2>Standorte mit bekanntem Starttermin</h2>
 <p>Bei diesen Standorten ist die Planung schon sehr weit vorangeschritten und ein Starttermin wurde bereits bekannt gegeben:</p>
 <ul>
-  {{ range .PlannedDataTermin }}
+  {{range .PlannedDataTermin}}
     <li>
         <b>{{.Name}} / {{.City}}</b><br>
         geplanter Start am {{.Start}}<br>
-        Quelle(n):<br>
-        {{if .Link1.IsValid}}<a target="_blank" href="{{ .Link1.Url }}">{{ .Link1.Name }}</a><br>{{end}}
-        <a target="_blank" href="{{ .Instagram }}">Instagram</a>
+        {{if .Links}}
+          Quelle(n):
+          {{range .Links}}<br><a target="_blank" href="{{ .Url }}">{{ .Name }}</a>{{end}}
+        {{end}}
     </li>
-  {{ end }}
+  {{end}}
 </ul>
 {{end}}
 
@@ -22,10 +23,11 @@
 <ul>
   {{ range .PlannedDataTest }}
     <li>
-        <b>{{.Name}} / {{.City}}</b><br>
-        Quelle(n):<br>
-        {{if .Link1.IsValid}}<a target="_blank" href="{{ .Link1.Url }}">{{ .Link1.Name }}</a><br>{{end}}
-        <a target="_blank" href="{{ .Instagram }}">Instagram</a>
+        <b>{{if ne .Name ""}}{{.Name}} / {{end}}{{.City}}</b><br>
+        {{if .Links}}
+          Quelle(n):
+          {{range .Links}}<br><a target="_blank" href="{{ .Url }}">{{ .Name }}</a>{{end}}
+        {{end}}
     </li>
   {{ end }}
 </ul>
@@ -37,10 +39,11 @@
 <ul>
   {{ range .PlannedDataOther }}
     <li>
-        <b>{{.Name}} / {{.City}}</b><br>
-        Quelle(n):<br>
-        {{if .Link1.IsValid}}<a target="_blank" href="{{ .Link1.Url }}">{{ .Link1.Name }}</a><br>{{end}}
-        <a target="_blank" href="{{ .Instagram }}">Instagram</a>
+        <b>{{if ne .Name ""}}{{.Name}} / {{end}}{{.City}}</b><br>
+        {{if .Links}}
+          Quelle(n):
+          {{range .Links}}<br><a target="_blank" href="{{ .Url }}">{{ .Name }}</a>{{end}}
+        {{end}}
     </li>
   {{ end }}
 </ul>

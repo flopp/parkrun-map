@@ -514,7 +514,7 @@ type PlannedData struct {
 	Added     string
 	Start     string
 	Instagram string
-	Link1     parkrun.Link
+	Links     []parkrun.Link
 }
 
 func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunInfo, []PlannedData, error) {
@@ -633,7 +633,7 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 	if !found {
 		return nil, nil, fmt.Errorf("sheet 'planned' not found")
 	}
-	plannedColumns, err := googlesheetswrapper.ExtractHeader(plannedSheet, []string{"name", "city", "state", "status", "added", "start", "instagram", "link1"}, false)
+	plannedColumns, err := googlesheetswrapper.ExtractHeader(plannedSheet, []string{"name", "city", "state", "status", "added", "start", "instagram", "link1", "link2"}, false)
 	if err != nil {
 		return nil, nil, fmt.Errorf("extracting header from planned sheet: %w", err)
 	}
@@ -650,6 +650,23 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 		if err != nil {
 			return nil, nil, fmt.Errorf("parsing link1 in planned sheet: %w", err)
 		}
+		link2, err := parkrun.ParseLink(val(plannedColumns, row, "link2"))
+		if err != nil {
+			return nil, nil, fmt.Errorf("parsing link2 in planned sheet: %w", err)
+		}
+		links := []parkrun.Link{}
+		if instagram != "" {
+			links = append(links, parkrun.Link{
+				Name: "Instagram",
+				Url:  instagram,
+			})
+		}
+		if link1.IsValid() {
+			links = append(links, link1)
+		}
+		if link2.IsValid() {
+			links = append(links, link2)
+		}
 		plannedData = append(plannedData, PlannedData{
 			Name:      name,
 			City:      city,
@@ -658,7 +675,7 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 			Added:     added,
 			Start:     start,
 			Instagram: instagram,
-			Link1:     link1,
+			Links:     links,
 		})
 	}
 
