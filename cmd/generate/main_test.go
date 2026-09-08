@@ -22,9 +22,9 @@ func TestWriteSitemap(t *testing.T) {
 	filePath := filepath.Join(tempDir, "sitemap.xml")
 
 	data := RenderData{
-		CanonicalUrls: []string{
-			"https://example.com/",
-			"https://example.com/articles/a?x=1&y=2",
+		CanonicalUrls: []CanonicalUrl{
+			{Url: "https://example.com/"},
+			{Url: "https://example.com/articles/a?x=1&y=2"},
 		},
 	}
 

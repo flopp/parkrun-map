@@ -507,14 +507,13 @@ func val(cols map[string]int, row []string, name string) string {
 }
 
 type PlannedData struct {
-	Name      string
-	City      string
-	State     string
-	Status    string
-	Added     string
-	Start     string
-	Instagram string
-	Links     []parkrun.Link
+	Name   string
+	City   string
+	State  string
+	Status string
+	Added  string
+	Start  string
+	Links  []parkrun.Link
 }
 
 func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunInfo, []PlannedData, error) {
@@ -633,7 +632,7 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 	if !found {
 		return nil, nil, fmt.Errorf("sheet 'planned' not found")
 	}
-	plannedColumns, err := googlesheetswrapper.ExtractHeader(plannedSheet, []string{"name", "city", "state", "status", "added", "start", "instagram", "link1", "link2"}, false)
+	plannedColumns, err := googlesheetswrapper.ExtractHeader(plannedSheet, []string{"name", "city", "state", "status", "added", "start", "link1", "link2", "link3"}, false)
 	if err != nil {
 		return nil, nil, fmt.Errorf("extracting header from planned sheet: %w", err)
 	}
@@ -645,37 +644,24 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 		status := val(plannedColumns, row, "status")
 		added := val(plannedColumns, row, "added")
 		start := val(plannedColumns, row, "start")
-		instagram := val(plannedColumns, row, "instagram")
-		link1, err := parkrun.ParseLink(val(plannedColumns, row, "link1"))
-		if err != nil {
-			return nil, nil, fmt.Errorf("parsing link1 in planned sheet: %w", err)
-		}
-		link2, err := parkrun.ParseLink(val(plannedColumns, row, "link2"))
-		if err != nil {
-			return nil, nil, fmt.Errorf("parsing link2 in planned sheet: %w", err)
-		}
 		links := []parkrun.Link{}
-		if instagram != "" {
-			links = append(links, parkrun.Link{
-				Name: "Instagram",
-				Url:  instagram,
-			})
-		}
-		if link1.IsValid() {
-			links = append(links, link1)
-		}
-		if link2.IsValid() {
-			links = append(links, link2)
+		for _, key := range []string{"link1", "link2", "link3"} {
+			link, err := parkrun.ParseLink(val(plannedColumns, row, key))
+			if err != nil {
+				return nil, nil, fmt.Errorf("parsing %s in planned sheet: %w", key, err)
+			}
+			if link.IsValid() {
+				links = append(links, link)
+			}
 		}
 		plannedData = append(plannedData, PlannedData{
-			Name:      name,
-			City:      city,
-			State:     state,
-			Status:    status,
-			Added:     added,
-			Start:     start,
-			Instagram: instagram,
-			Links:     links,
+			Name:   name,
+			City:   city,
+			State:  state,
+			Status: status,
+			Added:  added,
+			Start:  start,
+			Links:  links,
 		})
 	}
 
