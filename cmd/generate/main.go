@@ -1307,6 +1307,10 @@ func main() {
 	if err := renderData.render(output.Path("liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'list.html': %v", err))
 	}
+	renderData.set("Absagen bei parkruns in Deutschland", "Alle bekannten Absagen der deutschen parkruns.", canonical("cancellations.html"), formatDate(latestEventUpdate), "cancellations")
+	if err := renderData.render(output.Path("cancellations.html"), t.Path("cancellations.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+		panic(fmt.Errorf("while rendering 'cancellations.html': %v", err))
+	}
 	renderData.set("parkruns Karte - Info", "Informationen", canonical("info.html"), "", "info")
 	if err := renderData.render(output.Path("info.html"), t.Path("info.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'info.html': %v", err))
