@@ -193,6 +193,9 @@ func (data RenderData) writeHtaccess(filePath string) error {
 	if _, err = f.WriteString("RewriteBase /\n"); err != nil {
 		return err
 	}
+	if _, err = f.WriteString("RewriteRule ^articles/geplante-parkruns\\.html$ /planned.html [R=301,L]\n"); err != nil {
+		return err
+	}
 	for _, event := range data.Events {
 		if _, err = f.WriteString(fmt.Sprintf("RewriteRule ^%s/?$ %s.html [L]\n", event.Id, event.Id)); err != nil {
 			return err
@@ -1314,6 +1317,10 @@ func main() {
 	renderData.set("parkruns Karte - Info", "Informationen", canonical("info.html"), "", "info")
 	if err := renderData.render(output.Path("info.html"), t.Path("info.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'info.html': %v", err))
+	}
+	renderData.set("Geplante parkruns in Deutschland", "Überblick über angekündigte neue parkrun-Standorte in Deutschland mit aktuellem Planungsstand.", canonical("planned.html"), formatDate(latestArticleUpdate), "planned")
+	if err := renderData.render(output.Path("planned.html"), t.Path("planned.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
+		panic(fmt.Errorf("while rendering 'planned.html': %v", err))
 	}
 	renderData.set("parkrun Artikel", "Informative Artikel rund um parkrun", canonical("articles/"), formatDate(latestArticleUpdate), "articles")
 	if err := renderData.render(output.Path("articles", "index.html"), t.Path("articles.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {

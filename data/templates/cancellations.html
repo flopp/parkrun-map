@@ -1,0 +1,39 @@
+{{template "header.html" .}}
+<main class="container">
+    <h1>Absagen</h1>
+
+    <article>
+        Auf dieser Seite findest alle aktuellen parkrun Absagen.<br>
+        Offizielle Liste: <a href="https://www.parkrun.com.de/cancellations/" target="_blank">parkrun.com.de/cancellations/</a>
+    </article>
+
+    {{if .Events}}
+        <table class="sortable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Ort</th>
+                    <th>Datum</th>
+                    <th>Grund</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range $event := .Events}}
+                    {{if $event.Cancellations}}
+                        {{range $cancellation := $event.Cancellations}}
+                            <tr>
+                                <td><a href="{{EventPath $event.Id}}">{{$event.FixedName}}</a></td>
+                                <td>{{$event.FixedLocation}}</td>
+                                <td data-sort="{{$cancellation.Date}}">{{$cancellation.DateF}}</td>
+                                <td>{{$cancellation.ReasonGerman}}</td>
+                            </tr>
+                        {{end}}
+                    {{end}}
+                {{end}}
+            </tbody>
+        </table>
+    {{else}}
+        <p>Es sind derzeit keine Absagen bekannt.</p>
+    {{end}}
+</main>
+{{template "footer.html" .}}
