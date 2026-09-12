@@ -510,13 +510,14 @@ func val(cols map[string]int, row []string, name string) string {
 }
 
 type PlannedData struct {
-	Name   string
-	City   string
-	State  string
-	Status string
-	Added  string
-	Start  string
-	Links  []parkrun.Link
+	Name        string
+	City        string
+	State       string
+	Description template.HTML
+	Status      string
+	Added       string
+	Start       string
+	Links       []parkrun.Link
 }
 
 func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunInfo, []PlannedData, error) {
@@ -635,7 +636,7 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 	if !found {
 		return nil, nil, fmt.Errorf("sheet 'planned' not found")
 	}
-	plannedColumns, err := googlesheetswrapper.ExtractHeader(plannedSheet, []string{"name", "city", "state", "status", "added", "start", "link1", "link2", "link3"}, false)
+	plannedColumns, err := googlesheetswrapper.ExtractHeader(plannedSheet, []string{"name", "city", "state", "description", "status", "added", "start", "link1", "link2", "link3"}, false)
 	if err != nil {
 		return nil, nil, fmt.Errorf("extracting header from planned sheet: %w", err)
 	}
@@ -644,6 +645,7 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 		name := val(plannedColumns, row, "name")
 		city := val(plannedColumns, row, "city")
 		state := val(plannedColumns, row, "state")
+		description := val(plannedColumns, row, "description")
 		status := val(plannedColumns, row, "status")
 		added := val(plannedColumns, row, "added")
 		start := val(plannedColumns, row, "start")
@@ -658,13 +660,14 @@ func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunI
 			}
 		}
 		plannedData = append(plannedData, PlannedData{
-			Name:   name,
-			City:   city,
-			State:  state,
-			Status: status,
-			Added:  added,
-			Start:  start,
-			Links:  links,
+			Name:        name,
+			City:        city,
+			State:       state,
+			Description: template.HTML(description),
+			Status:      status,
+			Added:       added,
+			Start:       start,
+			Links:       links,
 		})
 	}
 

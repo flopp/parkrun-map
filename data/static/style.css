@@ -134,6 +134,85 @@ a[href^="https://"]::after
     margin-top: 1.5rem;
 }
 
+.planned-section + .planned-section {
+    margin-top: 2.5rem;
+}
+
+.planned-section > header h2 {
+    margin-bottom: 0.5rem;
+}
+
+.planned-section > header p {
+    margin-bottom: 1.25rem;
+}
+
+.planned-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: 1rem;
+}
+
+.planned-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    border-top: 0.3rem solid var(--pico-primary);
+}
+
+.planned-card-confirmed {
+    border-top-color: var(--pico-primary);
+}
+
+.planned-card-test {
+    border-top-color: var(--pico-ins-color);
+}
+
+.planned-card-unknown {
+    border-top-color: var(--pico-muted-color);
+}
+
+.planned-card > header {
+    flex: 1;
+}
+
+.planned-card h3 {
+    margin-top: 0.6rem;
+    margin-bottom: 0;
+    font-size: 1.15rem;
+}
+
+.planned-status {
+    color: var(--pico-muted-color);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.planned-date {
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.planned-location {
+    color: var(--pico-muted-color);
+    margin-bottom: 1rem;
+}
+
+.planned-card footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.planned-card footer a[role="button"] {
+    margin-bottom: 0;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.85rem;
+}
+
 /* Mobile navigation wrapping */
 @media screen and (max-width: 768px) {
     header nav ul:last-child {
