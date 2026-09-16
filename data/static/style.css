@@ -174,9 +174,11 @@ a[href^="https://"]::after
 }
 
 .planned-card > header {
+    xx-flex: 1;
+}
+.planned-card > main {
     flex: 1;
 }
-
 .planned-card h3 {
     margin-top: 0.6rem;
     margin-bottom: 0;
