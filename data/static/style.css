@@ -148,7 +148,8 @@ a[href^="https://"]::after
 
 .planned-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    /* auto-fill (not auto-fit) keeps card width consistent even with few cards */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
     gap: 1rem;
 }
 
