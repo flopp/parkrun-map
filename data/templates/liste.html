@@ -31,14 +31,15 @@
             {{range .Events}}
                 <tr>
                     <td data-sort="{{.FixedName}}">
-                        {{if .Active}}
                         <a href="{{EventPath .Id}}">{{.FixedName}}</a>
+                        {{if .Active}}
+                            {{if .IsCancelled}}<br><span class="tag-orange">abgesagt</span>{{end}}
                         {{else if .Planned}}
-                        <a href="{{EventPath .Id}}">{{.FixedName}}</a><br><span class="tag-green">geplant</span>
+                            <br><span class="tag-green">geplant</span>
                         {{else if .TemporarilyClosed}}
-                        <a href="{{EventPath .Id}}">{{.FixedName}}</a><br><span class="tag-red">temporär geschlossen</span>
+                            <br><span class="tag-red">temporär geschlossen</span>
                         {{else}}
-                        <a href="{{EventPath .Id}}">{{.FixedName}}</a><br><span class="tag-red">archiviert</span>
+                            <br><span class="tag-red">archiviert</span>
                         {{end}}
                     </td>
                     <td data-sort="{{.FixedLocation}}">

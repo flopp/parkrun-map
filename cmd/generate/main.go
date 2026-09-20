@@ -520,6 +520,22 @@ type PlannedData struct {
 	Links       []parkrun.Link
 }
 
+func plannedDataFromEvent(event *parkrun.Event) PlannedData {
+	links := make([]parkrun.Link, 0)
+	links = append(links, parkrun.Link{Name: fmt.Sprintf("%s bei parkruns.de", event.Name), Url: event.Id})
+	links = append(links, event.Links()...)
+	return PlannedData{
+		Name:        event.FixedName(),
+		City:        event.FixedLocation(),
+		State:       event.State(),
+		Description: event.Description,
+		Status:      event.Status,
+		Added:       "",
+		Start:       event.First(),
+		Links:       links,
+	}
+}
+
 func loadGoogleSheetsData(apiKey, sheetsId string) (map[string]*parkrun.ParkrunInfo, []PlannedData, error) {
 	ctx := context.Background()
 	client, err := googlesheetswrapper.New(apiKey, sheetsId)
@@ -1082,6 +1098,16 @@ func main() {
 		}
 	}
 
+	// add planned events from main table
+	for _, event := range events {
+		if event.Planned() {
+			// handle planned events from main table
+			log.Printf("planned event from main table: %s", event.Name)
+
+			plannedDataTermin = append(plannedDataTermin, plannedDataFromEvent(event))
+		}
+	}
+
 	// cancellations
 	// read & parse
 	cancellations_wiki_url := "https://wiki.parkrun.com/index.php/Cancellations/Germany"
@@ -1103,6 +1129,15 @@ func main() {
 			log.Printf("applying cancellation data from wiki for event %s: %d cancellations", event.Name, len(cancellations))
 			event.Cancellations = cancellations
 			processedCancellations[event.Name] = true
+
+			// check if latest run is cancelled
+			event.IsCancelled = false
+			for _, c := range cancellations {
+				if c.Date == latestDate {
+					event.IsCancelled = true
+					break
+				}
+			}
 		}
 	}
 	// check for cancellations that were not applied (e.g. because the event name from the wiki does not match the event name from the parkrun data)
