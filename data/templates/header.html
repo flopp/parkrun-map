@@ -8,6 +8,20 @@
 
         {{if .Canonical}}<link rel="canonical" href="{{.Canonical}}" />{{end}}
         {{if eq .Nav "404"}}<meta name="robots" content="noindex">{{end}}
+        {{if .Canonical}}
+        <meta property="og:type" content="{{if .Article}}article{{else}}website{{end}}">
+        <meta property="og:title" content="{{.Title}}">
+        <meta property="og:description" content="{{.Description}}">
+        <meta property="og:url" content="{{.Canonical}}">
+        <meta property="og:site_name" content="parkruns.de">
+        <meta property="og:locale" content="de_DE">
+        <meta property="og:image" content="{{.SocialImage}}">
+        <meta property="og:image:alt" content="Karte mit parkrun Standorten in Deutschland">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{.Title}}">
+        <meta name="twitter:description" content="{{.Description}}">
+        <meta name="twitter:image" content="{{.SocialImage}}">
+        {{end}}
         {{.StructuredData}}
 
         {{range .CssFiles}}<link rel="stylesheet" href="/{{.}}"/>{{end}}
