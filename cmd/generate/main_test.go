@@ -102,3 +102,36 @@ func TestRenderCancellationsPage(t *testing.T) {
 		t.Fatalf("rendered page unexpectedly included a non-cancelled event: %s", got)
 	}
 }
+
+func TestRender404Page(t *testing.T) {
+	tempDir := t.TempDir()
+	outputFile := filepath.Join(tempDir, "404.html")
+
+	data := RenderData{}
+	data.set("404 - Seite nicht gefunden", "Die angeforderte Seite wurde nicht gefunden.", "", "", "404")
+
+	if err := data.render(outputFile,
+		"../../data/templates/404.html",
+		"../../data/templates/header.html",
+		"../../data/templates/footer.html",
+		"../../data/templates/tail.html",
+	); err != nil {
+		t.Fatalf("render() error = %v", err)
+	}
+
+	content, err := os.ReadFile(outputFile)
+	if err != nil {
+		t.Fatalf("ReadFile() error = %v", err)
+	}
+
+	got := string(content)
+	if strings.Contains(got, "rel=\"canonical\"") {
+		t.Fatalf("404 page unexpectedly included a canonical URL: %s", got)
+	}
+	if !strings.Contains(got, `<meta name="robots" content="noindex">`) {
+		t.Fatalf("404 page did not include noindex: %s", got)
+	}
+	if len(data.CanonicalUrls) != 0 {
+		t.Fatalf("404 page unexpectedly added a sitemap URL: %#v", data.CanonicalUrls)
+	}
+}

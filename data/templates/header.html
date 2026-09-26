@@ -6,7 +6,8 @@
         <title>{{.Title}}</title>
         <meta name="description" content="{{.Description}}">
 
-        <link rel="canonical" href="{{.Canonical}}" />
+        {{if .Canonical}}<link rel="canonical" href="{{.Canonical}}" />{{end}}
+        {{if eq .Nav "404"}}<meta name="robots" content="noindex">{{end}}
 
         {{range .CssFiles}}<link rel="stylesheet" href="/{{.}}"/>{{end}}
         {{if .UmamiJsFile}}<script defer src="/{{.UmamiJsFile}}" data-website-id="{{.Config.UmamiWebsiteID}}"></script>{{end}}

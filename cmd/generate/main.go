@@ -108,7 +108,7 @@ func (data *RenderData) render(outputFile string, templateFiles ...string) error
 	}
 
 	// only collect "real" pages for sitemap
-	if !strings.HasSuffix(data.Canonical, "404.html") {
+	if data.Canonical != "" && !strings.HasSuffix(data.Canonical, "404.html") {
 		data.CanonicalUrls = append(data.CanonicalUrls, CanonicalUrl{Url: data.Canonical, Updated: data.Updated})
 	}
 
@@ -1372,7 +1372,7 @@ func main() {
 	if err := renderData.render(output.Path("impressum.html"), t.Path("impressum.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'impressum.html': %v", err))
 	}
-	renderData.set("404 - Seite nicht gefunden", "Die angeforderte Seite wurde nicht gefunden.", canonical("404.html"), "", "")
+	renderData.set("404 - Seite nicht gefunden", "Die angeforderte Seite wurde nicht gefunden.", "", "", "404")
 	if err := renderData.render(output.Path("404.html"), t.Path("404.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering '404.html': %v", err))
 	}
