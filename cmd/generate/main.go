@@ -50,6 +50,7 @@ type RenderData struct {
 	Title             string
 	Description       string
 	Canonical         string
+	StructuredData    template.HTML
 	Nav               string
 	Timestamp         string
 	Updated           string
@@ -63,6 +64,37 @@ func (data *RenderData) set(title, description, canonical, updated string, nav s
 	data.Canonical = canonical
 	data.Updated = updated
 	data.Nav = nav
+}
+
+func (data *RenderData) setStructuredData(schemas ...map[string]interface{}) {
+	payload := map[string]interface{}{
+		"@context": "https://schema.org",
+		"@graph":   schemas,
+	}
+	encoded, err := json.Marshal(payload)
+	if err != nil {
+		panic(fmt.Errorf("cannot encode structured data: %w", err))
+	}
+	data.StructuredData = template.HTML(`<script type="application/ld+json">` + string(encoded) + `</script>`)
+}
+
+func breadcrumbSchema(items ...map[string]string) map[string]interface{} {
+	listItems := make([]map[string]interface{}, 0, len(items))
+	for position, item := range items {
+		listItem := map[string]interface{}{
+			"@type":    "ListItem",
+			"position": position + 1,
+			"name":     item["name"],
+		}
+		if item["url"] != "" {
+			listItem["item"] = item["url"]
+		}
+		listItems = append(listItems, listItem)
+	}
+	return map[string]interface{}{
+		"@type":           "BreadcrumbList",
+		"itemListElement": listItems,
+	}
 }
 
 func (data *RenderData) eventPath(eventID string) string {
@@ -1293,6 +1325,13 @@ func main() {
 	canonical := func(path string) string {
 		return fmt.Sprintf("https://%s/%s", config.Domain, path)
 	}
+	eventURL := func(eventID string) string {
+		path := eventID
+		if *noRewrite {
+			path += ".html"
+		}
+		return canonical(path)
+	}
 
 	renderData := RenderData{
 		Config:            &config,
@@ -1341,38 +1380,111 @@ func main() {
 
 	t := PathBuilder(filepath.Join(*dataDir, "templates"))
 	renderData.set("Karte mit allen parkrun Standorten in Deutschland", "Alle parkrun Standorte in Deutschland auf einer Karte", canonical(""), formatDate(latestEventUpdate), "map")
+	renderData.setStructuredData(
+		map[string]interface{}{
+			"@type":       "WebSite",
+			"@id":         canonical("#website"),
+			"name":        "Alle parkruns in Deutschland",
+			"url":         canonical(""),
+			"description": renderData.Description,
+			"inLanguage":  "de",
+		},
+	)
 	if err := renderData.render(output.Path("index.html"), t.Path("index.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'index.html': %v", err))
 	}
 	renderData.set("Alle parkrun Standorte in Deutschland", "Alle parkrun Standorte in Deutschland.", canonical("liste.html"), formatDate(latestEventUpdate), "list")
+	listItems := make([]map[string]interface{}, 0, len(events))
+	for position, event := range events {
+		listItems = append(listItems, map[string]interface{}{
+			"@type":    "ListItem",
+			"position": position + 1,
+			"name":     event.FixedName(),
+			"url":      eventURL(event.Id),
+		})
+	}
+	renderData.setStructuredData(
+		map[string]interface{}{
+			"@type":           "ItemList",
+			"name":            "Alle parkrun Standorte in Deutschland",
+			"numberOfItems":   len(listItems),
+			"itemListElement": listItems,
+		},
+		breadcrumbSchema(
+			map[string]string{"name": "Startseite", "url": canonical("")},
+			map[string]string{"name": "Alle Standorte"},
+		),
+	)
 	if err := renderData.render(output.Path("liste.html"), t.Path("liste.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'list.html': %v", err))
 	}
 	renderData.set("Absagen bei parkruns in Deutschland", "Alle bekannten Absagen der deutschen parkruns.", canonical("cancellations.html"), formatDate(latestEventUpdate), "cancellations")
+	renderData.setStructuredData(breadcrumbSchema(
+		map[string]string{"name": "Startseite", "url": canonical("")},
+		map[string]string{"name": "Absagen"},
+	))
 	if err := renderData.render(output.Path("cancellations.html"), t.Path("cancellations.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'cancellations.html': %v", err))
 	}
 	renderData.set("parkruns Karte - Info", "Informationen", canonical("info.html"), "", "info")
+	renderData.setStructuredData(breadcrumbSchema(
+		map[string]string{"name": "Startseite", "url": canonical("")},
+		map[string]string{"name": "Info"},
+	))
 	if err := renderData.render(output.Path("info.html"), t.Path("info.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'info.html': %v", err))
 	}
 	renderData.set("Geplante parkruns in Deutschland", "Überblick über angekündigte neue parkrun-Standorte in Deutschland mit aktuellem Planungsstand.", canonical("planned.html"), formatDate(latestArticleUpdate), "planned")
+	renderData.setStructuredData(breadcrumbSchema(
+		map[string]string{"name": "Startseite", "url": canonical("")},
+		map[string]string{"name": "Geplante parkruns"},
+	))
 	if err := renderData.render(output.Path("planned.html"), t.Path("planned.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'planned.html': %v", err))
 	}
 	renderData.set("parkrun Artikel", "Informative Artikel rund um parkrun", canonical("articles/"), formatDate(latestArticleUpdate), "articles")
+	articleItems := make([]map[string]interface{}, 0, len(articles))
+	for position, article := range articles {
+		articleItems = append(articleItems, map[string]interface{}{
+			"@type":    "ListItem",
+			"position": position + 1,
+			"name":     article.Title,
+			"url":      canonical(fmt.Sprintf("articles/%s.html", article.Slug)),
+		})
+	}
+	renderData.setStructuredData(
+		map[string]interface{}{
+			"@type":           "ItemList",
+			"name":            "parkrun Artikel",
+			"numberOfItems":   len(articleItems),
+			"itemListElement": articleItems,
+		},
+		breadcrumbSchema(
+			map[string]string{"name": "Startseite", "url": canonical("")},
+			map[string]string{"name": "Artikel"},
+		),
+	)
 	if err := renderData.render(output.Path("articles", "index.html"), t.Path("articles.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'articles/index.html': %v", err))
 	}
 	renderData.set("parkruns Karte - Datenschutz", "Datenschutzinformationen", canonical("datenschutz.html"), "", "datenschutz")
+	renderData.setStructuredData(breadcrumbSchema(
+		map[string]string{"name": "Startseite", "url": canonical("")},
+		map[string]string{"name": "Datenschutz"},
+	))
 	if err := renderData.render(output.Path("datenschutz.html"), t.Path("datenschutz.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'datenschutz.html': %v", err))
 	}
 	renderData.set("parkruns Karte - Impressum", "Impressum", canonical("impressum.html"), "", "impressum")
+	renderData.setStructuredData(breadcrumbSchema(
+		map[string]string{"name": "Startseite", "url": canonical("")},
+		map[string]string{"name": "Impressum"},
+	))
 	if err := renderData.render(output.Path("impressum.html"), t.Path("impressum.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering 'impressum.html': %v", err))
 	}
 	renderData.set("404 - Seite nicht gefunden", "Die angeforderte Seite wurde nicht gefunden.", "", "", "404")
+	renderData.StructuredData = ""
 	if err := renderData.render(output.Path("404.html"), t.Path("404.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 		panic(fmt.Errorf("while rendering '404.html': %v", err))
 	}
@@ -1382,12 +1494,38 @@ func main() {
 		title := fmt.Sprintf("%s, %s", event.FixedName(), event.FixedLocation())
 		description := fmt.Sprintf("Alle Infos zum %s in %s; Strecke, Karte, Statistiken und wichtige Links", event.FixedName(), event.FixedLocation())
 		file := fmt.Sprintf("%s.html", event.Id)
-		canonicalUrl := canonical(file)
-		if !*noRewrite {
-			// remove .html from canonical URL for better SEO
-			canonicalUrl = strings.TrimSuffix(canonicalUrl, ".html")
-		}
+		canonicalUrl := eventURL(event.Id)
 		renderData.set(title, description, canonicalUrl, formatDate(event.UpdatedAt()), "list")
+		location := map[string]interface{}{
+			"@type":           "PostalAddress",
+			"addressLocality": event.FixedLocation(),
+			"addressRegion":   event.State(),
+			"addressCountry":  "DE",
+		}
+		place := map[string]interface{}{
+			"@type":      "SportsActivityLocation",
+			"@id":        canonicalUrl + "#location",
+			"name":       event.FixedName(),
+			"url":        canonicalUrl,
+			"address":    location,
+			"sameAs":     event.Url(),
+			"areaServed": "Deutschland",
+		}
+		if event.Coords.IsValid() {
+			place["geo"] = map[string]interface{}{
+				"@type":     "GeoCoordinates",
+				"latitude":  event.Coords.Lat,
+				"longitude": event.Coords.Lon,
+			}
+		}
+		renderData.setStructuredData(
+			place,
+			breadcrumbSchema(
+				map[string]string{"name": "Startseite", "url": canonical("")},
+				map[string]string{"name": "Alle Standorte", "url": canonical("liste.html")},
+				map[string]string{"name": event.FixedName()},
+			),
+		)
 		if err := renderData.render(output.Path(file), t.Path("parkrun.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 			panic(fmt.Errorf("while rendering '%s': %v", file, err))
 		}
@@ -1406,6 +1544,31 @@ func main() {
 
 		renderData.Article = article
 		renderData.set(article.Title+" - parkrun Artikel", article.Summary, canonical(fmt.Sprintf("articles/%s.html", article.Slug)), formatDate(article.UpdatedAt), "articles")
+		articleSchema := map[string]interface{}{
+			"@type":         "Article",
+			"@id":           renderData.Canonical + "#article",
+			"headline":      article.Title,
+			"description":   article.Summary,
+			"url":           renderData.Canonical,
+			"datePublished": article.Published,
+			"inLanguage":    "de",
+			"author": map[string]interface{}{
+				"@type": "Person",
+				"name":  "Florian Pigorsch",
+				"url":   "https://florian-pigorsch.de/",
+			},
+		}
+		if article.Updated != "" {
+			articleSchema["dateModified"] = article.Updated
+		}
+		renderData.setStructuredData(
+			articleSchema,
+			breadcrumbSchema(
+				map[string]string{"name": "Startseite", "url": canonical("")},
+				map[string]string{"name": "Artikel", "url": canonical("articles/")},
+				map[string]string{"name": article.Title},
+			),
+		)
 		if err := renderData.render(output.Path("articles", fmt.Sprintf("%s.html", article.Slug)), t.Path("article.html"), t.Path("header.html"), t.Path("footer.html"), t.Path("tail.html")); err != nil {
 			panic(fmt.Errorf("while rendering article '%s': %v", article.Slug, err))
 		}

@@ -37,7 +37,7 @@
         {{end}}
         {{if .Event.Cancellations}}
         <tr>
-            <td style="vertical-align: top;">⚠️ Absagen</td>
+            <td class="cancellation-label">⚠️ Absagen</td>
             <td>
                 {{range $i, $e := .Event.Cancellations}}{{if $i}}<br>{{end}}{{$e.DateF}}: {{$e.ReasonGerman}}{{end}}
             </td>

@@ -1,6 +1,29 @@
 html.has-two-navbars-fixed-top {
     padding-top: 3.25rem;
 }
+
+.site-brand {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    color: inherit;
+}
+
+.site-brand-logo {
+    width: 3rem;
+    height: 3rem;
+    margin-right: 0.5rem;
+}
+
+.site-brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.cancellation-label {
+    vertical-align: top;
+}
+
 @media screen and (max-width: 1023px) {
     html.has-two-navbars-fixed-top {
         padding-top: 6.5rem;
