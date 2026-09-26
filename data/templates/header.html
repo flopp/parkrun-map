@@ -30,12 +30,10 @@
     <body {{if eq .Nav "map"}}class="full-body"{{end}}>
         <header class="container">
             <nav>
-                <ul>
-                    <a href="/" class="site-brand">
-                        <img src="/favicon.svg" alt="Logo" class="site-brand-logo">
-                        <div class="site-brand-text"><strong>Alle parkruns in Deutschland</strong><span>(inoffizielle Webseite)</span></div>
-                    </a>
-                </ul>
+                <a href="/" class="site-brand">
+                    <img src="/favicon.svg" alt="Logo" class="site-brand-logo">
+                    <div class="site-brand-text"><strong>Alle parkruns in Deutschland</strong><span>(inoffizielle Webseite)</span></div>
+                </a>
                 <ul>
                     <li><a role="button" href="/" {{if eq .Nav "map"}}class="secondary"{{end}}>Karte</a></li>
                     <li><a role="button" href="/liste.html" {{if eq .Nav "list"}}class="secondary"{{end}}>Liste</a></li>
