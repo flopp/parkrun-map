@@ -67,6 +67,27 @@ func TestWriteSitemap(t *testing.T) {
 	}
 }
 
+func TestWriteHtaccessRedirectsArticleIndex(t *testing.T) {
+	tempDir := t.TempDir()
+	filePath := filepath.Join(tempDir, ".htaccess")
+
+	if err := (RenderData{}).writeHtaccess(filePath); err != nil {
+		t.Fatalf("writeHtaccess() error = %v", err)
+	}
+
+	content, err := os.ReadFile(filePath)
+	if err != nil {
+		t.Fatalf("ReadFile() error = %v", err)
+	}
+
+	got := string(content)
+	want := "RewriteCond %{THE_REQUEST} \\s/+articles/index\\.html(?:[\\s?]|$) [NC]\n" +
+		"RewriteRule ^articles/index\\.html$ /articles/ [R=301,L]\n"
+	if !strings.Contains(got, want) {
+		t.Fatalf("article index redirect missing from .htaccess:\n%s", got)
+	}
+}
+
 func TestRenderCancellationsPage(t *testing.T) {
 	tempDir := t.TempDir()
 	outputFile := filepath.Join(tempDir, "cancellations.html")

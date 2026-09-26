@@ -232,6 +232,12 @@ func (data RenderData) writeHtaccess(filePath string) error {
 	if _, err = f.WriteString("RewriteRule ^index\\.html$ / [R=301,L]\n"); err != nil {
 		return err
 	}
+	if _, err = f.WriteString("RewriteCond %{THE_REQUEST} \\s/+articles/index\\.html(?:[\\s?]|$) [NC]\n"); err != nil {
+		return err
+	}
+	if _, err = f.WriteString("RewriteRule ^articles/index\\.html$ /articles/ [R=301,L]\n"); err != nil {
+		return err
+	}
 	if _, err = f.WriteString("RewriteRule ^articles/geplante-parkruns\\.html$ /planned.html [R=301,L]\n"); err != nil {
 		return err
 	}
