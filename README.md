@@ -17,13 +17,14 @@ https://parkruns.de
 - [Dietenbach parkrun / Freiburg](https://parkruns.de/dietenbach)
 - [Dreiländergarten parkrun / Weil am Rhein](https://parkruns.de/dreilaendergarten)
 - [Ebenberg parkrun / Landau in der Pfalz](https://parkruns.de/ebenberg)
-- [Ehrenbreitstein parkrun / Koblenz](https://parkruns.de/ehrenbreitstein)
+- [Ehrenbreitstein parkrun / Koblenz](https://parkruns.de/ehrenbreitstein) - archived
 - [Emmerwiesen parkrun / Bad Pyrmont](https://parkruns.de/emmerwiesen)
 - [Friedrichsau parkrun / Ulm](https://parkruns.de/friedrichsau)
 - [Fuldaaue parkrun / Fulda](https://parkruns.de/fuldaaue)
 - [Georgengarten parkrun / Hannover](https://parkruns.de/georgengarten)
 - [Globe parkrun / Schwäbisch Hall](https://parkruns.de/globe)
-- [Grüner Weg parkrun / Bad Urach](https://parkruns.de/gruenerweg)
+- [Großer Spektesee parkrun / Berlin](https://parkruns.de/grosserspektesee) - planned
+- [Grüner Weg parkrun / Bad Urach](https://parkruns.de/gruenerweg) - archived
 - [Hasenheide parkrun / Berlin](https://parkruns.de/hasenheide)
 - [Havelkanal parkrun / Hennigsdorf](https://parkruns.de/havelkanal)
 - [Hockgraben parkrun / Konstanz](https://parkruns.de/hockgraben)
@@ -31,6 +32,7 @@ https://parkruns.de
 - [Illerufer parkrun, Kempten / Kempten](https://parkruns.de/illeruferkempten)
 - [Kastanienallee parkrun / Tübingen](https://parkruns.de/kastanienallee)
 - [Kemnader See parkrun / Bochum](https://parkruns.de/kemnadersee)
+- [Kiellinie parkrun / Kiel](https://parkruns.de/kiellinie)
 - [Kiessee parkrun / Göttingen](https://parkruns.de/kiessee)
 - [Königshof parkrun / Sittensen](https://parkruns.de/koenigshof)
 - [Kräherwald parkrun / Stuttgart](https://parkruns.de/kraeherwald)
@@ -70,6 +72,7 @@ https://parkruns.de
 - [Röthelheimpark parkrun / Erlangen](https://parkruns.de/roethelheimpark) - archived
 - [Rosensteinpark parkrun / Stuttgart](https://parkruns.de/rosensteinpark)
 - [Rubbenbruchsee parkrun / Osnabrück](https://parkruns.de/rubbenbruchsee)
+- [Schloss Rheydt parkrun / Mönchengladbach](https://parkruns.de/schlossrheydt)
 - [Schönbusch parkrun / Aschaffenburg](https://parkruns.de/schoenbusch)
 - [Schwanenteich parkrun / Giessen](https://parkruns.de/schwanenteich)
 - [Seewoog parkrun / Ramstein-Miesenbach](https://parkruns.de/seewoog)
@@ -77,7 +80,7 @@ https://parkruns.de
 - [Sportpark Rems parkrun / Schorndorf](https://parkruns.de/sportparkrems)
 - [Stadtpark parkrun / Fürth](https://parkruns.de/stadtpark)
 - [Stadtpark parkrun, Chemnitz / Chemnitz](https://parkruns.de/stadtparkchemnitz)
-- [Stadtpark Rotehorn parkrun / Magdeburg](https://parkruns.de/stadtparkrotehorn) - planned
+- [Stadtpark Rotehorn parkrun / Magdeburg](https://parkruns.de/stadtparkrotehorn)
 - [Talaue parkrun / Waiblingen](https://parkruns.de/talaue)
 - [Tempelhofer Feld parkrun / Berlin](https://parkruns.de/tempelhoferfeld)
 - [Traumschleife Bärenbachpfad parkrun / Baumholder](https://parkruns.de/traumschleifebaerenbachpfad) - archived
