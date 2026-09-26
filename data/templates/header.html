@@ -31,13 +31,13 @@
         <header class="container">
             <nav>
                 <ul>
-                    <a href="/index.html" class="site-brand">
+                    <a href="/" class="site-brand">
                         <img src="/favicon.svg" alt="Logo" class="site-brand-logo">
                         <div class="site-brand-text"><strong>Alle parkruns in Deutschland</strong><span>(inoffizielle Webseite)</span></div>
                     </a>
                 </ul>
                 <ul>
-                    <li><a role="button" href="/index.html" {{if eq .Nav "map"}}class="secondary"{{end}}>Karte</a></li>
+                    <li><a role="button" href="/" {{if eq .Nav "map"}}class="secondary"{{end}}>Karte</a></li>
                     <li><a role="button" href="/liste.html" {{if eq .Nav "list"}}class="secondary"{{end}}>Liste</a></li>
                     <li><a role="button" href="/planned.html" {{if eq .Nav "planned"}}class="secondary"{{end}}>Geplant</a></li>
                     <!--<li><a role="button" href="/cancellations.html" {{if eq .Nav "cancellations"}}class="secondary"{{end}}>Absagen</a></li>-->
