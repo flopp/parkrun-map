@@ -241,6 +241,9 @@ func (data RenderData) writeHtaccess(filePath string) error {
 	if _, err = f.WriteString("RewriteRule ^articles/geplante-parkruns\\.html$ /planned.html [R=301,L]\n"); err != nil {
 		return err
 	}
+	if _, err = f.WriteString("RewriteRule ^wittelsbacherpark$ /wittelsbacher [R=301,L]\n"); err != nil {
+		return err
+	}
 	for _, event := range data.Events {
 		if _, err = f.WriteString(fmt.Sprintf("RewriteRule ^%s/?$ %s.html [L]\n", event.Id, event.Id)); err != nil {
 			return err
