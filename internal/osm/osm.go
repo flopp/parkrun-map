@@ -27,8 +27,9 @@ const (
 	cacheMaxAge       = 100 * 24 * time.Hour
 	maxPlacesPerType  = 5
 	overpassURL       = "https://overpass-api.de/api/interpreter"
-	overpassDelay     = 10 * time.Second
 )
+
+var overpassDelay = 10 * time.Second
 
 var overpassFallbackURLs = []string{
 	"https://overpass.private.coffee/api/interpreter",

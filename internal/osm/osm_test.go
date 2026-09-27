@@ -37,6 +37,15 @@ func marshalTestCache(t *testing.T, bounds boundingBox, data []byte) []byte {
 	return contents
 }
 
+func withoutOverpassDelay(t *testing.T) {
+	t.Helper()
+	previousDelay := overpassDelay
+	overpassDelay = 0
+	t.Cleanup(func() {
+		overpassDelay = previousDelay
+	})
+}
+
 func TestLoadNearbyUsesFreshCache(t *testing.T) {
 	now := time.Date(2026, time.September, 27, 12, 0, 0, 0, time.UTC)
 	cachePath := filepath.Join(t.TempDir(), "event")
@@ -270,6 +279,7 @@ func TestFetchOverpassFallsBackAfterTransientFailures(t *testing.T) {
 }
 
 func TestConnectionRefusedDisablesOnlyThatOverpassServer(t *testing.T) {
+	withoutOverpassDelay(t)
 	overpassThrottle.Lock()
 	previousLastRequestEnd := overpassThrottle.lastRequestEnd
 	previousDisabled := overpassThrottle.disabledServers
@@ -321,6 +331,7 @@ func TestConnectionRefusedDisablesOnlyThatOverpassServer(t *testing.T) {
 }
 
 func TestRateLimitedOverpassServerIsSkippedLater(t *testing.T) {
+	withoutOverpassDelay(t)
 	overpassThrottle.Lock()
 	previousLastRequestEnd := overpassThrottle.lastRequestEnd
 	previousDisabled := overpassThrottle.disabledServers
@@ -371,6 +382,7 @@ func TestRateLimitedOverpassServerIsSkippedLater(t *testing.T) {
 }
 
 func TestClientTimeoutServerIsSkippedLater(t *testing.T) {
+	withoutOverpassDelay(t)
 	overpassThrottle.Lock()
 	previousLastRequestEnd := overpassThrottle.lastRequestEnd
 	previousDisabled := overpassThrottle.disabledServers
