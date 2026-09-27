@@ -1,6 +1,7 @@
 package parkrun
 
 import (
+	"encoding/json"
 	"fmt"
 	"html"
 	"html/template"
@@ -14,6 +15,7 @@ import (
 	"time"
 
 	"github.com/flopp/go-parkrunparser"
+	"github.com/flopp/parkrun-map/internal/osm"
 	"github.com/flopp/parkrun-map/internal/utils"
 	simplifier "github.com/yrsh/simplify-go"
 )
@@ -243,6 +245,7 @@ type Event struct {
 	Tracks                      [][]utils.Coordinates
 	LatestRun                   *Run
 	NearbyEvents                []*EventDistance
+	OSMNearby                   osm.Nearby
 	Current                     bool
 	Order                       int
 	Status                      string
@@ -543,7 +546,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			continue
 		}
 
-		event := &Event{e.Name, e.LongName, e.Location, "", "", utils.Coordinates{Lat: e.Coordinates.Lat, Lon: e.Coordinates.Lng}, utils.InvalidCoordinates, e.Country.Url, "", "", nil, nil, nil, false, 0, "", 0, 0, 0, 0, 0, nil, false}
+		event := &Event{e.Name, e.LongName, e.Location, "", "", utils.Coordinates{Lat: e.Coordinates.Lat, Lon: e.Coordinates.Lng}, utils.InvalidCoordinates, e.Country.Url, "", "", nil, nil, nil, osm.Nearby{}, false, 0, "", 0, 0, 0, 0, 0, nil, false}
 		eventList = append(eventList, event)
 		eventMap[e.Name] = event
 	}
@@ -564,7 +567,7 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			event.RouteType = info.RouteType
 			continue
 		}
-		event := &Event{info.Id, info.Name, info.City, info.Location, template.HTML(info.Description), coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, nil, false, 0, info.Status, 0, 0, 0, 0, 0, nil, false}
+		event := &Event{info.Id, info.Name, info.City, info.Location, template.HTML(info.Description), coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, nil, osm.Nearby{}, false, 0, info.Status, 0, 0, 0, 0, 0, nil, false}
 		eventList = append(eventList, event)
 	}
 
@@ -888,6 +891,11 @@ func RenderJs(events []*Event, filePath string) error {
 			fmt.Fprintf(out, "]")
 		}
 		fmt.Fprintf(out, "],\n")
+		toilets, err := json.Marshal(event.OSMNearby.Toilets)
+		if err != nil {
+			return fmt.Errorf("marshaling toilet markers for event %s: %w", event.Id, err)
+		}
+		fmt.Fprintf(out, "\"toilets\": %s,\n", toilets)
 
 		if event.Active() {
 			fmt.Fprintf(out, "\"active\": true,\n")

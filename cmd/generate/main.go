@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/flopp/go-googlesheetswrapper"
+	"github.com/flopp/parkrun-map/internal/osm"
 	"github.com/flopp/parkrun-map/internal/parkrun"
 	"github.com/flopp/parkrun-map/internal/utils"
 	"golang.org/x/net/html"
@@ -1236,6 +1237,13 @@ func main() {
 	// determine 3 nearby parkruns for each event
 	for _, event := range events {
 		event.PopulateNearby(events)
+	}
+	for _, event := range events {
+		nearby, err := osm.LoadNearby(context.Background(), event.Id, download.Path("osm"), event.Coords, event.Tracks, now)
+		if err != nil {
+			log.Printf("while loading nearby OSM data for %s: %v", event.Id, err)
+		}
+		event.OSMNearby = nearby
 	}
 
 	// fetch external assets (bulma, leaflet)

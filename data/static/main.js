@@ -232,6 +232,34 @@ const loadParkrunMap = function (divId) {
             L.polyline(latlngs, {color: 'red'}).addTo(map);
 
         });
+        (parkrun.toilets || []).forEach(toilet => {
+            const toiletLatLng = L.latLng(toilet.lat, toilet.lon);
+            bounds.extend(toiletLatLng);
+            const toiletIcon = L.divIcon({
+                className: 'toilet-map-marker',
+                html: '<span aria-hidden="true">WC</span>',
+                iconSize: [36, 36],
+                iconAnchor: [18, 18],
+                popupAnchor: [0, -18]
+            });
+            const marker = L.marker(toiletLatLng, {
+                icon: toiletIcon,
+                title: toilet.name || 'Toilette'
+            }).addTo(map);
+
+            const popup = document.createElement('div');
+            const name = document.createElement('strong');
+            name.textContent = toilet.name || 'Toilette';
+            const distance = document.createElement('div');
+            distance.textContent = `${toilet.distance} m`;
+            const link = document.createElement('a');
+            link.href = toilet.url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = 'In OpenStreetMap anzeigen';
+            popup.append(name, distance, link);
+            marker.bindPopup(popup);
+        });
         map.fitBounds(bounds);
 
         fixLeafletButtons(div);

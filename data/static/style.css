@@ -48,6 +48,27 @@ html.has-two-navbars-fixed-top {
     margin-right: 2em;
 }
 
+.toilet-map-marker {
+    background: transparent;
+    border: 0;
+}
+
+.toilet-map-marker span {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    border-radius: 6px;
+    background: #16734b;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 45%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+}
+
 .leaflet-container [role=button] {
     padding: 0px 0px;
 }
