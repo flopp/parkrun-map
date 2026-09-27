@@ -92,7 +92,6 @@ https://parkruns.de
 - [Westpark parkrun / München](https://parkruns.de/westpark)
 - [Wienburgpark parkrun / Münster](https://parkruns.de/wienburgpark)
 - [Wittelsbacher parkrun / Augsburg](https://parkruns.de/wittelsbacher)
-- [Wittelsbacher Park parkrun / Augsburg](https://parkruns.de/wittelsbacherpark) - archived
 - [Wöhrder See parkrun / Nürnberg](https://parkruns.de/woehrdersee)
 - [Ziegelwiese parkrun / Halle (Saale)](https://parkruns.de/ziegelwiese)
 - [Zschopauaue parkrun / Frankenberg](https://parkruns.de/zschopauaue)
