@@ -1312,7 +1312,7 @@ func main() {
 	css_files = append(css_files, utils.MustCopyHash(download.Path("leaflet/leaflet.css"), "leaflet-HASH.css", *outputDir))
 	css_files = append(css_files, utils.MustCopyHash(download.Path("sortable/sortable.min.css"), "sortable-HASH.css", *outputDir))
 	css_files = append(css_files, utils.MustCopyHash(data.Path("static", "style.css"), "style-HASH.css", *outputDir))
-	social_image_file := utils.MustCopyHash(data.Path("screenshots", "map-details.png"), "images/social-preview-HASH.png", *outputDir)
+	social_image_file := utils.MustCopyHash(data.Path("static", "social-preview.png"), "images/social-preview-HASH.png", *outputDir)
 
 	utils.MustCopyHash(download.Path("leaflet/marker-icon.png"), "images/marker-icon.png", *outputDir)
 	utils.MustCopyHash(download.Path("leaflet/marker-icon-2x.png"), "images/marker-icon-2x.png", *outputDir)
