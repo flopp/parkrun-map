@@ -7,6 +7,7 @@ toolchain go1.27.1
 require (
 	github.com/flopp/go-googlesheetswrapper v0.0.0-20260406112809-7c5a6afecd10
 	github.com/flopp/go-parkrunparser v0.0.3
+	github.com/qedus/osmpbf v1.2.0
 	github.com/yrsh/simplify-go v0.0.0-20141205144220-b78647bd27f7
 	golang.org/x/net v0.59.0
 )
@@ -34,5 +35,5 @@ require (
 	google.golang.org/api v0.225.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb // indirect
 	google.golang.org/grpc v1.71.0 // indirect
-	google.golang.org/protobuf v1.36.5 // indirect
+	google.golang.org/protobuf v1.36.10 // indirect
 )

@@ -897,6 +897,7 @@ func main() {
 	outputDir := flag.String("output", ".output", "the output directory")
 	configFile := flag.String("config", "config.json", "the config file with Google API key and Sheets ID")
 	exportCsvFile := flag.String("export-csv", "", "export CSV file with all parkrun events")
+	osmPbfFile := flag.String("osm-pbf", "germany.osm.pbf", "the .osm.pbf file used to look up nearby toilets")
 	disableUmami := flag.Bool("disable-umami", false, "disable Umami analytics in generated output")
 	noRewrite := flag.Bool("no-rewrite", false, "disable URL rewrite rules in generated output")
 	verbose := flag.Bool("verbose", false, "verbose logging")
@@ -1238,12 +1239,18 @@ func main() {
 	for _, event := range events {
 		event.PopulateNearby(events)
 	}
+
+	// find nearby toilets for each event from a local OSM PBF extract
+	osmEvents := make([]osm.EventTrack, 0, len(events))
 	for _, event := range events {
-		nearby, err := osm.LoadNearby(context.Background(), event.Id, download.Path("osm"), event.Coords, event.Tracks, now)
-		if err != nil {
-			log.Printf("while loading nearby OSM data for %s: %v", event.Id, err)
-		}
-		event.OSMNearby = nearby
+		osmEvents = append(osmEvents, osm.EventTrack{EventID: event.Id, Coord: event.Coords, Tracks: event.Tracks})
+	}
+	osmNearby, err := osm.LoadNearbyToiletsFromPBF(*osmPbfFile, osmEvents)
+	if err != nil {
+		log.Printf("while loading nearby OSM data from %s: %v", *osmPbfFile, err)
+	}
+	for _, event := range events {
+		event.OSMNearby = osmNearby[event.Id]
 	}
 
 	// fetch external assets (bulma, leaflet)
