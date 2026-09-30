@@ -62,12 +62,6 @@
         <tr><td>Nächste parkruns</td><td>
                 {{range $i,$e := .Event.NearbyEvents}}{{if $i}}<br>{{end}}<a href="{{EventPath $e.Event.Id}}">{{$e.String}}</a>{{end}}
         </td></tr>
-        {{if .Event.OSMNearby.Toilets}}
-        <tr><td>Toiletten in der Nähe</td><td>
-            {{range $i,$e := .Event.OSMNearby.Toilets}}{{if $i}}<br>{{end}}<a href="{{$e.URL}}" target="_blank">{{$e.Name}}</a> ({{$e.Distance}} m vom Start){{end}}
-            <br><small><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap-Mitwirkende</a> (ODbL; Angaben können unvollständig sein)</small>
-        </td></tr>
-        {{end}}
     </table>
 
     <div id="parkrun-map" data-id="{{.Event.Id}}"></div>

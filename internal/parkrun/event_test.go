@@ -19,11 +19,10 @@ func TestRenderJsIncludesToiletCoordinates(t *testing.T) {
 		Location: "Test city",
 		Coords:   utils.Coordinates{Lat: 52.52, Lon: 13.405},
 		OSMNearby: osm.Nearby{Toilets: []osm.Place{{
-			Lat:      52.521,
-			Lon:      13.406,
-			Name:     "Public toilet",
-			Distance: 120,
-			URL:      "https://www.openstreetmap.org/node/1",
+			Lat:  52.521,
+			Lon:  13.406,
+			Name: "Public toilet",
+			URL:  "https://www.openstreetmap.org/node/1",
 		}}},
 	}}
 

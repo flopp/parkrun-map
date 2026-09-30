@@ -210,7 +210,9 @@ const loadParkrunMap = function (divId) {
     if (parkrun == null) {
         div.style.display = "none";
     } else {
-        const map = L.map(divId, {preferCanvas: true});
+        // no preferCanvas here: canvas-rendered tracks cover the whole map and would
+        // block pointer events to the toilet markers in the pane underneath
+        const map = L.map(divId);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
@@ -232,6 +234,11 @@ const loadParkrunMap = function (divId) {
             L.polyline(latlngs, {color: 'red'}).addTo(map);
 
         });
+        // toilet markers use a pane below the default overlayPane (z-index 400) so the track stays on top
+        if (!map.getPane('toiletPane')) {
+            map.createPane('toiletPane');
+            map.getPane('toiletPane').style.zIndex = 350;
+        }
         (parkrun.toilets || []).forEach(toilet => {
             const toiletLatLng = L.latLng(toilet.lat, toilet.lon);
             bounds.extend(toiletLatLng);
@@ -244,20 +251,20 @@ const loadParkrunMap = function (divId) {
             });
             const marker = L.marker(toiletLatLng, {
                 icon: toiletIcon,
-                title: toilet.name || 'Toilette'
+                title: toilet.name || 'Toilette',
+                pane: 'toiletPane'
             }).addTo(map);
+            marker.bindTooltip(toilet.name || 'Toilette');
 
             const popup = document.createElement('div');
             const name = document.createElement('strong');
             name.textContent = toilet.name || 'Toilette';
-            const distance = document.createElement('div');
-            distance.textContent = `${toilet.distance} m`;
             const link = document.createElement('a');
             link.href = toilet.url;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
             link.textContent = 'In OpenStreetMap anzeigen';
-            popup.append(name, distance, link);
+            popup.append(name, link);
             marker.bindPopup(popup);
         });
         map.fitBounds(bounds);

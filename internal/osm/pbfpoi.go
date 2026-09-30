@@ -7,6 +7,7 @@ import (
 	"math"
 	"os"
 	"runtime"
+	"sort"
 	"time"
 
 	"github.com/qedus/osmpbf"
@@ -34,18 +35,35 @@ type PBFIndex struct {
 	pois []pbfPOI
 }
 
+// TagFilter selects nodes whose tags contain Key=Value.
+type TagFilter struct {
+	Key   string
+	Value string
+}
+
 // LoadPBFIndex streams through the given .osm.pbf file once and keeps every
-// node whose tags contain tagKey=tagValue. Ways and relations are skipped:
-// resolving their geometry would require buffering all node coordinates in
-// the file, which is impractical for a country-sized extract, and the vast
-// majority of point amenities (e.g. public toilets) are mapped as nodes.
-// If path is empty, defaultPBFPath is used.
-func LoadPBFIndex(path, tagKey, tagValue string) (*PBFIndex, error) {
+// node matching the filter. If path is empty, defaultPBFPath is used.
+func LoadPBFIndex(path string, filter TagFilter) (*PBFIndex, error) {
+	indexes, err := LoadPBFIndexes(path, map[string]TagFilter{"default": filter})
+	if err != nil {
+		return nil, err
+	}
+	return indexes["default"], nil
+}
+
+// LoadPBFIndexes streams through the given .osm.pbf file exactly once and
+// builds one PBFIndex per named filter, keyed by the same name. Ways and
+// relations are skipped: resolving their geometry would require buffering
+// all node coordinates in the file, which is impractical for a
+// country-sized extract, and the vast majority of point amenities (e.g.
+// public toilets, parking) are mapped as nodes. If path is empty,
+// defaultPBFPath is used.
+func LoadPBFIndexes(path string, filters map[string]TagFilter) (map[string]*PBFIndex, error) {
 	if path == "" {
 		path = defaultPBFPath
 	}
 	start := time.Now()
-	log.Printf("PBF: loading %s=%s from %s", tagKey, tagValue, path)
+	log.Printf("PBF: loading %d POI categories from %s", len(filters), path)
 
 	f, err := os.Open(path)
 	if err != nil {
@@ -58,7 +76,7 @@ func LoadPBFIndex(path, tagKey, tagValue string) (*PBFIndex, error) {
 		return nil, fmt.Errorf("starting PBF decoder for %s: %w", path, err)
 	}
 
-	var pois []pbfPOI
+	poisByName := make(map[string][]pbfPOI, len(filters))
 	scanned := 0
 	for {
 		obj, err := decoder.Decode()
@@ -74,21 +92,29 @@ func LoadPBFIndex(path, tagKey, tagValue string) (*PBFIndex, error) {
 		}
 		scanned++
 		if scanned%5_000_000 == 0 {
-			log.Printf("PBF: scanned %d nodes, %d matches so far (%s)", scanned, len(pois), path)
+			log.Printf("PBF: scanned %d nodes so far (%s)", scanned, path)
 		}
-		if node.Tags[tagKey] != tagValue {
-			continue
+		for name, filter := range filters {
+			if node.Tags[filter.Key] != filter.Value {
+				continue
+			}
+			poisByName[name] = append(poisByName[name], pbfPOI{
+				id:   node.ID,
+				lat:  node.Lat,
+				lon:  node.Lon,
+				tags: node.Tags,
+			})
 		}
-		pois = append(pois, pbfPOI{
-			id:   node.ID,
-			lat:  node.Lat,
-			lon:  node.Lon,
-			tags: node.Tags,
-		})
 	}
 
-	log.Printf("PBF: loaded %d %s=%s POIs from %d nodes in %s (%s)", len(pois), tagKey, tagValue, scanned, time.Since(start).Round(time.Millisecond), path)
-	return &PBFIndex{pois: pois}, nil
+	indexes := make(map[string]*PBFIndex, len(filters))
+	for name, filter := range filters {
+		pois := poisByName[name]
+		indexes[name] = &PBFIndex{pois: pois}
+		log.Printf("PBF: loaded %d %s=%s POIs (%s)", len(pois), filter.Key, filter.Value, name)
+	}
+	log.Printf("PBF: scanned %d nodes from %s in %s", scanned, path, time.Since(start).Round(time.Millisecond))
+	return indexes, nil
 }
 
 // NearbyPlaces returns the POIs from the index that fall within bounds and
@@ -96,7 +122,7 @@ func LoadPBFIndex(path, tagKey, tagValue string) (*PBFIndex, error) {
 // only cheaply narrow down candidates; the track distance is the real
 // filter), sorted by distance from origin and capped at maxPlacesPerType.
 func (idx *PBFIndex) NearbyPlaces(origin utils.Coordinates, bounds boundingBox, tracks [][]utils.Coordinates, maxTrackDistanceMeters float64) []Place {
-	places := make([]Place, 0)
+	candidates := make([]placeCandidate, 0)
 	for _, poi := range idx.pois {
 		point := coordinates{Lat: poi.lat, Lon: poi.lon}
 		if !bounds.contains(point) {
@@ -108,16 +134,43 @@ func (idx *PBFIndex) NearbyPlaces(origin utils.Coordinates, bounds boundingBox, 
 		if distanceToTracksMeters(point, tracks) > maxTrackDistanceMeters {
 			continue
 		}
-		distance := utils.DistanceMeters(origin, utils.Coordinates{Lat: poi.lat, Lon: poi.lon})
-		places = append(places, Place{
-			Lat:      poi.lat,
-			Lon:      poi.lon,
-			Name:     placeName(poi.tags),
-			Distance: int(math.Round(distance)),
-			URL:      fmt.Sprintf("https://www.openstreetmap.org/node/%d", poi.id),
+		candidates = append(candidates, placeCandidate{
+			place: Place{
+				Lat:  poi.lat,
+				Lon:  poi.lon,
+				Name: placeName(poi.tags),
+				URL:  fmt.Sprintf("https://www.openstreetmap.org/node/%d", poi.id),
+			},
+			distance: utils.DistanceMeters(origin, utils.Coordinates{Lat: poi.lat, Lon: poi.lon}),
 		})
 	}
-	return nearest(places)
+	return nearest(candidates)
+}
+
+// placeCandidate pairs a Place with its distance from the origin, used only
+// for sorting/capping; the distance itself is not exposed on Place.
+type placeCandidate struct {
+	place    Place
+	distance float64
+}
+
+// nearest sorts candidates by distance (ties broken by name) and returns the
+// closest maxPlacesPerType as plain Places.
+func nearest(candidates []placeCandidate) []Place {
+	sort.Slice(candidates, func(i, j int) bool {
+		if candidates[i].distance == candidates[j].distance {
+			return candidates[i].place.Name < candidates[j].place.Name
+		}
+		return candidates[i].distance < candidates[j].distance
+	})
+	if len(candidates) > maxPlacesPerType {
+		candidates = candidates[:maxPlacesPerType]
+	}
+	places := make([]Place, len(candidates))
+	for i, c := range candidates {
+		places[i] = c.place
+	}
+	return places
 }
 
 // distanceToTracksMeters returns the shortest distance from point to any
@@ -172,9 +225,9 @@ type EventTrack struct {
 
 // LoadNearbyToiletsFromPBF loads the "amenity=toilets" index from the given
 // .osm.pbf file once, then returns the nearby toilets for every event, using
-// a 500m buffer around each event's track instead of querying Overpass.
+// a 100m buffer around each event's track instead of querying Overpass.
 func LoadNearbyToiletsFromPBF(pbfPath string, events []EventTrack) (map[string]Nearby, error) {
-	idx, err := LoadPBFIndex(pbfPath, "amenity", "toilets")
+	idx, err := LoadPBFIndex(pbfPath, TagFilter{Key: "amenity", Value: "toilets"})
 	if err != nil {
 		return nil, err
 	}

@@ -60,24 +60,3 @@ func TestPlaceNameFallsBackWithoutName(t *testing.T) {
 		t.Fatalf("placeName() = %q, want fallback %q", got, "Toilette")
 	}
 }
-
-func TestNearestSortsAndCaps(t *testing.T) {
-	places := []Place{
-		{Name: "b", Distance: 50},
-		{Name: "a", Distance: 50},
-		{Name: "c", Distance: 10},
-		{Name: "d", Distance: 30},
-		{Name: "e", Distance: 40},
-		{Name: "f", Distance: 20},
-	}
-	got := nearest(places)
-	if len(got) != maxPlacesPerType {
-		t.Fatalf("nearest() returned %d places, want %d", len(got), maxPlacesPerType)
-	}
-	wantOrder := []string{"c", "f", "d", "e", "a"}
-	for i, name := range wantOrder {
-		if got[i].Name != name {
-			t.Fatalf("nearest()[%d].Name = %q, want %q", i, got[i].Name, name)
-		}
-	}
-}

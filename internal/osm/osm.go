@@ -5,7 +5,6 @@ package osm
 import (
 	"errors"
 	"math"
-	"sort"
 	"strings"
 
 	"github.com/flopp/parkrun-map/internal/utils"
@@ -17,11 +16,10 @@ const (
 )
 
 type Place struct {
-	Lat      float64 `json:"lat"`
-	Lon      float64 `json:"lon"`
-	Name     string  `json:"name"`
-	Distance int     `json:"distance"`
-	URL      string  `json:"url"`
+	Lat  float64 `json:"lat"`
+	Lon  float64 `json:"lon"`
+	Name string  `json:"name"`
+	URL  string  `json:"url"`
 }
 
 type Nearby struct {
@@ -89,17 +87,4 @@ func placeName(tags map[string]string) string {
 		return name
 	}
 	return "Toilette"
-}
-
-func nearest(places []Place) []Place {
-	sort.Slice(places, func(i, j int) bool {
-		if places[i].Distance == places[j].Distance {
-			return places[i].Name < places[j].Name
-		}
-		return places[i].Distance < places[j].Distance
-	})
-	if len(places) > maxPlacesPerType {
-		places = places[:maxPlacesPerType]
-	}
-	return places
 }
