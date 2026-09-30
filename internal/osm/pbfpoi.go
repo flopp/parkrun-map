@@ -72,8 +72,18 @@ func LoadPBFIndexes(path string, filters map[string]TagFilter) (map[string]*PBFI
 	defer f.Close()
 
 	decoder := osmpbf.NewDecoder(f)
+	decoder.SetBufferSize(osmpbf.MaxBlobSize)
 	if err := decoder.Start(runtime.GOMAXPROCS(-1)); err != nil {
 		return nil, fmt.Errorf("starting PBF decoder for %s: %w", path, err)
+	}
+
+	type namedFilter struct {
+		name   string
+		filter TagFilter
+	}
+	namedFilters := make([]namedFilter, 0, len(filters))
+	for name, filter := range filters {
+		namedFilters = append(namedFilters, namedFilter{name, filter})
 	}
 
 	poisByName := make(map[string][]pbfPOI, len(filters))
@@ -94,11 +104,16 @@ func LoadPBFIndexes(path string, filters map[string]TagFilter) (map[string]*PBFI
 		if scanned%5_000_000 == 0 {
 			log.Printf("PBF: scanned %d nodes so far (%s)", scanned, path)
 		}
-		for name, filter := range filters {
-			if node.Tags[filter.Key] != filter.Value {
+		if len(node.Tags) == 0 {
+			// the vast majority of nodes are untagged track geometry; skip them
+			// without touching the (rarely populated) tags map at all
+			continue
+		}
+		for _, nf := range namedFilters {
+			if node.Tags[nf.filter.Key] != nf.filter.Value {
 				continue
 			}
-			poisByName[name] = append(poisByName[name], pbfPOI{
+			poisByName[nf.name] = append(poisByName[nf.name], pbfPOI{
 				id:   node.ID,
 				lat:  node.Lat,
 				lon:  node.Lon,
