@@ -9,6 +9,8 @@ import (
 	"flag"
 	"fmt"
 	"html/template"
+	"image"
+	"image/jpeg"
 	"io"
 	"io/fs"
 	"log"
@@ -25,6 +27,7 @@ import (
 	"github.com/flopp/parkrun-map/internal/osm"
 	"github.com/flopp/parkrun-map/internal/parkrun"
 	"github.com/flopp/parkrun-map/internal/utils"
+	"golang.org/x/image/draw"
 	"golang.org/x/net/html"
 )
 
@@ -37,9 +40,9 @@ type RenderData struct {
 	Config            *Config
 	Event             *parkrun.Event
 	Events            []*parkrun.Event
-	PlannedDataTermin []PlannedData
-	PlannedDataTest   []PlannedData
-	PlannedDataOther  []PlannedData
+	PlannedDataTermin []*PlannedData
+	PlannedDataTest   []*PlannedData
+	PlannedDataOther  []*PlannedData
 	Article           *Article
 	Articles          []*Article
 	ActiveEvents      int
@@ -533,6 +536,76 @@ func copyArticleAssets(srcDir, dstDir string) error {
 	})
 }
 
+func copyResizedImages(srcDir, dstDir string) error {
+	return filepath.WalkDir(srcDir, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() {
+			return nil
+		}
+		extension := strings.ToLower(filepath.Ext(path))
+		if extension != ".jpg" && extension != ".jpeg" {
+			return nil
+		}
+
+		input, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		original, decodeErr := jpeg.Decode(input)
+		closeErr := input.Close()
+		if decodeErr != nil {
+			return fmt.Errorf("decoding %s: %w", path, decodeErr)
+		}
+		if closeErr != nil {
+			return closeErr
+		}
+
+		bounds := original.Bounds()
+		width, height := bounds.Dx(), bounds.Dy()
+		resizedWidth, resizedHeight := width, height
+		if width > 256 || height > 256 {
+			if width >= height {
+				resizedWidth = 256
+				resizedHeight = max(1, (height*256+width/2)/width)
+			} else {
+				resizedHeight = 256
+				resizedWidth = max(1, (width*256+height/2)/height)
+			}
+		}
+
+		resized := image.Image(original)
+		if resizedWidth != width || resizedHeight != height {
+			destination := image.NewRGBA(image.Rect(0, 0, resizedWidth, resizedHeight))
+			draw.CatmullRom.Scale(destination, destination.Bounds(), original, bounds, draw.Over, nil)
+			resized = destination
+		}
+
+		relativePath, err := filepath.Rel(srcDir, path)
+		if err != nil {
+			return err
+		}
+		destination := filepath.Join(dstDir, relativePath)
+		if err := os.MkdirAll(filepath.Dir(destination), 0770); err != nil {
+			return err
+		}
+		output, err := os.Create(destination)
+		if err != nil {
+			return err
+		}
+		encodeErr := jpeg.Encode(output, resized, &jpeg.Options{Quality: 85})
+		closeErr = output.Close()
+		if encodeErr != nil {
+			return fmt.Errorf("encoding %s: %w", destination, encodeErr)
+		}
+		if closeErr != nil {
+			return closeErr
+		}
+		return nil
+	})
+}
+
 type Config struct {
 	Domain         string       `json:"domain"`
 	IndexNow       string       `json:"indexnow"`
@@ -567,13 +640,18 @@ type PlannedData struct {
 	Added       string
 	Start       string
 	Links       []parkrun.Link
+	Image       string
 }
 
-func plannedDataFromEvent(event *parkrun.Event) PlannedData {
+func (p *PlannedData) NormalizedCity() string {
+	return strings.ToLower(strings.ReplaceAll(p.City, " ", "-"))
+}
+
+func plannedDataFromEvent(event *parkrun.Event) *PlannedData {
 	links := make([]parkrun.Link, 0)
 	links = append(links, parkrun.Link{Name: fmt.Sprintf("%s bei parkruns.de", event.Name), Url: event.Id})
 	links = append(links, event.Links()...)
-	return PlannedData{
+	return &PlannedData{
 		Name:        event.FixedName(),
 		City:        event.FixedLocation(),
 		State:       event.State(),
@@ -582,6 +660,7 @@ func plannedDataFromEvent(event *parkrun.Event) PlannedData {
 		Added:       "",
 		Start:       event.First(),
 		Links:       links,
+		Image:       "",
 	}
 }
 
@@ -931,9 +1010,9 @@ func main() {
 
 	// fetch data from Google Sheets
 	var parkrun_infos map[string]*parkrun.ParkrunInfo
-	var plannedDataTermin []PlannedData
-	var plannedDataTest []PlannedData
-	var plannedDataOther []PlannedData
+	var plannedDataTermin []*PlannedData
+	var plannedDataTest []*PlannedData
+	var plannedDataOther []*PlannedData
 	var config Config
 	if configContent, err := os.ReadFile(*configFile); err != nil {
 		panic(fmt.Errorf("while reading config file %s: %v", *configFile, err))
@@ -945,11 +1024,11 @@ func main() {
 		parkrun_infos = googleInfos
 		for _, p := range planned {
 			if p.Status == "termin" {
-				plannedDataTermin = append(plannedDataTermin, p)
+				plannedDataTermin = append(plannedDataTermin, &p)
 			} else if p.Status == "test" {
-				plannedDataTest = append(plannedDataTest, p)
+				plannedDataTest = append(plannedDataTest, &p)
 			} else {
-				plannedDataOther = append(plannedDataOther, p)
+				plannedDataOther = append(plannedDataOther, &p)
 			}
 		}
 	}
@@ -1339,6 +1418,23 @@ func main() {
 	utils.MustCopyHash(data.Path("static", "favicon.ico"), "favicon.ico", *outputDir)
 	utils.MustCopyHash(data.Path("static", "favicon.svg"), "favicon.svg", *outputDir)
 	mustCreateIndexNow(config.IndexNow, *outputDir)
+
+	// copy images:
+	// rescale images from data/images to fit into 256x256 and copy the results to *outputDir/images/parkruns
+	imageSourceFolder := data.Path("images")
+	if err := copyResizedImages(imageSourceFolder, output.Path("images", "parkruns")); err != nil {
+		panic(fmt.Errorf("while copying parkrun images: %w", err))
+	}
+
+	// collect images for planned parkruns based on normalized city name
+	for _, plannedEvents := range [][]*PlannedData{plannedDataTermin, plannedDataTest, plannedDataOther} {
+		for _, event := range plannedEvents {
+			normalizedCity := event.NormalizedCity()
+			if _, err := os.Stat(output.Path("images", "parkruns", fmt.Sprintf("%s.jpg", normalizedCity))); err == nil {
+				event.Image = fmt.Sprintf("images/parkruns/%s.jpg", normalizedCity)
+			}
+		}
+	}
 
 	// render templates to output folder
 	active := 0

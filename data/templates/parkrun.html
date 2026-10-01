@@ -54,6 +54,7 @@
         {{end}}
         <tr><td>Offizielle Webseiten</td><td><a href="{{.Event.Url}}" target="_blank">Hauptseite</a>, <a href="{{.Event.CoursePageUrl}}" target="_blank">Streckenbeschreibung</a>, <a href="{{.Event.ResultsUrl}}" target="_blank">Ergebnisliste</a>, <a href="{{.Event.WikiUrl}}" target="_blank">Wiki</a></td></tr> 
         <tr><td>Google Maps</td><td><a href="{{.Event.GoogleMapsUrl}}" target="_blank">Ort</a>, <a href="{{.Event.GoogleMapsCourseUrl}}" target="_blank">Strecke</a></td></tr>
+        <tr><td>Toiletten in der Nähe?</td><td>{{if .Event.OSMNearby.Toilets}}☑️ ({{len .Event.OSMNearby.Toilets}} Toiletten via OpenStreetMap, siehe Karte){{else}}❌ (keine Toiletten bekannt){{end}}</td></tr>
         {{if .Event.Links}}
         <tr><td>Weitere Links</td><td>
                 {{range $i,$e := .Event.Links}}{{if $i}}, {{end}}<a href="{{$e.Url}}" target="_blank">{{$e.Name}}</a>{{end}}

@@ -217,6 +217,13 @@ a[href^="https://"]::after
     border-top-color: var(--pico-muted-color);
 }
 
+.planned-card-image {
+    width: 100%;
+    height: 12rem;
+    margin-bottom: 1rem;
+    object-fit: contain;
+}
+
 .planned-card > header {
     xx-flex: 1;
 }
