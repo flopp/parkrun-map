@@ -16,9 +16,9 @@
           <div class="planned-grid">
             {{range .PlannedDataTermin}}
               <article class="planned-card planned-card-confirmed">
+                <span class="planned-status">Starttermin bekannt</span>
                 {{if .Image}}<img class="planned-card-image" src="/{{.Image}}" alt="{{.City}}" loading="lazy" decoding="async">{{end}}
                 <header>
-                  <span class="planned-status">Starttermin bekannt</span>
                   {{if .Name}}
                     <h3>{{.Name}}</h3>
                     <h3>{{.City}}</h3>
@@ -52,9 +52,9 @@
           <div class="planned-grid">
             {{ range .PlannedDataTest }}
               <article class="planned-card planned-card-test">
+                <span class="planned-status">Test-Veranstaltung aktiv</span>
                 {{if .Image}}<img class="planned-card-image" src="/{{.Image}}" alt="{{.City}}" loading="lazy" decoding="async">{{end}}
                 <header>
-                  <span class="planned-status">Test-Veranstaltung aktiv</span>
                   {{if .Name}}
                     <h3>{{.Name}}</h3>
                     <h3>{{.City}}</h3>
@@ -88,9 +88,9 @@
           <div class="planned-grid">
             {{ range .PlannedDataOther }}
               <article class="planned-card planned-card-unknown">
+                <span class="planned-status">Unbekannter Status</span>
                 {{if .Image}}<img class="planned-card-image" src="/{{.Image}}" alt="{{.City}}" loading="lazy" decoding="async">{{end}}
                 <header>
-                  <span class="planned-status">Unbekannter Status</span>
                   {{if .Name}}
                     <h3>{{.Name}}</h3>
                     <h3>{{.City}}</h3>

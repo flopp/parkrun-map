@@ -202,19 +202,18 @@ a[href^="https://"]::after
     flex-direction: column;
     height: 100%;
     margin: 0;
-    border-top: 0.3rem solid var(--pico-primary);
 }
 
 .planned-card-confirmed {
-    border-top-color: var(--pico-primary);
+    --planned-status-background: var(--pico-primary);
 }
 
 .planned-card-test {
-    border-top-color: var(--pico-ins-color);
+    --planned-status-background: var(--pico-ins-color);
 }
 
 .planned-card-unknown {
-    border-top-color: var(--pico-muted-color);
+    --planned-status-background: var(--pico-muted-color);
 }
 
 .planned-card-image {
@@ -237,7 +236,12 @@ a[href^="https://"]::after
 }
 
 .planned-status {
-    color: var(--pico-muted-color);
+    display: block;
+    margin: calc(-1 * var(--pico-block-spacing-vertical)) calc(-1 * var(--pico-block-spacing-horizontal)) 1rem;
+    padding: 0.65rem var(--pico-block-spacing-horizontal);
+    border-radius: var(--pico-border-radius) var(--pico-border-radius) 0 0;
+    background: var(--planned-status-background);
+    color: var(--pico-background-color);
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 0.02em;
