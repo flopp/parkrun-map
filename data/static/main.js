@@ -37,8 +37,51 @@ const getTrackStyle = function(parkrun) {
     return {color: 'grey', pane: trackPanes.archived};
 };
 
-const updateTracks = function(map, parkruns) {
+const createToiletMarker = function(toilet, pane) {
+    console.log("toilet at", toilet.lat, toilet.lon);
+    const marker = L.marker([toilet.lat, toilet.lon], {
+        icon: L.divIcon({
+            className: 'toilet-map-marker',
+            html: '<span aria-hidden="true">WC</span>',
+            iconSize: [36, 36],
+            iconAnchor: [18, 18],
+            popupAnchor: [0, -18]
+        }),
+        title: toilet.name || 'Toilette',
+        pane: pane
+    });
+    marker.bindTooltip(toilet.name || 'Toilette');
+
+    const popup = document.createElement('div');
+    const name = document.createElement('strong');
+    name.textContent = toilet.name || 'Toilette';
+    popup.append(name);
+    marker.bindPopup(popup);
+    return marker;
+};
+
+const updateToilets = function(map, toiletMarkers) {
+    const bounds = map.getBounds();
+    const shouldShow = map.getZoom() >= 15;
+    toiletMarkers.forEach(toilet => {
+        const visible = shouldShow && bounds.contains(toilet.latlng);
+        if (visible === toilet.visible) {
+            return;
+        }
+        toilet.visible = visible;
+        if (visible) {
+            toilet.marker.addTo(map);
+            console.log("showing toilet at", toilet.latlng);
+        } else {
+            toilet.marker.removeFrom(map);
+            console.log("hiding toilet at", toilet.latlng);
+        }
+    });
+};
+
+const updateTracks = function(map, parkruns, toiletMarkers) {
     ensureTrackPanes(map);
+    updateToilets(map, toiletMarkers);
     // store lat,lon,zoom in location.hash
     const center = map.getCenter();
     const zoom = map.getZoom();
@@ -61,7 +104,8 @@ const updateTracks = function(map, parkruns) {
     // show tracks within bounds
     const bounds = map.getBounds();
     parkruns.forEach((parkrun, index, array) => {
-        if (bounds.contains([parkrun.lat, parkrun.lon])) {
+        const courseVisible = parkrun.trackBounds && bounds.intersects(parkrun.trackBounds);
+        if (bounds.contains([parkrun.lat, parkrun.lon]) || courseVisible) {
             if (!parkrun.polylines_visible) {
                 const style = getTrackStyle(parkrun);
                 array[index].polylines_visible = true;
@@ -128,9 +172,28 @@ const loadMap = function (id, hash) {
     const greenIcon = load_marker("green");
     const greyIcon = load_marker("grey");
 
+    const toiletMarkers = [];
+    const seenToilets = new Set();
     let minAttendace = 0;
     let maxAttendance = 0;
+    if (!map.getPane('toiletPane')) {
+        map.createPane('toiletPane');
+        map.getPane('toiletPane').style.zIndex = 350;
+    }
+
     parkruns.forEach((parkrun, index, array) => {
+        (parkrun.toilets || []).forEach(toilet => {
+            const key = `${toilet.lat},${toilet.lon}`;
+            if (!seenToilets.has(key)) {
+                seenToilets.add(key);
+                toiletMarkers.push({
+                    latlng: L.latLng(toilet.lat, toilet.lon),
+                    marker: createToiletMarker(toilet, 'toiletPane'),
+                    visible: false
+                });
+            }
+        });
+
         if (parkrun.active) {
             if (parkrun.latest) {
                 if (parkrun.latest.runners > maxAttendance) {
@@ -183,15 +246,17 @@ const loadMap = function (id, hash) {
         }
         array[index].polylines = null;
         array[index].polylines_visible = false;
+        const trackCoordinates = parkrun.tracks.flat();
+        array[index].trackBounds = trackCoordinates.length > 0 ? L.latLngBounds(trackCoordinates) : null;
     });
 
     map.on('zoomend', function() {
-        updateTracks(map, parkruns);
+        updateTracks(map, parkruns, toiletMarkers);
     });
     map.on('moveend', function() {
-        updateTracks(map, parkruns);
+        updateTracks(map, parkruns, toiletMarkers);
     });
-    updateTracks(map, parkruns);
+    updateTracks(map, parkruns, toiletMarkers);
     fixLeafletButtons(document.getElementById(id));
 };
 
@@ -242,30 +307,7 @@ const loadParkrunMap = function (divId) {
         (parkrun.toilets || []).forEach(toilet => {
             const toiletLatLng = L.latLng(toilet.lat, toilet.lon);
             bounds.extend(toiletLatLng);
-            const toiletIcon = L.divIcon({
-                className: 'toilet-map-marker',
-                html: '<span aria-hidden="true">WC</span>',
-                iconSize: [36, 36],
-                iconAnchor: [18, 18],
-                popupAnchor: [0, -18]
-            });
-            const marker = L.marker(toiletLatLng, {
-                icon: toiletIcon,
-                title: toilet.name || 'Toilette',
-                pane: 'toiletPane'
-            }).addTo(map);
-            marker.bindTooltip(toilet.name || 'Toilette');
-
-            const popup = document.createElement('div');
-            const name = document.createElement('strong');
-            name.textContent = toilet.name || 'Toilette';
-            const link = document.createElement('a');
-            link.href = toilet.url;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            link.textContent = 'In OpenStreetMap anzeigen';
-            popup.append(name, link);
-            marker.bindPopup(popup);
+            createToiletMarker(toilet, 'toiletPane').addTo(map);
         });
         map.fitBounds(bounds);
 
