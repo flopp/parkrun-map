@@ -38,7 +38,6 @@ const getTrackStyle = function(parkrun) {
 };
 
 const createToiletMarker = function(toilet, pane) {
-    console.log("toilet at", toilet.lat, toilet.lon);
     const marker = L.marker([toilet.lat, toilet.lon], {
         icon: L.divIcon({
             className: 'toilet-map-marker',
@@ -71,10 +70,8 @@ const updateToilets = function(map, toiletMarkers) {
         toilet.visible = visible;
         if (visible) {
             toilet.marker.addTo(map);
-            console.log("showing toilet at", toilet.latlng);
         } else {
             toilet.marker.removeFrom(map);
-            console.log("hiding toilet at", toilet.latlng);
         }
     });
 };
