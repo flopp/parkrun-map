@@ -1,0 +1,29 @@
+<p>
+	Beim <strong>parkrun Alphabet Challenge</strong> besuchst du parkrun-Standorte, deren Namen mit den Buchstaben von A bis Z beginnen.
+	So lernst du unterschiedliche Strecken und Communities kennen und hast nebenbei ein langfristiges Ziel für deine parkrun-Besuche.
+</p>
+
+<p>
+	Hier findest du die derzeit aktiven parkruns in Deutschland, alphabetisch nach ihrem Namen sortiert.
+	Die Übersicht wird bei jeder Erstellung der Website automatisch aus den aktuellen Veranstaltungsdaten erzeugt.
+	Geplante und nicht aktive Standorte sind nicht enthalten.
+</p>
+
+<h2>Aktive parkruns von A bis Z</h2>
+{{range .AlphabetEvents}}
+<h3 id="{{.Letter}}">{{.Letter}}</h3>
+{{if .Events}}
+<ul>
+	{{range .Events}}
+	<li><a href="{{EventPath .Id}}">{{.FixedName}}</a> ({{.FixedLocation}})</li>
+	{{end}}
+</ul>
+{{else}}
+<p>Aktuell ist kein aktiver parkrun mit diesem Anfangsbuchstaben gelistet.</p>
+{{end}}
+{{end}}
+
+<p>
+	Die Liste spiegelt den Datenstand der Website wider. Prüfe vor einem Besuch die jeweilige Veranstaltungsseite,
+	um aktuelle Informationen zu Startort, Strecke und möglichen Absagen zu erhalten.
+</p>

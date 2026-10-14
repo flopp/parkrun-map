@@ -22,6 +22,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/flopp/go-googlesheetswrapper"
 	"github.com/flopp/parkrun-map/internal/osm"
@@ -40,6 +41,7 @@ type RenderData struct {
 	Config            *Config
 	Event             *parkrun.Event
 	Events            []*parkrun.Event
+	AlphabetEvents    []AlphabetEventGroup
 	PlannedDataTermin []*PlannedData
 	PlannedDataTest   []*PlannedData
 	PlannedDataOther  []*PlannedData
@@ -61,6 +63,54 @@ type RenderData struct {
 	Updated           string
 	CanonicalUrls     []CanonicalUrl
 	NoRewrite         bool
+}
+
+type AlphabetEventGroup struct {
+	Letter string
+	Events []*parkrun.Event
+}
+
+func alphabetEventGroups(events []*parkrun.Event) []AlphabetEventGroup {
+	groups := make([]AlphabetEventGroup, 26)
+	groupIndexes := make(map[rune]int, 26)
+	for i, letter := range "ABCDEFGHIJKLMNOPQRSTUVWXYZ" {
+		groups[i].Letter = string(letter)
+		groupIndexes[letter] = i
+	}
+
+	for _, event := range events {
+		if !event.Active() {
+			continue
+		}
+
+		name := strings.TrimSpace(event.FixedName())
+		if name == "" {
+			continue
+		}
+		var letter rune
+		for _, firstRune := range name {
+			letter = unicode.ToUpper(firstRune)
+			break
+		}
+		switch letter {
+		case 'Ä':
+			letter = 'A'
+		case 'Ö':
+			letter = 'O'
+		case 'Ü':
+			letter = 'U'
+		}
+		if index, ok := groupIndexes[letter]; ok {
+			groups[index].Events = append(groups[index].Events, event)
+		}
+	}
+
+	for i := range groups {
+		sort.Slice(groups[i].Events, func(a, b int) bool {
+			return strings.ToLower(groups[i].Events[a].FixedName()) < strings.ToLower(groups[i].Events[b].FixedName())
+		})
+	}
+	return groups
 }
 
 func (data *RenderData) set(title, description, canonical, updated string, nav string) {
@@ -1465,6 +1515,7 @@ func main() {
 		Config:            &config,
 		Event:             nil,
 		Events:            events,
+		AlphabetEvents:    alphabetEventGroups(events),
 		PlannedDataTermin: plannedDataTermin,
 		PlannedDataTest:   plannedDataTest,
 		PlannedDataOther:  plannedDataOther,

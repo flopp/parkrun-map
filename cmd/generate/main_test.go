@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/xml"
 	"image"
 	"image/color"
@@ -13,6 +14,71 @@ import (
 
 	"github.com/flopp/parkrun-map/internal/parkrun"
 )
+
+func TestAlphabetEventGroupsAndArticleContent(t *testing.T) {
+	events := []*parkrun.Event{
+		{Id: "zulu", Name: "Zulu parkrun", Location: "Berlin"},
+		{Id: "aachen", Name: "Aachen parkrun", Location: "Aachen"},
+		{Id: "aepfel", Name: "Äpfel parkrun", Location: "Äpfelstadt"},
+		{Id: "planned", Name: "Plan parkrun", Status: "geplant"},
+		{Id: "closed", Name: "Closed parkrun", Status: "temporär geschlossen"},
+	}
+	groups := alphabetEventGroups(events)
+
+	if got, want := len(groups), 26; got != want {
+		t.Fatalf("alphabetEventGroups() returned %d groups, want %d", got, want)
+	}
+	if got, want := groups[0].Letter, "A"; got != want {
+		t.Errorf("first group letter = %q, want %q", got, want)
+	}
+	if got, want := len(groups[0].Events), 2; got != want {
+		t.Fatalf("A group contains %d events, want %d", got, want)
+	}
+	if got, want := groups[0].Events[0].Id, "aachen"; got != want {
+		t.Errorf("first A event = %q, want %q", got, want)
+	}
+	if got, want := groups[25].Events[0].Id, "zulu"; got != want {
+		t.Errorf("Z event = %q, want %q", got, want)
+	}
+	for _, group := range groups {
+		for _, event := range group.Events {
+			if event.Id == "planned" || event.Id == "closed" {
+				t.Errorf("non-active event %q included in alphabet groups", event.Id)
+			}
+		}
+	}
+
+	content, err := os.ReadFile("../../data/articles/parkrun-alphabet/content.html")
+	if err != nil {
+		t.Fatalf("ReadFile() article content error = %v", err)
+	}
+	data := RenderData{AlphabetEvents: groups}
+	tmpl, err := data.TemplateStr(string(content))
+	if err != nil {
+		t.Fatalf("TemplateStr() error = %v", err)
+	}
+	var rendered bytes.Buffer
+	if err := tmpl.Execute(&rendered, data); err != nil {
+		t.Fatalf("Execute() article content error = %v", err)
+	}
+	got := rendered.String()
+	for _, want := range []string{
+		`href="/aachen">Aachen parkrun</a>`,
+		`href="/aepfel">Äpfel parkrun</a>`,
+		"href=\"/zulu\">Zulu parkrun</a>",
+		"X",
+		"Aktuell ist kein aktiver parkrun mit diesem Anfangsbuchstaben gelistet.",
+	} {
+		if !strings.Contains(got, want) {
+			t.Errorf("rendered article content does not contain %q", want)
+		}
+	}
+	for _, excluded := range []string{"Plan parkrun", "Closed parkrun"} {
+		if strings.Contains(got, excluded) {
+			t.Errorf("rendered article content unexpectedly includes %q", excluded)
+		}
+	}
+}
 
 type testSitemapURL struct {
 	Loc string `xml:"loc"`
