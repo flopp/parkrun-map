@@ -565,8 +565,10 @@ func LoadEvents(events_json_file string, parkrun_infos_param map[string]*Parkrun
 			event.Status = info.Status
 			event.SpecificLocation = info.Location
 			event.RouteType = info.RouteType
+			event.Description = template.HTML(info.Description)
 			continue
 		}
+
 		event := &Event{info.Id, info.Name, info.City, info.Location, template.HTML(info.Description), coordinates, utils.InvalidCoordinates, "", "", info.RouteType, nil, nil, nil, osm.Nearby{}, false, 0, info.Status, 0, 0, 0, 0, 0, nil, false}
 		eventList = append(eventList, event)
 	}
