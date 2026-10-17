@@ -29,12 +29,11 @@ func TestNearestSortsAndCaps(t *testing.T) {
 
 func TestNearbyPlacesIncludesNearbyToiletWay(t *testing.T) {
 	index := &PBFIndex{pois: []pbfPOI{{
-		id:       42,
-		lat:      0,
-		lon:      0,
-		tags:     map[string]string{"amenity": "toilets", "name": "Park toilets"},
-		wayNodes: []coordinates{{Lat: 0, Lon: -0.001}, {Lat: 0, Lon: 0.001}},
-		isWay:    true,
+		id:    42,
+		lat:   0,
+		lon:   0,
+		tags:  map[string]string{"amenity": "toilets", "name": "Park toilets"},
+		isWay: true,
 	}}}
 	track := [][]utils.Coordinates{{{Lat: -0.001, Lon: 0}, {Lat: 0.001, Lon: 0}}}
 	bounds := boundingBox{South: -0.002, West: -0.002, North: 0.002, East: 0.002}
@@ -48,14 +47,5 @@ func TestNearbyPlacesIncludesNearbyToiletWay(t *testing.T) {
 	}
 	if got[0].URL != "https://www.openstreetmap.org/way/42" {
 		t.Errorf("NearbyPlaces()[0].URL = %q, want a way URL", got[0].URL)
-	}
-}
-
-func TestWayDistanceToTracksMeasuresBetweenWayNodes(t *testing.T) {
-	way := []coordinates{{Lat: 0, Lon: -0.001}, {Lat: 0, Lon: 0.001}}
-	track := [][]utils.Coordinates{{{Lat: -0.001, Lon: 0}, {Lat: 0.001, Lon: 0}}}
-
-	if got := wayDistanceToTracksMeters(way, track); got > 0.01 {
-		t.Errorf("wayDistanceToTracksMeters() = %f, want approximately 0 for crossing segments", got)
 	}
 }
