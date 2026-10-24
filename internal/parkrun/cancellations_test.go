@@ -106,6 +106,9 @@ func TestParseCancellationsWiki(t *testing.T) {
 					if !got.Date.Equal(want.Date) {
 						t.Fatalf("ParseCancellationsWiki() event %s cancellation %d date = %s, want %s", eventName, i, got.Date.Format("2006-01-02"), want.Date.Format("2006-01-02"))
 					}
+					if got.Date.Location() != time.Local {
+						t.Errorf("ParseCancellationsWiki() event %s cancellation %d date location = %v, want %v", eventName, i, got.Date.Location(), time.Local)
+					}
 					if got.Description != want.Description {
 						t.Fatalf("ParseCancellationsWiki() event %s cancellation %d description = %q, want %q", eventName, i, got.Description, want.Description)
 					}
@@ -118,7 +121,7 @@ func TestParseCancellationsWiki(t *testing.T) {
 func mustParseDate(t *testing.T, value string) time.Time {
 	t.Helper()
 
-	date, err := time.Parse("2006-01-02", value)
+	date, err := time.ParseInLocation("2006-01-02", value, time.Local)
 	if err != nil {
 		t.Fatalf("invalid test date %q: %v", value, err)
 	}

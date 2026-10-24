@@ -312,7 +312,24 @@ func TestRenderPlannedPageImages(t *testing.T) {
 			t.Errorf("rendered page does not include image %q", image)
 		}
 	}
+
 	if got, want := strings.Count(got, `class="planned-card-image"`), 3; got != want {
 		t.Errorf("rendered image count = %d, want %d", got, want)
+	}
+}
+
+func TestSameCalendarDateAcrossTimeZones(t *testing.T) {
+	cest := time.FixedZone("CEST", 2*60*60)
+	cancellationDate := time.Date(2026, time.October, 24, 0, 0, 0, 0, time.UTC)
+	latestDate := time.Date(2026, time.October, 24, 0, 0, 0, 0, cest)
+
+	if cancellationDate.Equal(latestDate) {
+		t.Fatal("test dates unexpectedly represent the same instant")
+	}
+	if !sameCalendarDate(cancellationDate, latestDate) {
+		t.Errorf("sameCalendarDate(%v, %v) = false, want true", cancellationDate, latestDate)
+	}
+	if sameCalendarDate(cancellationDate, latestDate.AddDate(0, 0, 1)) {
+		t.Errorf("sameCalendarDate(%v, %v) = true, want false", cancellationDate, latestDate.AddDate(0, 0, 1))
 	}
 }

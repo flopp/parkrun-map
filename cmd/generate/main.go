@@ -1020,6 +1020,12 @@ func extractIntContent(n *html.Node) int {
 	return v
 }
 
+func sameCalendarDate(a, b time.Time) bool {
+	yearA, monthA, dayA := a.Date()
+	yearB, monthB, dayB := b.Date()
+	return yearA == yearB && monthA == monthB && dayA == dayB
+}
+
 func main() {
 	dataDir := flag.String("data", "data", "the data directory")
 	downloadDir := flag.String("download", ".download", "the download directory")
@@ -1312,12 +1318,14 @@ func main() {
 			// check if latest run is cancelled
 			event.IsCancelled = false
 			for _, c := range cancellations {
-				if c.Date == latestDate {
+				if sameCalendarDate(c.Date, latestDate) {
 					event.IsCancelled = true
+					log.Printf("--> event %s is cancelled for latest run on %s", event.Name, latestDate.Format("02.01.2006"))
 					break
 				}
 			}
 		}
+
 	}
 	// check for cancellations that were not applied (e.g. because the event name from the wiki does not match the event name from the parkrun data)
 	for eventName, processed := range processedCancellations {

@@ -54,7 +54,7 @@ func ParseCancellationsWiki(cancellationsFilePath string) (map[string][]Cancella
 	rowRe := regexp.MustCompile(`(?is)<tr>\s*<td>\s*([0-9]{4}-[0-9]{2}-[0-9]{2})\s*</td>\s*<td>\s*(.*?)\s*</td>\s*<td>\s*.*?\s*</td>\s*<td>\s*(.*?)\s*</td>\s*</tr>`)
 	matches := rowRe.FindAllStringSubmatch(wikiFileData, -1)
 	for _, match := range matches {
-		date, err := time.Parse("2006-01-02", strings.TrimSpace(match[1]))
+		date, err := time.ParseInLocation("2006-01-02", strings.TrimSpace(match[1]), time.Local)
 		if err != nil {
 			return nil, fmt.Errorf("while parsing cancellation date %q: %w", match[1], err)
 		}
