@@ -10,7 +10,7 @@ require (
 	github.com/qedus/osmpbf v1.2.0
 	github.com/yrsh/simplify-go v0.0.0-20141205144220-b78647bd27f7
 	golang.org/x/image v0.47.0
-	golang.org/x/net v0.61.0
+	golang.org/x/net v0.62.0
 )
 
 require (
