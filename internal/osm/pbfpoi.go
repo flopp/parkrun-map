@@ -145,9 +145,11 @@ func (idx *PBFIndex) NearbyPlaces(origin utils.Coordinates, bounds boundingBox, 
 			continue
 		}
 
-		if restrictedAccess(poi.tags["access"]) {
-			continue
-		}
+		/*
+			if restrictedAccess(poi.tags["access"]) {
+				continue
+			}
+		*/
 		distance := distanceToTracksMeters(point, tracks)
 
 		if distance > maxTrackDistanceMeters {
